@@ -15,9 +15,12 @@ import ru.textanalysis.common.rest.utils.WebErrorHelper;
 import ru.textanalysis.common.rest.utils.WebHelper;
 import ru.textanalysis.tawt.ms.storage.OmoFormList;
 import ru.textanalysis.tawt.rest.server.api.request.SelectByStringRequest;
+import ru.textanalysis.tawt.rest.server.api.response.SelectMorfCharacteristicsByStringResponse;
 import ru.textanalysis.tawt.rest.server.api.response.SelectOmoformsByStringResponse;
 import ru.textanalysis.tawt.rest.server.services.JMorfSdkService;
 import ru.textanalysis.tawt.rest.server.services.ValidationService;
+
+import java.util.List;
 
 @RestController(value = "API для выборки")
 @RequestMapping("/api/get")
@@ -52,6 +55,28 @@ public class JmorfsdkSelectController {
             ServiceWorksResult<OmoFormList> resultSelect = jMorfSdkService.selectOmoformsByString(request.getWord());
             result.createEmptyData();
             result.getData().setOmoForms(resultSelect.getResult());
+            if (!resultSelect.getErrorMessage().isEmpty()) {
+                result.getErrors().addAll(resultSelect.getErrorMessage());
+            }
+        }
+
+        result.setSuccess(result.getErrors().isEmpty());
+        return WebHelper.makeSuccessResult(result);
+    }
+
+    @ApiOperation(value = "Получить морфологические характеристики по заданной форме")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK", response = SelectMorfCharacteristicsByStringResponse.class)})
+    @RequestMapping(value = "get/morphology/characteristics", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> getMorphologyCharacteristics(@RequestBody SelectByStringRequest request) {
+        SelectMorfCharacteristicsByStringResponse result = new SelectMorfCharacteristicsByStringResponse();
+
+        result.getErrors().addAll(validationService.validationRequest(request));
+
+        if (result.getErrors().isEmpty()) {
+            ServiceWorksResult<List<Long>> resultSelect = jMorfSdkService.selectLongByString(request.getWord());
+            result.createEmptyData();
+            result.getData().setMorfCharacteristics(resultSelect.getResult());
             if (!resultSelect.getErrorMessage().isEmpty()) {
                 result.getErrors().addAll(resultSelect.getErrorMessage());
             }
