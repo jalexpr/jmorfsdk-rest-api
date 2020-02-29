@@ -1,4 +1,4 @@
-package ru.textanalysis.tawt.jmorfsdk.rest.client.config;
+package ru.textanalysis.tawt.rest.client.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;

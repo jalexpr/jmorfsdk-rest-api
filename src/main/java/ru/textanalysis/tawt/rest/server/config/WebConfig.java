@@ -1,4 +1,4 @@
-package ru.textanalysis.tawt.jmorfsdk.rest.server.config;
+package ru.textanalysis.tawt.rest.server.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.*;

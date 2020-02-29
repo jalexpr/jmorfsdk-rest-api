@@ -1,7 +1,7 @@
-package ru.textanalysis.tawt.jmorfsdk.rest.api.selection.response;
+package ru.textanalysis.tawt.rest.server.api.response;
 
 import ru.textanalysis.common.rest.domain.response.BaseResponseAbstract;
-import ru.textanalysis.tawt.jmorfsdk.rest.api.selection.response.item.SelectOmoforms;
+import ru.textanalysis.tawt.rest.server.api.response.item.SelectOmoforms;
 
 public class SelectOmoformsByStringResponse  extends BaseResponseAbstract<SelectOmoforms> {
     @Override

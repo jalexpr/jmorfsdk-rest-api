@@ -1,9 +1,9 @@
-package ru.textanalysis.tawt.jmorfsdk.rest.api.selection.request;
+package ru.textanalysis.tawt.rest.server.api.request;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
 
-public class SelectByStringRequest {
+public class ExistFormByStringRequest {
     @ApiModelProperty(value = "Слово")
     @JsonProperty
     private String word;

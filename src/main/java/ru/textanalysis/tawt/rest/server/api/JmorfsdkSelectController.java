@@ -1,4 +1,4 @@
-package ru.textanalysis.tawt.jmorfsdk.rest.api.selection;
+package ru.textanalysis.tawt.rest.server.api;
 
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -13,22 +13,22 @@ import org.springframework.web.bind.annotation.*;
 import ru.textanalysis.common.rest.classes.ServiceWorksResult;
 import ru.textanalysis.common.rest.utils.WebErrorHelper;
 import ru.textanalysis.common.rest.utils.WebHelper;
-import ru.textanalysis.tawt.jmorfsdk.rest.api.selection.request.SelectByStringRequest;
-import ru.textanalysis.tawt.jmorfsdk.rest.api.selection.response.SelectOmoformsByStringResponse;
-import ru.textanalysis.tawt.jmorfsdk.rest.server.services.JMorfSdkService;
-import ru.textanalysis.tawt.jmorfsdk.rest.server.services.ValidationService;
 import ru.textanalysis.tawt.ms.storage.OmoFormList;
+import ru.textanalysis.tawt.rest.server.api.request.SelectByStringRequest;
+import ru.textanalysis.tawt.rest.server.api.response.SelectOmoformsByStringResponse;
+import ru.textanalysis.tawt.rest.server.services.JMorfSdkService;
+import ru.textanalysis.tawt.rest.server.services.ValidationService;
 
 @RestController(value = "API для выборки")
 @RequestMapping("/api/get")
-public class SelectControllerImpl {
+public class JmorfsdkSelectController {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
     private final JMorfSdkService jMorfSdkService;
     private final ValidationService validationService;
 
     @Autowired
-    public SelectControllerImpl(JMorfSdkService jMorfSdkService, ValidationService validationService) {
+    public JmorfsdkSelectController(JMorfSdkService jMorfSdkService, ValidationService validationService) {
         this.jMorfSdkService = jMorfSdkService;
         this.validationService = validationService;
     }

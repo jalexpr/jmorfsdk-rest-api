@@ -1,4 +1,4 @@
-package ru.textanalysis.tawt.jmorfsdk.rest.server.config;
+package ru.textanalysis.tawt.rest.server.config;
 
 import com.google.common.base.Predicates;
 import org.springframework.context.annotation.Bean;
@@ -29,8 +29,8 @@ public class SwaggerConfig {
 
     private ApiInfo metadata() {
         return new ApiInfoBuilder()
-                .title("JMorfSdk Rest API")
-                .description("Данный сервис для использование API библиотеки JMorfSdk")
+                .title("TAWT REST API")
+                .description("Данный сервис для использование API фреймворка TAWT")
                 .version("2.10.10")
                 .build();
     }

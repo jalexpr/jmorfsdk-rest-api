@@ -1,4 +1,4 @@
-package ru.textanalysis.tawt.jmorfsdk.rest;
+package ru.textanalysis.tawt.rest;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -10,8 +10,8 @@ import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfigurat
         DataSourceAutoConfiguration.class,
         DataSourceTransactionManagerAutoConfiguration.class,
         HibernateJpaAutoConfiguration.class})
-public class JMorfSdkRestApiApplication {
+public class TawtRestApiApplication {
     public static void main(String[] args) {
-        SpringApplication.run(JMorfSdkRestApiApplication.class, args);
+        SpringApplication.run(TawtRestApiApplication.class, args);
     }
 }

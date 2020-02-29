@@ -1,4 +1,4 @@
-package ru.textanalysis.tawt.jmorfsdk.rest.server.services;
+package ru.textanalysis.tawt.rest.server.services;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,6 +28,19 @@ public class JMorfSdkService {
         OmoFormList result = new OmoFormList();
         try {
             result = jMorfSdk.getAllCharacteristicsOfForm(word);
+        } catch (Throwable ex) {
+            String message = "Cannot AllCharacteristicsOfForm for word: " + String.valueOf(word);
+            log.warn(message, ex);
+            errors.add(message);
+        }
+        return new ServiceWorksResult<>(result, errors);
+    }
+
+    public ServiceWorksResult<Boolean> isFormExistsInDictionary(String word) {
+        List<String> errors = new LinkedList<>();
+        Boolean result = null;
+        try {
+            result = jMorfSdk.isFormExistsInDictionary(word);
         } catch (Throwable ex) {
             String message = "Cannot AllCharacteristicsOfForm for word: " + String.valueOf(word);
             log.warn(message, ex);
