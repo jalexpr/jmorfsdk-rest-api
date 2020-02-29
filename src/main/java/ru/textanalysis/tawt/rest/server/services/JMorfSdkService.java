@@ -9,6 +9,7 @@ import ru.textanalysis.tawt.jmorfsdk.JMorfSdk;
 import ru.textanalysis.tawt.jmorfsdk.loader.JMorfSdkFactory;
 import ru.textanalysis.tawt.ms.storage.OmoFormList;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -41,6 +42,19 @@ public class JMorfSdkService {
         Boolean result = null;
         try {
             result = jMorfSdk.isFormExistsInDictionary(word);
+        } catch (Throwable ex) {
+            String message = "Cannot AllCharacteristicsOfForm for word: " + String.valueOf(word);
+            log.warn(message, ex);
+            errors.add(message);
+        }
+        return new ServiceWorksResult<>(result, errors);
+    }
+
+    public ServiceWorksResult<List<Long>> selectLongByString(String word) {
+        List<String> errors = new LinkedList<>();
+        List<Long> result = new ArrayList<>();
+        try {
+            result = jMorfSdk.getMorphologyCharacteristics(word);
         } catch (Throwable ex) {
             String message = "Cannot AllCharacteristicsOfForm for word: " + String.valueOf(word);
             log.warn(message, ex);
