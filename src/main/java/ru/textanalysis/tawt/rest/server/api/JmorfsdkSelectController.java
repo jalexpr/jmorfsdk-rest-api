@@ -13,10 +13,13 @@ import org.springframework.web.bind.annotation.*;
 import ru.textanalysis.common.rest.classes.ServiceWorksResult;
 import ru.textanalysis.common.rest.utils.WebErrorHelper;
 import ru.textanalysis.common.rest.utils.WebHelper;
+import ru.textanalysis.tawt.ms.internal.ref.RefOmoFormList;
 import ru.textanalysis.tawt.ms.storage.OmoFormList;
 import ru.textanalysis.tawt.rest.server.api.request.SelectByStringRequest;
-import ru.textanalysis.tawt.rest.server.api.response.SelectMorfCharacteristicsByStringResponse;
-import ru.textanalysis.tawt.rest.server.api.response.SelectOmoformsByStringResponse;
+import ru.textanalysis.tawt.rest.server.api.request.SelectByStringWithMorphologyCharacteristicsRequest;
+import ru.textanalysis.tawt.rest.server.api.request.SelectByStringWithTypeOfSpeechesAndMorphologyCharacteristicsRequest;
+import ru.textanalysis.tawt.rest.server.api.request.SelectByStringWithTypeOfSpeechesRequest;
+import ru.textanalysis.tawt.rest.server.api.response.*;
 import ru.textanalysis.tawt.rest.server.services.JMorfSdkService;
 import ru.textanalysis.tawt.rest.server.services.ValidationService;
 
@@ -77,6 +80,138 @@ public class JmorfsdkSelectController {
             ServiceWorksResult<List<Long>> resultSelect = jMorfSdkService.selectLongByString(request.getWord());
             result.createEmptyData();
             result.getData().setMorfCharacteristics(resultSelect.getResult());
+            if (!resultSelect.getErrorMessage().isEmpty()) {
+                result.getErrors().addAll(resultSelect.getErrorMessage());
+            }
+        }
+
+        result.setSuccess(result.getErrors().isEmpty());
+        return WebHelper.makeSuccessResult(result);
+    }
+
+    @ApiOperation(value = "Получение RefOmoFormList по заданному слову")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK", response = SelectRefOmoFormListByStringResponse.class)})
+    @RequestMapping(value = "get/ref/omo/form/list", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> getRefOmoFormList(@RequestBody SelectByStringRequest request) {
+        SelectRefOmoFormListByStringResponse result = new SelectRefOmoFormListByStringResponse();
+
+        result.getErrors().addAll(validationService.validationRequest(request));
+
+        if (result.getErrors().isEmpty()) {
+            ServiceWorksResult<RefOmoFormList> resultSelect = jMorfSdkService.selectRefOmoFormListByString(request.getWord());
+            result.createEmptyData();
+            result.getData().setRefOmoFormList(resultSelect.getResult());
+            if (!resultSelect.getErrorMessage().isEmpty()) {
+                result.getErrors().addAll(resultSelect.getErrorMessage());
+            }
+        }
+
+        result.setSuccess(result.getErrors().isEmpty());
+        return WebHelper.makeSuccessResult(result);
+    }
+
+    @ApiOperation(value = "Получение StringInitialForm по заданному слову")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK", response = SelectStringInitialFormByStringResponse.class)})
+    @RequestMapping(value = "get/string/initial/form", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> getStringInitialForm(@RequestBody SelectByStringRequest request) {
+        SelectStringInitialFormByStringResponse result = new SelectStringInitialFormByStringResponse();
+
+        result.getErrors().addAll(validationService.validationRequest(request));
+
+        if (result.getErrors().isEmpty()) {
+            ServiceWorksResult<List<String>> resultSelect = jMorfSdkService.selectStringInitialFormByString(request.getWord());
+            result.createEmptyData();
+            result.getData().setStringList(resultSelect.getResult());
+            if (!resultSelect.getErrorMessage().isEmpty()) {
+                result.getErrors().addAll(resultSelect.getErrorMessage());
+            }
+        }
+
+        result.setSuccess(result.getErrors().isEmpty());
+        return WebHelper.makeSuccessResult(result);
+    }
+
+    @ApiOperation(value = "Получение TypeOfSpeeches по заданному слову")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK", response = SelectTypeOfSpeechesByStringResponse.class)})
+    @RequestMapping(value = "get/type/of/speeches", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> getTypeOfSpeeches(@RequestBody SelectByStringRequest request) {
+        SelectTypeOfSpeechesByStringResponse result = new SelectTypeOfSpeechesByStringResponse();
+
+        result.getErrors().addAll(validationService.validationRequest(request));
+
+        if (result.getErrors().isEmpty()) {
+            ServiceWorksResult<List<Byte>> resultSelect = jMorfSdkService.selectTypeOfSpeechesByString(request.getWord());
+            result.createEmptyData();
+            result.getData().setByteList(resultSelect.getResult());
+            if (!resultSelect.getErrorMessage().isEmpty()) {
+                result.getErrors().addAll(resultSelect.getErrorMessage());
+            }
+        }
+
+        result.setSuccess(result.getErrors().isEmpty());
+        return WebHelper.makeSuccessResult(result);
+    }
+
+    @ApiOperation(value = "Получение DerivativeForm по заданному слову с параметрами: часть речи и морфологические характеристики")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK", response = SelectDerivativeFormByStringResponse.class)})
+    @RequestMapping(value = "get/derivative/form/with/type/of/speeches/and/morph/characteristics", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> getDerivativeForm(@RequestBody SelectByStringWithTypeOfSpeechesAndMorphologyCharacteristicsRequest request) {
+        SelectDerivativeFormByStringResponse result = new SelectDerivativeFormByStringResponse();
+
+        result.getErrors().addAll(validationService.validationRequest(request));
+
+        if (result.getErrors().isEmpty()) {
+            ServiceWorksResult<List<String>> resultSelect = jMorfSdkService.selectDerivativeFormByString(request.getWord(), request.getTypeOfSpeeches(), request.getMorphologyCharacteristics());
+            result.createEmptyData();
+            result.getData().setStringList(resultSelect.getResult());
+            if (!resultSelect.getErrorMessage().isEmpty()) {
+                result.getErrors().addAll(resultSelect.getErrorMessage());
+            }
+        }
+
+        result.setSuccess(result.getErrors().isEmpty());
+        return WebHelper.makeSuccessResult(result);
+    }
+
+    @ApiOperation(value = "Получение DerivativeForm по заданному слову с параметром: часть речи")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK", response = SelectDerivativeFormByStringResponse.class)})
+    @RequestMapping(value = "get/derivative/form/with/type/of/speeches", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> getDerivativeForm(@RequestBody SelectByStringWithTypeOfSpeechesRequest request) {
+        SelectDerivativeFormByStringResponse result = new SelectDerivativeFormByStringResponse();
+
+        result.getErrors().addAll(validationService.validationRequest(request));
+
+        if (result.getErrors().isEmpty()) {
+            ServiceWorksResult<List<String>> resultSelect = jMorfSdkService.selectDerivativeFormByString(request.getWord(), request.getTypeOfSpeeches());
+            result.createEmptyData();
+            result.getData().setStringList(resultSelect.getResult());
+            if (!resultSelect.getErrorMessage().isEmpty()) {
+                result.getErrors().addAll(resultSelect.getErrorMessage());
+            }
+        }
+
+        result.setSuccess(result.getErrors().isEmpty());
+        return WebHelper.makeSuccessResult(result);
+    }
+
+    @ApiOperation(value = "Получение DerivativeForm по заданному слову с параметром: морфологические характеристики")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK", response = SelectDerivativeFormByStringResponse.class)})
+    @RequestMapping(value = "get/derivative/form/with/morph/characteristics", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> getDerivativeForm(@RequestBody SelectByStringWithMorphologyCharacteristicsRequest request) {
+        SelectDerivativeFormByStringResponse result = new SelectDerivativeFormByStringResponse();
+
+        result.getErrors().addAll(validationService.validationRequest(request));
+
+        if (result.getErrors().isEmpty()) {
+            ServiceWorksResult<List<String>> resultSelect = jMorfSdkService.selectDerivativeFormByString(request.getWord(), request.getMorphologyCharacteristics());
+            result.createEmptyData();
+            result.getData().setStringList(resultSelect.getResult());
             if (!resultSelect.getErrorMessage().isEmpty()) {
                 result.getErrors().addAll(resultSelect.getErrorMessage());
             }

@@ -15,6 +15,7 @@ import ru.textanalysis.common.rest.utils.WebErrorHelper;
 import ru.textanalysis.common.rest.utils.WebHelper;
 import ru.textanalysis.tawt.rest.server.api.request.ExistFormByStringRequest;
 import ru.textanalysis.tawt.rest.server.api.response.ExistFormByStringResponse;
+import ru.textanalysis.tawt.rest.server.api.response.ExistInitialFormByStringResponse;
 import ru.textanalysis.tawt.rest.server.api.response.SelectOmoformsByStringResponse;
 import ru.textanalysis.tawt.rest.server.services.JMorfSdkService;
 import ru.textanalysis.tawt.rest.server.services.ValidationService;
@@ -52,6 +53,28 @@ public class JmorfsdkExistControllerImpl {
             ServiceWorksResult<Boolean> resultSelect = jMorfSdkService.isFormExistsInDictionary(request.getWord());
             result.createEmptyData();
             result.getData().setExist(resultSelect.getResult());
+            if (!resultSelect.getErrorMessage().isEmpty()) {
+                result.getErrors().addAll(resultSelect.getErrorMessage());
+            }
+        }
+
+        result.setSuccess(result.getErrors().isEmpty());
+        return WebHelper.makeSuccessResult(result);
+    }
+
+    @ApiOperation(value = "Проверка на существование InitialForm в словаре")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK", response = ExistInitialFormByStringResponse.class)})
+    @RequestMapping(value = "is/initial/form", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> isInitialForm(@RequestBody ExistFormByStringRequest request) {
+        ExistInitialFormByStringResponse result = new ExistInitialFormByStringResponse();
+
+        result.getErrors().addAll(validationService.validationRequest(request));
+
+        if (result.getErrors().isEmpty()) {
+            ServiceWorksResult<Byte> resultSelect = jMorfSdkService.isInitialForm(request.getWord());
+            result.createEmptyData();
+            result.getData().setExistInitialForm(resultSelect.getResult());
             if (!resultSelect.getErrorMessage().isEmpty()) {
                 result.getErrors().addAll(resultSelect.getErrorMessage());
             }
