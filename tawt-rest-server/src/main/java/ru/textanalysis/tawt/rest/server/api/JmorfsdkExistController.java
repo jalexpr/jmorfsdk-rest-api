@@ -60,4 +60,26 @@ public class JmorfsdkExistController {
         result.setSuccess(result.getErrors().isEmpty());
         return WebHelper.makeSuccessResult(result);
     }
+
+    @ApiOperation(value = "Проверка на существование InitialForm в словаре")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK", response = ExistInitialFormByStringResponse.class)})
+    @RequestMapping(value = "is/initial/form", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> isInitialForm(@RequestBody ExistFormByStringRequest request) {
+        ExistInitialFormByStringResponse result = new ExistInitialFormByStringResponse();
+
+        result.getErrors().addAll(validationService.validationRequest(request));
+
+        if (result.getErrors().isEmpty()) {
+            ServiceWorksResult<Byte> resultSelect = jMorfSdkService.isInitialForm(request.getWord());
+            result.createEmptyData();
+            result.getData().setExistInitialForm(resultSelect.getResult());
+            if (!resultSelect.getErrorMessage().isEmpty()) {
+                result.getErrors().addAll(resultSelect.getErrorMessage());
+            }
+        }
+
+        result.setSuccess(result.getErrors().isEmpty());
+        return WebHelper.makeSuccessResult(result);
+    }
 }
