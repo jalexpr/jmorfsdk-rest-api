@@ -15,6 +15,7 @@ import ru.textanalysis.common.rest.utils.WebErrorHelper;
 import ru.textanalysis.common.rest.utils.WebHelper;
 import ru.textanalysis.tawt.rest.common.api.request.ExistFormByStringRequest;
 import ru.textanalysis.tawt.rest.common.api.response.ExistFormByStringResponse;
+import ru.textanalysis.tawt.rest.common.api.response.ExistInitialFormByStringResponse;
 import ru.textanalysis.tawt.rest.common.api.response.SelectOmoformsByStringResponse;
 import ru.textanalysis.tawt.rest.server.services.JMorfSdkService;
 import ru.textanalysis.tawt.rest.server.services.ValidationService;

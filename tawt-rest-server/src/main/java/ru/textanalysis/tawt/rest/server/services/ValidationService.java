@@ -4,8 +4,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import ru.textanalysis.tawt.rest.common.api.request.ExistFormByStringRequest;
-import ru.textanalysis.tawt.rest.common.api.request.SelectByStringRequest;
+import ru.textanalysis.tawt.rest.common.api.request.*;
 
 import java.util.Collection;
 import java.util.LinkedList;

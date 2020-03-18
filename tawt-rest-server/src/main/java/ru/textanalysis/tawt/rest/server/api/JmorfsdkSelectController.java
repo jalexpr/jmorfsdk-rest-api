@@ -18,6 +18,10 @@ import ru.textanalysis.tawt.ms.storage.OmoFormList;
 import ru.textanalysis.tawt.rest.common.api.request.SelectByStringRequest;
 import ru.textanalysis.tawt.rest.common.api.response.SelectMorfCharacteristicsByStringResponse;
 import ru.textanalysis.tawt.rest.common.api.response.SelectOmoformsByStringResponse;
+import ru.textanalysis.tawt.rest.common.api.request.SelectByStringWithMorphologyCharacteristicsRequest;
+import ru.textanalysis.tawt.rest.common.api.request.SelectByStringWithTypeOfSpeechesAndMorphologyCharacteristicsRequest;
+import ru.textanalysis.tawt.rest.common.api.request.SelectByStringWithTypeOfSpeechesRequest;
+import ru.textanalysis.tawt.rest.common.api.response.*;
 import ru.textanalysis.tawt.rest.server.services.JMorfSdkService;
 import ru.textanalysis.tawt.rest.server.services.ValidationService;
 
