@@ -4,260 +4,227 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>ru.textanalysis.tawt</groupId>
-    <artifactId>tawt-rest-api</artifactId>
-    <name>TAWT Rest API</name>
-    <packaging>jar</packaging>
-    <version>${project.version}</version>
+    <groupId>ru.textanalysis.tawt.rest</groupId>
+    <artifactId>tawt-rest-api-parent</artifactId>
+    <name>TAWT Rest API PARENT</name>
+    <packaging>pom</packaging>
+    <version>b662d4b8ba</version>
+
+    <modules>
+        <module>tawt-rest-common</module>
+        <module>tawt-rest-server</module>
+        <module>tawt-rest-client</module>
+    </modules>
 
     <properties>
-        <project.version>c6564ac2ac</project.version>
+        <tawt.version>b662d4b8ba</tawt.version>
+        <common-rest-interface.version>70c9ff49e7</common-rest-interface.version>
 
         <project.java.version>11</project.java.version>
         <project.build.sourceEncoding>utf-8</project.build.sourceEncoding>
 
         <spring.boot.version>2.2.4.RELEASE</spring.boot.version>
-        <spring.data.version>${spring.boot.version}</spring.data.version>
         <springfox.swagger.version>2.9.2</springfox.swagger.version>
         <gson.version>2.8.6</gson.version>
-        <httpcomponents.version>4.5.11</httpcomponents.version>
+        <slf4j.version>1.7.26</slf4j.version>
 
         <junit.jupiter.version>5.4.2</junit.jupiter.version>
+
+        <maven-jar-plugin.vesion>3.2.0</maven-jar-plugin.vesion>
+        <maven-compiler-plugin.vesion>3.8.0</maven-compiler-plugin.vesion>
     </properties>
 
-    <dependencies>
-        <!-- TAWT!-->
-        <dependency>
-            <groupId>com.github.jalexpr</groupId>
-            <artifactId>tawt</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.github.jalexpr.tawt</groupId>
-            <artifactId>gama</artifactId>
-            <version>${project.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>ru.textanalysis.tawt</groupId>
-                    <artifactId>jmorfsdk</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>ru.textanalysis.tawt</groupId>
-                    <artifactId>morphological-structures</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>com.github.jalexpr.tawt</groupId>
-            <artifactId>ambiguity-words-filter</artifactId>
-            <version>${project.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>ru.textanalysis.tawt</groupId>
-                    <artifactId>morphological-structures</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>ru.textanalysis.tawt</groupId>
-                    <artifactId>rules-for-compatibility</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>com.github.jalexpr.tawt</groupId>
-            <artifactId>jmorfsdk</artifactId>
-            <version>${project.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>ru.textanalysis.tawt</groupId>
-                    <artifactId>morphological-structures</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>com.github.jalexpr.tawt</groupId>
-            <artifactId>graphematic-parser</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.github.jalexpr.tawt</groupId>
-            <artifactId>morphological-structures</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.github.jalexpr.tawt</groupId>
-            <artifactId>rules-for-compatibility</artifactId>
-            <version>${project.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>ru.textanalysis.tawt</groupId>
-                    <artifactId>morphological-structures</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>com.github.jalexpr.tawt</groupId>
-            <artifactId>syntactic-parser</artifactId>
-            <version>${project.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>ru.textanalysis.tawt</groupId>
-                    <artifactId>morphological-structures</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>ru.textanalysis.tawt</groupId>
-                    <artifactId>gama</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>ru.textanalysis.tawt</groupId>
-                    <artifactId>ambiguity-words-filter</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>ru.textanalysis.tawt</groupId>
-                    <artifactId>rules-for-compatibility</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <!-- END TAWT!-->
-        <dependency>
-            <groupId>com.github.jalexpr</groupId>
-            <artifactId>common-rest-interface</artifactId>
-            <version>70c9ff49e7</version>
-        </dependency>
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>ru.textanalysis.tawt.rest</groupId>
+                <artifactId>tawt-rest-common</artifactId>
+                <version>${tawt.version}</version>
+            </dependency>
+
+            <!-- TAWT!-->
+            <dependency>
+                <groupId>com.github.jalexpr</groupId>
+                <artifactId>tawt</artifactId>
+                <version>${tawt.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.jalexpr.tawt</groupId>
+                <artifactId>gama</artifactId>
+                <version>${tawt.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>ru.textanalysis.tawt</groupId>
+                        <artifactId>jmorfsdk</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>ru.textanalysis.tawt</groupId>
+                        <artifactId>morphological-structures</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>com.github.jalexpr.tawt</groupId>
+                <artifactId>ambiguity-words-filter</artifactId>
+                <version>${tawt.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>ru.textanalysis.tawt</groupId>
+                        <artifactId>morphological-structures</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>ru.textanalysis.tawt</groupId>
+                        <artifactId>rules-for-compatibility</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>com.github.jalexpr.tawt</groupId>
+                <artifactId>jmorfsdk</artifactId>
+                <version>${tawt.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>ru.textanalysis.tawt</groupId>
+                        <artifactId>morphological-structures</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>com.github.jalexpr.tawt</groupId>
+                <artifactId>graphematic-parser</artifactId>
+                <version>${tawt.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.jalexpr.tawt</groupId>
+                <artifactId>morphological-structures</artifactId>
+                <version>${tawt.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.jalexpr.tawt</groupId>
+                <artifactId>rules-for-compatibility</artifactId>
+                <version>${tawt.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>ru.textanalysis.tawt</groupId>
+                        <artifactId>morphological-structures</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>com.github.jalexpr.tawt</groupId>
+                <artifactId>syntactic-parser</artifactId>
+                <version>${tawt.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>ru.textanalysis.tawt</groupId>
+                        <artifactId>morphological-structures</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>ru.textanalysis.tawt</groupId>
+                        <artifactId>gama</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>ru.textanalysis.tawt</groupId>
+                        <artifactId>ambiguity-words-filter</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>ru.textanalysis.tawt</groupId>
+                        <artifactId>rules-for-compatibility</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <!-- END TAWT!-->
+            <dependency>
+                <groupId>com.github.jalexpr</groupId>
+                <artifactId>common-rest-interface</artifactId>
+                <version>${common-rest-interface.version}</version>
+            </dependency>
 
 
-        <dependency>
-            <groupId>org.springframework.data</groupId>
-            <artifactId>spring-data-jpa</artifactId>
-            <version>${spring.data.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-autoconfigure</artifactId>
-            <version>${spring.boot.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter</artifactId>
-            <version>${spring.boot.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-            <version>${spring.boot.version}</version>
-        </dependency>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-web</artifactId>
+                <version>${spring.boot.version}</version>
+            </dependency>
 
 
-        <dependency>
-            <groupId>io.springfox</groupId>
-            <artifactId>springfox-swagger2</artifactId>
-            <version>${springfox.swagger.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>io.springfox</groupId>
-            <artifactId>springfox-swagger-ui</artifactId>
-            <version>${springfox.swagger.version}</version>
-        </dependency>
+            <dependency>
+                <groupId>io.springfox</groupId>
+                <artifactId>springfox-swagger2</artifactId>
+                <version>${springfox.swagger.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.springfox</groupId>
+                <artifactId>springfox-swagger-ui</artifactId>
+                <version>${springfox.swagger.version}</version>
+            </dependency>
 
 
-        <dependency>
-            <groupId>com.google.code.gson</groupId>
-            <artifactId>gson</artifactId>
-            <version>${gson.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.httpcomponents</groupId>
-            <artifactId>httpclient</artifactId>
-            <version>${httpcomponents.version}</version>
-        </dependency>
+            <dependency>
+                <groupId>com.google.code.gson</groupId>
+                <artifactId>gson</artifactId>
+                <version>${gson.version}</version>
+            </dependency>
 
-        <!-- Logger-->
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-            <version>1.7.26</version>
-        </dependency>
+            <!-- Logger-->
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>${slf4j.version}</version>
+            </dependency>
 
-        <!-- TEST -->
-        <!-- exclude junit 4 -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <version>${spring.boot.version}</version>
-            <scope>test</scope>
-            <exclusions>
-                <exclusion>
-                    <groupId>junit</groupId>
-                    <artifactId>junit</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
 
-        <!-- junit 5 -->
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-engine</artifactId>
-            <version>${junit.jupiter.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter</artifactId>
-            <version>${junit.jupiter.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-devtools</artifactId>
-            <version>${spring.boot.version}</version>
-            <optional>true</optional>
-        </dependency>
-    </dependencies>
+            <!-- TEST -->
+            <!-- exclude junit 4 -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-test</artifactId>
+                <version>${spring.boot.version}</version>
+                <scope>test</scope>
+                <exclusions>
+                    <exclusion>
+                        <groupId>junit</groupId>
+                        <artifactId>junit</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+
+            <!-- junit 5 -->
+            <dependency>
+                <groupId>org.junit.jupiter</groupId>
+                <artifactId>junit-jupiter-engine</artifactId>
+                <version>${junit.jupiter.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.junit.jupiter</groupId>
+                <artifactId>junit-jupiter</artifactId>
+                <version>${junit.jupiter.version}</version>
+                <scope>test</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
     <build>
-        <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-                <version>${spring.boot.version}</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>repackage</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <addResources>true</addResources>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <version>3.2.0</version>
-                <configuration>
-                    <archive>
-                        <manifest>
-                            <mainClass>ru.textanalysis.tawt.rest.TawtRestApiApplication</mainClass>
-                            <addClasspath>true</addClasspath>
-                            <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
-                        </manifest>
-                        <manifestEntries>
-                            <Built-By>Maven</Built-By>
-                            <class-path>.</class-path>
-                        </manifestEntries>
-                    </archive>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>${project.java.version}</source>
-                    <target>${project.java.version}</target>
-                    <encoding>${project.build.sourceEncoding}</encoding>
-                </configuration>
-            </plugin>
-        </plugins>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-maven-plugin</artifactId>
+                    <version>${spring.boot.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-jar-plugin</artifactId>
+                    <version>${maven-jar-plugin.vesion}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>${maven-compiler-plugin.vesion}</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
     </build>
 
     <repositories>
