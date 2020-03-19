@@ -54,7 +54,7 @@ public class JMorfSdkService implements InitializingBean {
         return new ServiceWorksResult<>(result, errors);
     }
 
-    public ServiceWorksResult<List<Long>> selectLongByString(String word) {
+    public ServiceWorksResult<List<Long>> selectMorphologyCharacteristicsByString(String word) {
         List<String> errors = new LinkedList<>();
         List<Long> result = new ArrayList<>();
         try {

@@ -25,7 +25,7 @@ public class JMorfSdkRemoteService {
 
     public ServiceWorksResult<OmoFormList> getAllCharacteristicsOfForm(String word) {
         SelectByStringRequest request = new SelectByStringRequest();
-        request.setWord(word);
+        request.setText(word);
 
         SelectOmoformsByStringResponse response =
                 restClientService.post(SERVICE_NAME, URN_SELECT_OMOFORMS_BY_STRING,

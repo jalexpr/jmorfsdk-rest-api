@@ -4,15 +4,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
 
 public class SelectByStringRequest {
-    @ApiModelProperty(value = "Слово")
+    @ApiModelProperty(value = "Слово, несущая фраза, текст, предложение...")
     @JsonProperty
-    private String word;
+    private String text;
 
-    public String getWord() {
-        return word;
+    public String getText() {
+        return text;
     }
 
-    public void setWord(String word) {
-        this.word = word;
+    public void setText(String text) {
+        this.text = text;
     }
 }

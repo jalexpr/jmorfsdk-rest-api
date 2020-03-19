@@ -7,7 +7,7 @@ import ru.textanalysis.common.rest.domain.response.item.ResponseItem;
 import java.io.Serializable;
 
 public class ExistForm implements ResponseItem, Serializable {
-    @ApiModelProperty(value = "truue если существует, false если не существует")
+    @ApiModelProperty(value = "true если существует, false если не существует")
     @JsonProperty
     private Boolean exist;
 

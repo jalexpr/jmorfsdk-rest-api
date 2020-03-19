@@ -20,8 +20,8 @@ public class ValidationService {
             String message = "Request is null";
             log.warn(message);
             errors.add(message);
-        } else if (StringUtils.isBlank(request.getWord())) {
-            String message = "Field 'word' is null or empty";
+        } else if (StringUtils.isBlank(request.getText())) {
+            String message = "Field 'text' is null or empty";
             log.warn(message);
             errors.add(message);
         }
@@ -35,7 +35,7 @@ public class ValidationService {
             log.warn(message);
             errors.add(message);
         } else if (StringUtils.isBlank(request.getWord())) {
-            String message = "Field 'word' is null or empty";
+            String message = "Field 'text' is null or empty";
             log.warn(message);
             errors.add(message);
         }
