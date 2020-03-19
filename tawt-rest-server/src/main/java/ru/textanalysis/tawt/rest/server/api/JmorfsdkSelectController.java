@@ -25,8 +25,8 @@ import ru.textanalysis.tawt.rest.server.services.ValidationService;
 
 import java.util.List;
 
-@RestController(value = "API для выборки")
-@RequestMapping("/api/get")
+@RestController(value = "API для выборки jmorfsdk")
+@RequestMapping("/api/jmorfsdk")
 public class JmorfsdkSelectController {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
@@ -48,14 +48,14 @@ public class JmorfsdkSelectController {
     @ApiOperation(value = "Получение списка омоформ по заданному слову")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK", response = SelectOmoformsByStringResponse.class)})
-    @RequestMapping(value = "all/characteristics/of/form", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "get/all/characteristics/of/form", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> getAllCharacteristicsOfForm(@RequestBody SelectByStringRequest request) {
         SelectOmoformsByStringResponse result = new SelectOmoformsByStringResponse();
 
         result.getErrors().addAll(validationService.validationRequest(request));
 
         if (result.getErrors().isEmpty()) {
-            ServiceWorksResult<OmoFormList> resultSelect = jMorfSdkService.selectOmoformsByString(request.getWord());
+            ServiceWorksResult<OmoFormList> resultSelect = jMorfSdkService.selectOmoformsByString(request.getText());
             result.createEmptyData();
             result.getData().setOmoForms(resultSelect.getResult());
             if (!resultSelect.getErrorMessage().isEmpty()) {
@@ -67,7 +67,7 @@ public class JmorfsdkSelectController {
         return WebHelper.makeSuccessResult(result);
     }
 
-    @ApiOperation(value = "Получить морфологические характеристики по заданной форме")
+    @ApiOperation(value = "Получить морфологические характеристики по заданному слову")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK", response = SelectMorfCharacteristicsByStringResponse.class)})
     @RequestMapping(value = "get/morphology/characteristics", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -77,7 +77,7 @@ public class JmorfsdkSelectController {
         result.getErrors().addAll(validationService.validationRequest(request));
 
         if (result.getErrors().isEmpty()) {
-            ServiceWorksResult<List<Long>> resultSelect = jMorfSdkService.selectLongByString(request.getWord());
+            ServiceWorksResult<List<Long>> resultSelect = jMorfSdkService.selectMorphologyCharacteristicsByString(request.getText());
             result.createEmptyData();
             result.getData().setMorfCharacteristics(resultSelect.getResult());
             if (!resultSelect.getErrorMessage().isEmpty()) {
@@ -99,7 +99,7 @@ public class JmorfsdkSelectController {
         result.getErrors().addAll(validationService.validationRequest(request));
 
         if (result.getErrors().isEmpty()) {
-            ServiceWorksResult<RefOmoFormList> resultSelect = jMorfSdkService.selectRefOmoFormListByString(request.getWord());
+            ServiceWorksResult<RefOmoFormList> resultSelect = jMorfSdkService.selectRefOmoFormListByString(request.getText());
             result.createEmptyData();
             result.getData().setRefOmoFormList(resultSelect.getResult());
             if (!resultSelect.getErrorMessage().isEmpty()) {
@@ -121,7 +121,7 @@ public class JmorfsdkSelectController {
         result.getErrors().addAll(validationService.validationRequest(request));
 
         if (result.getErrors().isEmpty()) {
-            ServiceWorksResult<List<String>> resultSelect = jMorfSdkService.selectStringInitialFormByString(request.getWord());
+            ServiceWorksResult<List<String>> resultSelect = jMorfSdkService.selectStringInitialFormByString(request.getText());
             result.createEmptyData();
             result.getData().setStringList(resultSelect.getResult());
             if (!resultSelect.getErrorMessage().isEmpty()) {
@@ -143,7 +143,7 @@ public class JmorfsdkSelectController {
         result.getErrors().addAll(validationService.validationRequest(request));
 
         if (result.getErrors().isEmpty()) {
-            ServiceWorksResult<List<Byte>> resultSelect = jMorfSdkService.selectTypeOfSpeechesByString(request.getWord());
+            ServiceWorksResult<List<Byte>> resultSelect = jMorfSdkService.selectTypeOfSpeechesByString(request.getText());
             result.createEmptyData();
             result.getData().setByteList(resultSelect.getResult());
             if (!resultSelect.getErrorMessage().isEmpty()) {
