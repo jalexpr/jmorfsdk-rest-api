@@ -25,14 +25,14 @@ import ru.textanalysis.tawt.rest.server.services.ValidationService;
 
 @RestController(value = "API для выборки gama")
 @RequestMapping("/api/gama")
-public class GamaSelectController {
+public class GamaController {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
     private final GamaService gamaService;
     private final ValidationService validationService;
 
     @Autowired
-    public GamaSelectController(GamaService gamaService, ValidationService validationService) {
+    public GamaController(GamaService gamaService, ValidationService validationService) {
         this.gamaService = gamaService;
         this.validationService = validationService;
     }

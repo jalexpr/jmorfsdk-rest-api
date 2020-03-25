@@ -24,14 +24,14 @@ import java.util.List;
 
 @RestController(value = "API для выборки jmorfsdk")
 @RequestMapping("/api/jmorfsdk")
-public class JmorfsdkSelectController {
+public class JmorfsdkController {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
     private final JMorfSdkService jMorfSdkService;
     private final ValidationService validationService;
 
     @Autowired
-    public JmorfsdkSelectController(JMorfSdkService jMorfSdkService, ValidationService validationService) {
+    public JmorfsdkController(JMorfSdkService jMorfSdkService, ValidationService validationService) {
         this.jMorfSdkService = jMorfSdkService;
         this.validationService = validationService;
     }
