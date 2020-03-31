@@ -15,10 +15,7 @@ import ru.textanalysis.common.rest.utils.WebErrorHelper;
 import ru.textanalysis.common.rest.utils.WebHelper;
 import ru.textanalysis.tawt.ms.internal.ref.RefOmoFormList;
 import ru.textanalysis.tawt.ms.storage.OmoFormList;
-import ru.textanalysis.tawt.rest.common.api.request.SelectByStringRequest;
-import ru.textanalysis.tawt.rest.common.api.request.SelectByStringWithMorphologyCharacteristicsRequest;
-import ru.textanalysis.tawt.rest.common.api.request.SelectByStringWithTypeOfSpeechesAndMorphologyCharacteristicsRequest;
-import ru.textanalysis.tawt.rest.common.api.request.SelectByStringWithTypeOfSpeechesRequest;
+import ru.textanalysis.tawt.rest.common.api.request.*;
 import ru.textanalysis.tawt.rest.common.api.response.*;
 import ru.textanalysis.tawt.rest.server.services.JMorfSdkService;
 import ru.textanalysis.tawt.rest.server.services.ValidationService;
@@ -27,14 +24,14 @@ import java.util.List;
 
 @RestController(value = "API для выборки jmorfsdk")
 @RequestMapping("/api/jmorfsdk")
-public class JmorfsdkSelectController {
+public class JmorfsdkController {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
     private final JMorfSdkService jMorfSdkService;
     private final ValidationService validationService;
 
     @Autowired
-    public JmorfsdkSelectController(JMorfSdkService jMorfSdkService, ValidationService validationService) {
+    public JmorfsdkController(JMorfSdkService jMorfSdkService, ValidationService validationService) {
         this.jMorfSdkService = jMorfSdkService;
         this.validationService = validationService;
     }
@@ -212,6 +209,50 @@ public class JmorfsdkSelectController {
             ServiceWorksResult<List<String>> resultSelect = jMorfSdkService.selectDerivativeFormByString(request.getWord(), request.getMorphologyCharacteristics());
             result.createEmptyData();
             result.getData().setStringList(resultSelect.getResult());
+            if (!resultSelect.getErrorMessage().isEmpty()) {
+                result.getErrors().addAll(resultSelect.getErrorMessage());
+            }
+        }
+
+        result.setSuccess(result.getErrors().isEmpty());
+        return WebHelper.makeSuccessResult(result);
+    }
+
+    @ApiOperation(value = "Проверка на существование формы в словаре")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK", response = SelectOmoformsByStringResponse.class)})
+    @RequestMapping(value = "is/form/exists/in/dictionary", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> isFormExistsInDictionary(@RequestBody ExistFormByStringRequest request) {
+        ExistFormByStringResponse result = new ExistFormByStringResponse();
+
+        result.getErrors().addAll(validationService.validationRequest(request));
+
+        if (result.getErrors().isEmpty()) {
+            ServiceWorksResult<Boolean> resultSelect = jMorfSdkService.isFormExistsInDictionary(request.getWord());
+            result.createEmptyData();
+            result.getData().setExist(resultSelect.getResult());
+            if (!resultSelect.getErrorMessage().isEmpty()) {
+                result.getErrors().addAll(resultSelect.getErrorMessage());
+            }
+        }
+
+        result.setSuccess(result.getErrors().isEmpty());
+        return WebHelper.makeSuccessResult(result);
+    }
+
+    @ApiOperation(value = "Проверка на существование InitialForm в словаре")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK", response = ExistInitialFormByStringResponse.class)})
+    @RequestMapping(value = "is/initial/form", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> isInitialForm(@RequestBody ExistFormByStringRequest request) {
+        ExistInitialFormByStringResponse result = new ExistInitialFormByStringResponse();
+
+        result.getErrors().addAll(validationService.validationRequest(request));
+
+        if (result.getErrors().isEmpty()) {
+            ServiceWorksResult<Byte> resultSelect = jMorfSdkService.isInitialForm(request.getWord());
+            result.createEmptyData();
+            result.getData().setExistInitialForm(resultSelect.getResult());
             if (!resultSelect.getErrorMessage().isEmpty()) {
                 result.getErrors().addAll(resultSelect.getErrorMessage());
             }
