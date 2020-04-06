@@ -14,7 +14,7 @@ import ru.textanalysis.tawt.rest.common.exception.TawtRestRuntimeException;
 @Service
 public class JMorfSdkRemoteService {
     private final static String SERVICE_NAME = "http://localhost:30002/tawt-rest-api";//todo читать из проперти
-    private final static String URN_SELECT_OMOFORMS_BY_STRING = "api/get/all/characteristics/of/form";
+    private final static String URN_SELECT_OMOFORMS_BY_STRING = "api/jmorfsdk/get/all/characteristics/of/form";
 
     private final RestClientService restClientService;
 
