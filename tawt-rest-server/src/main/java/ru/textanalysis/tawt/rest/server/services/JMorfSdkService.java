@@ -10,7 +10,7 @@ import ru.textanalysis.tawt.jmorfsdk.JMorfSdk;
 import ru.textanalysis.tawt.jmorfsdk.loader.JMorfSdkFactory;
 import ru.textanalysis.tawt.ms.internal.form.Form;
 import ru.textanalysis.tawt.ms.internal.ref.RefOmoFormList;
-import ru.textanalysis.tawt.ms.storage.OmoFormList;
+import ru.textanalysis.tawt.rest.common.api.response.item.IOmoFormItem;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -28,11 +28,13 @@ public class JMorfSdkService implements InitializingBean {
         this.jMorfSdk = JMorfSdkFactory.loadFullLibrary(false);
     }
 
-    public ServiceWorksResult<OmoFormList> selectOmoformsByString(String word) {
+    public ServiceWorksResult<List<IOmoFormItem>> selectOmoformsByString(String word) {
         List<String> errors = new LinkedList<>();
-        OmoFormList result = new OmoFormList();
+        List<IOmoFormItem> result = new LinkedList<>();
         try {
-            result = jMorfSdk.getAllCharacteristicsOfForm(word);
+            jMorfSdk.getAllCharacteristicsOfForm(word).forEach(iOmoForm -> {
+                result.add(new IOmoFormItem(iOmoForm));
+            });
         } catch (Throwable ex) {
             String message = "Cannot AllCharacteristicsOfForm for word: " + String.valueOf(word);
             log.warn(message, ex);

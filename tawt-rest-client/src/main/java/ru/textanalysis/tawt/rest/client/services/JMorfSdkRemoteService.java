@@ -5,6 +5,9 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import ru.textanalysis.common.rest.classes.ServiceWorksResult;
 import ru.textanalysis.common.rest.services.RestClientService;
+import ru.textanalysis.tawt.ms.internal.NumberOmoForm;
+import ru.textanalysis.tawt.ms.internal.OmoForm;
+import ru.textanalysis.tawt.ms.internal.ref.RefOmoFormList;
 import ru.textanalysis.tawt.ms.storage.OmoFormList;
 import ru.textanalysis.tawt.rest.common.api.request.SelectByStringRequest;
 import ru.textanalysis.tawt.rest.common.api.response.SelectOmoformsByStringResponse;
@@ -37,6 +40,20 @@ public class JMorfSdkRemoteService {
             throw new TawtRestRuntimeException(message);
         }
 
-        return new ServiceWorksResult<>(response.getData().getOmoForms(), response.getErrors());
+        OmoFormList result = new OmoFormList();
+        response.getData().getOmoForms().forEach(item -> {
+            System.out.println(item.getInitialFormKey());
+            if (item.isNumber()) {
+                //todo не учетн способ передачи параметра для числовой омоформы
+                result.add(new NumberOmoForm(""));
+            } else {
+                //todo не учтены myDependent и myMain =
+                result.add(new OmoForm(item.getInitialFormKey(), item.getMyFormKey(),
+                        item.getTypeOfSpeech(), item.getAllMorfCharacteristics()));
+                System.out.println(result);
+            }
+        });
+
+        return new ServiceWorksResult<>(result, response.getErrors());
     }
 }

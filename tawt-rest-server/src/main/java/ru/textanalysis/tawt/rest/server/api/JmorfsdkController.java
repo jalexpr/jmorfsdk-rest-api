@@ -14,9 +14,9 @@ import ru.textanalysis.common.rest.classes.ServiceWorksResult;
 import ru.textanalysis.common.rest.utils.WebErrorHelper;
 import ru.textanalysis.common.rest.utils.WebHelper;
 import ru.textanalysis.tawt.ms.internal.ref.RefOmoFormList;
-import ru.textanalysis.tawt.ms.storage.OmoFormList;
 import ru.textanalysis.tawt.rest.common.api.request.*;
 import ru.textanalysis.tawt.rest.common.api.response.*;
+import ru.textanalysis.tawt.rest.common.api.response.item.IOmoFormItem;
 import ru.textanalysis.tawt.rest.server.services.JMorfSdkService;
 import ru.textanalysis.tawt.rest.server.services.ValidationService;
 
@@ -52,7 +52,7 @@ public class JmorfsdkController {
         result.getErrors().addAll(validationService.validationRequest(request));
 
         if (result.getErrors().isEmpty()) {
-            ServiceWorksResult<OmoFormList> resultSelect = jMorfSdkService.selectOmoformsByString(request.getText());
+            ServiceWorksResult<List<IOmoFormItem>> resultSelect = jMorfSdkService.selectOmoformsByString(request.getText());
             result.createEmptyData();
             result.getData().setOmoForms(resultSelect.getResult());
             if (!resultSelect.getErrorMessage().isEmpty()) {
