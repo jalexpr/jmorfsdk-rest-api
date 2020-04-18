@@ -3,7 +3,7 @@ package ru.textanalysis.tawt.ms.internal.ref;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import ru.textanalysis.tawt.ms.internal.ref.form.RefForm;
+import ru.textanalysis.tawt.rest.common.api.response.item.RefForm;
 import ru.textanalysis.tawt.rest.common.api.response.item.TransportRefOmoFormItem;
 
 @Service
@@ -32,7 +32,8 @@ public class BuilderTransportRef {
         form.setGetTypeOfSpeech(item.getTypeOfSpeech());
         form.setInitialFormString(item.getInitialFormString());
 
-        return new RefOmoForm(form);
+//        return new RefOmoForm(form);
+        return null;
     }
 
 }

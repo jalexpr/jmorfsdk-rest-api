@@ -1,0 +1,244 @@
+package ru.textanalysis.tawt.rest.client.services;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.stereotype.Service;
+import ru.textanalysis.common.rest.classes.ServiceWorksResult;
+import ru.textanalysis.common.rest.services.RestClientService;
+import ru.textanalysis.tawt.ms.internal.BuilderTransportBase;
+import ru.textanalysis.tawt.ms.internal.IOmoForm;
+import ru.textanalysis.tawt.ms.internal.form.Form;
+import ru.textanalysis.tawt.ms.internal.ref.BuilderTransportRef;
+import ru.textanalysis.tawt.ms.internal.ref.RefOmoForm;
+import ru.textanalysis.tawt.ms.internal.ref.RefOmoFormList;
+import ru.textanalysis.tawt.ms.storage.OmoFormList;
+import ru.textanalysis.tawt.rest.common.api.request.*;
+import ru.textanalysis.tawt.rest.common.api.response.*;
+import ru.textanalysis.tawt.rest.common.exception.TawtRestRuntimeException;
+
+import java.util.LinkedList;
+import java.util.List;
+
+@Lazy
+@Service
+public class JMorfSdkRemoteService {
+    private final static String SERVICE_NAME = "http://localhost:30002/tawt-rest-api";//todo читать из проперти
+    private final static String URN_SELECT_OMOFORMS_BY_STRING = "api/jmorfsdk/get/all/characteristics/of/form";
+    private final static String URN_SELECT_MORPHOLOGY_CHARACTERISTICS_BY_STRING = "api/jmorfsdk/get/morphology/characteristics";
+    private final static String URN_SELECT_REFOMOFORMLIST_BY_STRING = "api/jmorfsdk/get/ref/omo/form/list";
+    private final static String URN_SELECT_STRING_INITIAL_FORM_BY_STRING = "api/jmorfsdk/get/string/initial/form";
+    private final static String URN_SELECT_TYPE_OF_SPEECHES_BY_STRING = "api/jmorfsdk/get/type/of/speeches";
+    private final static String URN_SELECT_DERIVATIVE_FORM_WITH_TYPE_OF_SPEECHES_AND_MORPH_CHARACTERISTICS_BY_STRING = "api/jmorfsdk/get/derivative/form/with/type/of/speeches/and/morph/characteristics";
+    private final static String URN_SELECT_DERIVATIVE_FORM_WITH_TYPE_OF_SPEECHES_BY_STRING = "api/jmorfsdk/get/derivative/form/with/type/of/speeches";
+    private final static String URN_SELECT_DERIVATIVE_FORM_WITH_MORPH_CHARACTERISTICS_BY_STRING = "api/jmorfsdk/get/derivative/form/with/morph/characteristics";
+    private final static String URN_IS_FORM_EXISTS_IN_DICTIONARY_BY_STRING = "api/jmorfsdk/is/form/exists/in/dictionary";
+    private final static String URN_IS_INITIAL_FORM_BY_STRING = "api/jmorfsdk/is/initial/form";
+
+    private final RestClientService restClientService;
+    private final BuilderTransportBase builderTransport;
+    private final BuilderTransportRef builderTransportRef;
+
+    @Autowired
+    public JMorfSdkRemoteService(RestClientService restClientService,
+                                 BuilderTransportBase builderTransport,
+                                 BuilderTransportRef builderTransportRef) {
+        this.restClientService = restClientService;
+        this.builderTransport = builderTransport;
+        this.builderTransportRef = builderTransportRef;
+    }
+
+    public ServiceWorksResult<OmoFormList> getAllCharacteristicsOfForm(String word) {
+        SelectByStringRequest request = new SelectByStringRequest();
+        request.setText(word);
+
+        SelectOmoformsByStringResponse response =
+                restClientService.post(SERVICE_NAME, URN_SELECT_OMOFORMS_BY_STRING,
+                        request, SelectOmoformsByStringResponse.class);
+
+        if (response == null) {
+            String message = String.format("Error connected to http://%s/%s by word = %s",
+                    SERVICE_NAME, URN_SELECT_OMOFORMS_BY_STRING, word);
+            throw new TawtRestRuntimeException(message);
+        }
+
+        OmoFormList result = new OmoFormList();
+        response.getData().getOmoForms().forEach(item -> {
+            IOmoForm iOmoForm = builderTransport.build(item);
+            result.add(iOmoForm);
+        });
+
+        return new ServiceWorksResult<>(result, response.getErrors());
+    }
+
+    public ServiceWorksResult<List<Long>> getMorphologyCharacteristics(String word) {
+        SelectByStringRequest request = new SelectByStringRequest();
+        request.setText(word);
+
+        SelectMorfCharacteristicsByStringResponse response =
+                restClientService.post(SERVICE_NAME, URN_SELECT_MORPHOLOGY_CHARACTERISTICS_BY_STRING,
+                        request, SelectMorfCharacteristicsByStringResponse.class);
+
+        if (response == null) {
+            String message = String.format("Error connected to http://%s/%s by word = %s",
+                    SERVICE_NAME, URN_SELECT_MORPHOLOGY_CHARACTERISTICS_BY_STRING, word);
+            throw new TawtRestRuntimeException(message);
+        }
+
+
+        return new ServiceWorksResult<>(response.getData().getMorfCharacteristics(), response.getErrors());
+    }
+
+    //todo Не работает
+    public ServiceWorksResult<RefOmoFormList> getRefOmoFormList(String word) {
+        SelectByStringRequest request = new SelectByStringRequest();
+        request.setText(word);
+
+        SelectRefOmoFormListByStringResponse response =
+                restClientService.post(SERVICE_NAME, URN_SELECT_REFOMOFORMLIST_BY_STRING,
+                        request, SelectRefOmoFormListByStringResponse.class);
+
+        if (response == null) {
+            String message = String.format("Error connected to http://%s/%s by word = %s",
+                    SERVICE_NAME, URN_SELECT_REFOMOFORMLIST_BY_STRING, word);
+            throw new TawtRestRuntimeException(message);
+        }
+
+        List<Form> forms = new LinkedList<>();
+        RefOmoFormList result = new RefOmoFormList(forms);
+        response.getData().getRefOmoFormList().forEach(item -> {
+            RefOmoForm refOmoForm = builderTransportRef.build(item);
+            result.copy().add(refOmoForm);
+        });
+
+
+        return new ServiceWorksResult<>(result, response.getErrors());
+    }
+
+    public ServiceWorksResult<List<String>> getStringInitialForm(String word) {
+        SelectByStringRequest request = new SelectByStringRequest();
+        request.setText(word);
+
+        SelectStringInitialFormByStringResponse response =
+                restClientService.post(SERVICE_NAME, URN_SELECT_STRING_INITIAL_FORM_BY_STRING,
+                        request, SelectStringInitialFormByStringResponse.class);
+
+        if (response == null) {
+            String message = String.format("Error connected to http://%s/%s by word = %s",
+                    SERVICE_NAME, URN_SELECT_STRING_INITIAL_FORM_BY_STRING, word);
+            throw new TawtRestRuntimeException(message);
+        }
+
+
+        return new ServiceWorksResult<>(response.getData().getStringList(), response.getErrors());
+    }
+
+    public ServiceWorksResult<List<Byte>> getTypeOfSpeeches(String word) {
+        SelectByStringRequest request = new SelectByStringRequest();
+        request.setText(word);
+
+        SelectTypeOfSpeechesByStringResponse response =
+                restClientService.post(SERVICE_NAME, URN_SELECT_TYPE_OF_SPEECHES_BY_STRING,
+                        request, SelectTypeOfSpeechesByStringResponse.class);
+
+        if (response == null) {
+            String message = String.format("Error connected to http://%s/%s by word = %s",
+                    SERVICE_NAME, URN_SELECT_TYPE_OF_SPEECHES_BY_STRING, word);
+            throw new TawtRestRuntimeException(message);
+        }
+
+
+        return new ServiceWorksResult<>(response.getData().getByteList(), response.getErrors());
+    }
+
+    public ServiceWorksResult<List<String>> getDerivativeForm(String word, Byte typeOfSpeeches, Long morphologyCharacteristics) {
+        SelectByStringWithTypeOfSpeechesAndMorphologyCharacteristicsRequest request = new SelectByStringWithTypeOfSpeechesAndMorphologyCharacteristicsRequest();
+        request.setWord(word);
+        request.setTypeOfSpeeches(typeOfSpeeches);
+        request.setMorphologyCharacteristics(morphologyCharacteristics);
+
+        SelectDerivativeFormByStringResponse response =
+                restClientService.post(SERVICE_NAME, URN_SELECT_DERIVATIVE_FORM_WITH_TYPE_OF_SPEECHES_AND_MORPH_CHARACTERISTICS_BY_STRING,
+                        request, SelectDerivativeFormByStringResponse.class);
+
+        if (response == null) {
+            String message = String.format("Error connected to http://%s/%s by word = %s",
+                    SERVICE_NAME, URN_SELECT_DERIVATIVE_FORM_WITH_TYPE_OF_SPEECHES_AND_MORPH_CHARACTERISTICS_BY_STRING, word);
+            throw new TawtRestRuntimeException(message);
+        }
+
+
+        return new ServiceWorksResult<>(response.getData().getStringList(), response.getErrors());
+    }
+
+    public ServiceWorksResult<List<String>> getDerivativeForm(String word, Byte typeOfSpeeches) {
+        SelectByStringWithTypeOfSpeechesRequest request = new SelectByStringWithTypeOfSpeechesRequest();
+        request.setWord(word);
+        request.setTypeOfSpeeches(typeOfSpeeches);
+
+        SelectDerivativeFormByStringResponse response =
+                restClientService.post(SERVICE_NAME, URN_SELECT_DERIVATIVE_FORM_WITH_TYPE_OF_SPEECHES_BY_STRING,
+                        request, SelectDerivativeFormByStringResponse.class);
+
+        if (response == null) {
+            String message = String.format("Error connected to http://%s/%s by word = %s",
+                    SERVICE_NAME, URN_SELECT_DERIVATIVE_FORM_WITH_TYPE_OF_SPEECHES_BY_STRING, word);
+            throw new TawtRestRuntimeException(message);
+        }
+
+
+        return new ServiceWorksResult<>(response.getData().getStringList(), response.getErrors());
+    }
+
+    public ServiceWorksResult<List<String>> getDerivativeForm(String word, Long morphologyCharacteristics) {
+        SelectByStringWithMorphologyCharacteristicsRequest request = new SelectByStringWithMorphologyCharacteristicsRequest();
+        request.setWord(word);
+        request.setMorphologyCharacteristics(morphologyCharacteristics);
+
+        SelectDerivativeFormByStringResponse response =
+                restClientService.post(SERVICE_NAME, URN_SELECT_DERIVATIVE_FORM_WITH_MORPH_CHARACTERISTICS_BY_STRING,
+                        request, SelectDerivativeFormByStringResponse.class);
+
+        if (response == null) {
+            String message = String.format("Error connected to http://%s/%s by word = %s",
+                    SERVICE_NAME, URN_SELECT_DERIVATIVE_FORM_WITH_MORPH_CHARACTERISTICS_BY_STRING, word);
+            throw new TawtRestRuntimeException(message);
+        }
+
+
+        return new ServiceWorksResult<>(response.getData().getStringList(), response.getErrors());
+    }
+
+    public ServiceWorksResult<Boolean> isFormExistsInDictionary(String word) {
+        ExistFormByStringRequest request = new ExistFormByStringRequest();
+        request.setWord(word);
+
+        ExistFormByStringResponse response =
+                restClientService.post(SERVICE_NAME, URN_IS_FORM_EXISTS_IN_DICTIONARY_BY_STRING,
+                        request, ExistFormByStringResponse.class);
+
+        if (response == null) {
+            String message = String.format("Error connected to http://%s/%s by word = %s",
+                    SERVICE_NAME, URN_IS_FORM_EXISTS_IN_DICTIONARY_BY_STRING, word);
+            throw new TawtRestRuntimeException(message);
+        }
+
+        return new ServiceWorksResult<>(response.getData().getExist(), response.getErrors());
+    }
+
+    public ServiceWorksResult<Byte> isInitialForm(String word) {
+        ExistFormByStringRequest request = new ExistFormByStringRequest();
+        request.setWord(word);
+
+        ExistInitialFormByStringResponse response =
+                restClientService.post(SERVICE_NAME, URN_IS_INITIAL_FORM_BY_STRING,
+                        request, ExistInitialFormByStringResponse.class);
+
+        if (response == null) {
+            String message = String.format("Error connected to http://%s/%s by word = %s",
+                    SERVICE_NAME, URN_IS_INITIAL_FORM_BY_STRING, word);
+            throw new TawtRestRuntimeException(message);
+        }
+
+        return new ServiceWorksResult<>(response.getData().getExistInitialForm(), response.getErrors());
+    }
+}

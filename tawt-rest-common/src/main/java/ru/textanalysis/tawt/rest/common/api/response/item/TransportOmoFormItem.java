@@ -12,8 +12,8 @@ public class TransportOmoFormItem implements Serializable {
     private Long morfCharacteristics;
     private LinkedList<OmoForm> myDependent;
     private LinkedList<OmoForm> myMain;
-    private Boolean number;
-    private String strNumber;
+    private Integer typeForm;
+    private String stringForm;
 
     public Integer getInitialFormKey() {
         return initialFormKey;
@@ -63,19 +63,19 @@ public class TransportOmoFormItem implements Serializable {
         this.myMain = myMain;
     }
 
-    public Boolean getNumber() {
-        return number;
+    public Integer getTypeForm() {
+        return typeForm;
     }
 
-    public void setNumber(Boolean number) {
-        this.number = number;
+    public void setTypeForm(Integer typeForm) {
+        this.typeForm = typeForm;
     }
 
-    public String getStrNumber() {
-        return strNumber;
+    public String getStringForm() {
+        return stringForm;
     }
 
-    public void setStrNumber(String strNumber) {
-        this.strNumber = strNumber;
+    public void setStringForm(String stringForm) {
+        this.stringForm = stringForm;
     }
 }
