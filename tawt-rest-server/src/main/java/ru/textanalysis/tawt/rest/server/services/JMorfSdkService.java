@@ -8,9 +8,10 @@ import org.springframework.stereotype.Service;
 import ru.textanalysis.common.rest.classes.ServiceWorksResult;
 import ru.textanalysis.tawt.jmorfsdk.JMorfSdk;
 import ru.textanalysis.tawt.jmorfsdk.loader.JMorfSdkFactory;
-import ru.textanalysis.tawt.ms.internal.form.Form;
-import ru.textanalysis.tawt.ms.internal.ref.RefOmoFormList;
-import ru.textanalysis.tawt.rest.common.api.response.item.IOmoFormItem;
+import ru.textanalysis.tawt.ms.internal.BuilderTransportBase;
+import ru.textanalysis.tawt.ms.internal.ref.BuilderTransportRef;
+import ru.textanalysis.tawt.rest.common.api.response.item.TransportOmoFormItem;
+import ru.textanalysis.tawt.rest.common.api.response.item.TransportRefOmoFormItem;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -22,18 +23,26 @@ public class JMorfSdkService implements InitializingBean {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
     private JMorfSdk jMorfSdk;
+    private final BuilderTransportBase builderTransport;
+    private final BuilderTransportRef builderTransportRef;
+
+    public JMorfSdkService(BuilderTransportBase builderTransport, BuilderTransportRef builderTransportRef) {
+        this.builderTransport = builderTransport;
+        this.builderTransportRef = builderTransportRef;
+    }
 
     @Override
     public void afterPropertiesSet() throws Exception {
         this.jMorfSdk = JMorfSdkFactory.loadFullLibrary(false);
     }
 
-    public ServiceWorksResult<List<IOmoFormItem>> selectOmoformsByString(String word) {
+    public ServiceWorksResult<List<TransportOmoFormItem>> selectOmoformsByString(String word) {
         List<String> errors = new LinkedList<>();
-        List<IOmoFormItem> result = new LinkedList<>();
+        List<TransportOmoFormItem> result = new LinkedList<>();
         try {
-            jMorfSdk.getAllCharacteristicsOfForm(word).forEach(iOmoForm -> {
-                result.add(new IOmoFormItem(iOmoForm));
+            jMorfSdk.getAllCharacteristicsOfForm(word).forEach(form -> {
+                TransportOmoFormItem item = builderTransport.build(form);
+                result.add(item);
             });
         } catch (Throwable ex) {
             String message = "Cannot AllCharacteristicsOfForm for word: " + String.valueOf(word);
@@ -69,12 +78,17 @@ public class JMorfSdkService implements InitializingBean {
         return new ServiceWorksResult<>(result, errors);
     }
 
-    public ServiceWorksResult<RefOmoFormList> selectRefOmoFormListByString(String word) {
+    public ServiceWorksResult<List<TransportRefOmoFormItem>> selectRefOmoFormListByString(String word) {
         List<String> errors = new LinkedList<>();
-        List<Form> forms = new ArrayList<>();
-        RefOmoFormList result = new RefOmoFormList(forms);
+        //List<Form> forms = new ArrayList<>();
+        //RefOmoFormList result = new RefOmoFormList(forms);
+        List<TransportRefOmoFormItem> result = new LinkedList<>();
         try {
-            result = jMorfSdk.getRefOmoFormList(word);
+            //result = jMorfSdk.getRefOmoFormList(word);
+            jMorfSdk.getRefOmoFormList(word).copy().forEach(form -> {
+                TransportRefOmoFormItem item = builderTransportRef.build(form);
+                result.add(item);
+            });
         } catch (Throwable ex) {
             String message = "Cannot RefOmoFormList for word: " + String.valueOf(word);
             log.warn(message, ex);

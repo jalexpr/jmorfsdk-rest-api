@@ -3,20 +3,20 @@ package ru.textanalysis.tawt.rest.common.api.response.item;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
 import ru.textanalysis.common.rest.domain.response.item.ResponseItem;
-import ru.textanalysis.tawt.ms.internal.ref.RefOmoFormList;
 
 import java.io.Serializable;
+import java.util.List;
 
-public class SelectRefOmoformsList implements ResponseItem, Serializable {
+public class SelectRefOmoforms implements ResponseItem, Serializable {
     @ApiModelProperty(value = "Список RefOmoform по заданному слову")
     @JsonProperty
-    private RefOmoFormList refOmoFormList;
+    private List<TransportRefOmoFormItem> refOmoForms;
 
-    public RefOmoFormList getRefOmoFormList() {
-        return refOmoFormList;
+    public List<TransportRefOmoFormItem> getRefOmoForms() {
+        return refOmoForms;
     }
 
-    public void setRefOmoFormList(RefOmoFormList refOmoFormList) {
-        this.refOmoFormList = refOmoFormList;
+    public void setRefOmoForms(List<TransportRefOmoFormItem> refOmoForms) {
+        this.refOmoForms = refOmoForms;
     }
 }

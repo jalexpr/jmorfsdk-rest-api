@@ -13,10 +13,10 @@ import org.springframework.web.bind.annotation.*;
 import ru.textanalysis.common.rest.classes.ServiceWorksResult;
 import ru.textanalysis.common.rest.utils.WebErrorHelper;
 import ru.textanalysis.common.rest.utils.WebHelper;
-import ru.textanalysis.tawt.ms.internal.ref.RefOmoFormList;
 import ru.textanalysis.tawt.rest.common.api.request.*;
 import ru.textanalysis.tawt.rest.common.api.response.*;
-import ru.textanalysis.tawt.rest.common.api.response.item.IOmoFormItem;
+import ru.textanalysis.tawt.rest.common.api.response.item.TransportOmoFormItem;
+import ru.textanalysis.tawt.rest.common.api.response.item.TransportRefOmoFormItem;
 import ru.textanalysis.tawt.rest.server.services.JMorfSdkService;
 import ru.textanalysis.tawt.rest.server.services.ValidationService;
 
@@ -52,7 +52,7 @@ public class JmorfsdkController {
         result.getErrors().addAll(validationService.validationRequest(request));
 
         if (result.getErrors().isEmpty()) {
-            ServiceWorksResult<List<IOmoFormItem>> resultSelect = jMorfSdkService.selectOmoformsByString(request.getText());
+            ServiceWorksResult<List<TransportOmoFormItem>> resultSelect = jMorfSdkService.selectOmoformsByString(request.getText());
             result.createEmptyData();
             result.getData().setOmoForms(resultSelect.getResult());
             if (!resultSelect.getErrorMessage().isEmpty()) {
@@ -96,9 +96,9 @@ public class JmorfsdkController {
         result.getErrors().addAll(validationService.validationRequest(request));
 
         if (result.getErrors().isEmpty()) {
-            ServiceWorksResult<RefOmoFormList> resultSelect = jMorfSdkService.selectRefOmoFormListByString(request.getText());
+            ServiceWorksResult<List<TransportRefOmoFormItem>> resultSelect = jMorfSdkService.selectRefOmoFormListByString(request.getText());
             result.createEmptyData();
-            result.getData().setRefOmoFormList(resultSelect.getResult());
+            result.getData().setRefOmoForms(resultSelect.getResult());
             if (!resultSelect.getErrorMessage().isEmpty()) {
                 result.getErrors().addAll(resultSelect.getErrorMessage());
             }

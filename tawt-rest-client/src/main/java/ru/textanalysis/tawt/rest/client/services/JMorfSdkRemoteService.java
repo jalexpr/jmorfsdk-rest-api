@@ -5,14 +5,18 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import ru.textanalysis.common.rest.classes.ServiceWorksResult;
 import ru.textanalysis.common.rest.services.RestClientService;
-import ru.textanalysis.tawt.ms.internal.NumberOmoForm;
-import ru.textanalysis.tawt.ms.internal.OmoForm;
+import ru.textanalysis.tawt.ms.internal.BuilderTransportBase;
+import ru.textanalysis.tawt.ms.internal.IOmoForm;
+import ru.textanalysis.tawt.ms.internal.form.Form;
+import ru.textanalysis.tawt.ms.internal.ref.BuilderTransportRef;
+import ru.textanalysis.tawt.ms.internal.ref.RefOmoForm;
 import ru.textanalysis.tawt.ms.internal.ref.RefOmoFormList;
 import ru.textanalysis.tawt.ms.storage.OmoFormList;
 import ru.textanalysis.tawt.rest.common.api.request.*;
 import ru.textanalysis.tawt.rest.common.api.response.*;
 import ru.textanalysis.tawt.rest.common.exception.TawtRestRuntimeException;
 
+import java.util.LinkedList;
 import java.util.List;
 
 @Lazy
@@ -31,10 +35,16 @@ public class JMorfSdkRemoteService {
     private final static String URN_IS_INITIAL_FORM_BY_STRING = "api/jmorfsdk/is/initial/form";
 
     private final RestClientService restClientService;
+    private final BuilderTransportBase builderTransport;
+    private final BuilderTransportRef builderTransportRef;
 
     @Autowired
-    public JMorfSdkRemoteService(RestClientService restClientService) {
+    public JMorfSdkRemoteService(RestClientService restClientService,
+                                 BuilderTransportBase builderTransport,
+                                 BuilderTransportRef builderTransportRef) {
         this.restClientService = restClientService;
+        this.builderTransport = builderTransport;
+        this.builderTransportRef = builderTransportRef;
     }
 
     public ServiceWorksResult<OmoFormList> getAllCharacteristicsOfForm(String word) {
@@ -53,16 +63,8 @@ public class JMorfSdkRemoteService {
 
         OmoFormList result = new OmoFormList();
         response.getData().getOmoForms().forEach(item -> {
-            System.out.println(item.getInitialFormKey());
-            if (item.isNumber()) {
-                //todo не учетн способ передачи параметра для числовой омоформы
-                result.add(new NumberOmoForm(""));
-            } else {
-                //todo не учтены myDependent и myMain =
-                result.add(new OmoForm(item.getInitialFormKey(), item.getMyFormKey(),
-                        item.getTypeOfSpeech(), item.getAllMorfCharacteristics()));
-                System.out.println(result);
-            }
+            IOmoForm iOmoForm = builderTransport.build(item);
+            result.add(iOmoForm);
         });
 
         return new ServiceWorksResult<>(result, response.getErrors());
@@ -101,8 +103,15 @@ public class JMorfSdkRemoteService {
             throw new TawtRestRuntimeException(message);
         }
 
+        List<Form> forms = new LinkedList<>();
+        RefOmoFormList result = new RefOmoFormList(forms);
+        response.getData().getRefOmoForms().forEach(item -> {
+            RefOmoForm refOmoForm = builderTransportRef.build(item);
+            result.copy().add(refOmoForm);
+        });
 
-        return new ServiceWorksResult<>(response.getData().getRefOmoFormList(), response.getErrors());
+
+        return new ServiceWorksResult<>(result, response.getErrors());
     }
 
     public ServiceWorksResult<List<String>> getStringInitialForm(String word) {

@@ -10,13 +10,13 @@ import java.util.List;
 public class SelectOmoforms implements ResponseItem, Serializable {
     @ApiModelProperty(value = "Список омоформ для заданному слову")
     @JsonProperty
-    private List<IOmoFormItem> omoForms;
+    private List<TransportOmoFormItem> omoForms;
 
-    public List<IOmoFormItem> getOmoForms() {
+    public List<TransportOmoFormItem> getOmoForms() {
         return omoForms;
     }
 
-    public void setOmoForms(List<IOmoFormItem> omoForms) {
+    public void setOmoForms(List<TransportOmoFormItem> omoForms) {
         this.omoForms = omoForms;
     }
 }
