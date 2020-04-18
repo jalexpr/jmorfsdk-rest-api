@@ -218,7 +218,6 @@ public class JmorfsdkController {
         return WebHelper.makeSuccessResult(result);
     }
 
-
     @ApiOperation(value = "Проверка на существование формы в словаре")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK", response = SelectOmoformsByStringResponse.class)})
