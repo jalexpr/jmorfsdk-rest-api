@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import ru.textanalysis.tawt.rest.common.api.response.item.TransportOmoFormItem;
+import ru.textanalysis.tawt.rest.common.exception.TawtRestRuntimeException;
 
 @Service
 public class BuilderTransportBase {
@@ -16,28 +17,44 @@ public class BuilderTransportBase {
         item.setMyFormKey(form.myFormKey);
         item.setTypeOfSpeech(form.typeOfSpeech);
         item.setMorfCharacteristics(form.morfCharacteristics);
-        item.setNumber(form.isNumber());
+        item.setTypeForm(form.getTypeForm().getId());
         item.setMyMain(form.myMain);
         item.setMyDependent(form.myDependent);
-        if (form.isNumber()) {
-            item.setStrNumber(((NumberOmoForm) iOmoForm).strNumber);
+        switch (form.getTypeForm()) {
+            case NUMBER:
+            case UNFAMILIAR:
+                item.setStringForm(iOmoForm.getInitialFormString());
+                break;
         }
         return item;
     }
 
     public IOmoForm build(TransportOmoFormItem item) {
         OmoForm form;
-        if (item.getNumber()) {
-            form = new NumberOmoForm(item.getStrNumber());
-        } else {
-            form = new OmoForm();
+        TypeForms typeForm = IEnumWithLongValue.getEnumById(TypeForms.class, item.getTypeForm());
+        switch (typeForm) {
+            case INITIAL:
+            case WORD:
+                form = new OmoForm();
+                break;
+            case NUMBER:
+                form = new NumberOmoForm();
+                ((NumberOmoForm) form).str = item.getStringForm();
+                break;
+            case UNFAMILIAR:
+                form = new UnfamiliarOmoForm();
+                ((UnfamiliarOmoForm) form).str = item.getStringForm();
+                break;
+            default:
+                log.warn("Cannot impl for {}", typeForm);
+                throw new TawtRestRuntimeException("Cannot impl for {}" + typeForm);
         }
         form.initialFormKey = item.getInitialFormKey();
-        form.myFormKey = item.getMyFormKey();
-        form.typeOfSpeech = item.getTypeOfSpeech();
-        form.morfCharacteristics = item.getMorfCharacteristics();
-        form.myMain = item.getMyMain();
         form.myDependent = item.getMyDependent();
+        form.myMain = item.getMyMain();
+        form.myFormKey = item.getMyFormKey();
+        form.morfCharacteristics = item.getMorfCharacteristics();
+        form.typeOfSpeech = item.getTypeOfSpeech();
         return form;
     }
 }
