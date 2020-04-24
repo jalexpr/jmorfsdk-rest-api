@@ -46,7 +46,7 @@ public class BuilderTransportRef {
                 break;
             case WORD:
                 form = new WordForm(item.getFormKeyInBD(), item.getMorfCharacteristics(),
-                        new InitialForm(item.getFormKeyInBD(), item.getTypeOfSpeech(), item.getMorfCharacteristics()));
+                        new InitialForm(item.getInitialFormKey(), item.getTypeOfSpeech(), item.getMorfCharacteristics()));
                 break;
             case UNFAMILIAR:
                 form = new UnfamiliarForm(item.getInitialFormString());

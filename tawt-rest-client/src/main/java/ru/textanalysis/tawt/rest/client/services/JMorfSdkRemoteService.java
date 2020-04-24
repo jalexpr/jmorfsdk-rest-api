@@ -15,7 +15,7 @@ import ru.textanalysis.tawt.rest.common.api.request.*;
 import ru.textanalysis.tawt.rest.common.api.response.*;
 import ru.textanalysis.tawt.rest.common.exception.TawtRestRuntimeException;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 @Lazy
@@ -101,7 +101,7 @@ public class JMorfSdkRemoteService {
             throw new TawtRestRuntimeException(message);
         }
 
-        List<Form> forms = new ArrayList<>();
+        List<Form> forms = new LinkedList<>();
         response.getData().getRefOmoForms().forEach(item -> {
             Form form = builderTransportRef.build(item);
             forms.add(form);
