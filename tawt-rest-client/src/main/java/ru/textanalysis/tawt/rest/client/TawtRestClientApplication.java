@@ -26,8 +26,8 @@ public class TawtRestClientApplication {
             GamaRemoteService gamaRemoteService = new GamaRemoteService(restClientService, builderTransportRef);
 
             //System.out.println(jMorfSdkRemoteService.getAllCharacteristicsOfForm("дерево").getResult());
-            System.out.println(jMorfSdkRemoteService.getRefOmoFormList("дверью").getResult());
-            //System.out.println(gamaRemoteService.getMorphWord("село").getResult());
+            //System.out.println(jMorfSdkRemoteService.getRefOmoFormList("дерево").getResult());
+            System.out.println(gamaRemoteService.getMorphWord("село").getResult());
             //System.out.println(gamaRemoteService.getMorphBearingPhrase("мальнькая девочка").getResult());
         } catch (Exception ex) {
             logger.warn("Ошибка!", ex);
