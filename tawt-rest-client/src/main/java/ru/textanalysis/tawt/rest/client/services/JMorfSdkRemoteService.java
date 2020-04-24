@@ -9,14 +9,13 @@ import ru.textanalysis.tawt.ms.internal.BuilderTransportBase;
 import ru.textanalysis.tawt.ms.internal.IOmoForm;
 import ru.textanalysis.tawt.ms.internal.form.Form;
 import ru.textanalysis.tawt.ms.internal.ref.BuilderTransportRef;
-import ru.textanalysis.tawt.ms.internal.ref.RefOmoForm;
 import ru.textanalysis.tawt.ms.internal.ref.RefOmoFormList;
 import ru.textanalysis.tawt.ms.storage.OmoFormList;
 import ru.textanalysis.tawt.rest.common.api.request.*;
 import ru.textanalysis.tawt.rest.common.api.response.*;
 import ru.textanalysis.tawt.rest.common.exception.TawtRestRuntimeException;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 @Lazy
@@ -88,7 +87,6 @@ public class JMorfSdkRemoteService {
         return new ServiceWorksResult<>(response.getData().getMorfCharacteristics(), response.getErrors());
     }
 
-    //todo Не работает
     public ServiceWorksResult<RefOmoFormList> getRefOmoFormList(String word) {
         SelectByStringRequest request = new SelectByStringRequest();
         request.setText(word);
@@ -103,13 +101,12 @@ public class JMorfSdkRemoteService {
             throw new TawtRestRuntimeException(message);
         }
 
-        List<Form> forms = new LinkedList<>();
-        RefOmoFormList result = new RefOmoFormList(forms);
+        List<Form> forms = new ArrayList<>();
         response.getData().getRefOmoForms().forEach(item -> {
-            RefOmoForm refOmoForm = builderTransportRef.build(item);
-            result.copy().add(refOmoForm);
+            Form form = builderTransportRef.build(item);
+            forms.add(form);
         });
-
+        RefOmoFormList result = new RefOmoFormList(forms);
 
         return new ServiceWorksResult<>(result, response.getErrors());
     }

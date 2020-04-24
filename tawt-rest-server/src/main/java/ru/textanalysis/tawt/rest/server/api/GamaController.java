@@ -13,15 +13,16 @@ import org.springframework.web.bind.annotation.*;
 import ru.textanalysis.common.rest.classes.ServiceWorksResult;
 import ru.textanalysis.common.rest.utils.WebErrorHelper;
 import ru.textanalysis.common.rest.utils.WebHelper;
-import ru.textanalysis.tawt.ms.internal.ref.RefOmoFormList;
 import ru.textanalysis.tawt.ms.storage.ref.RefBearingPhraseList;
 import ru.textanalysis.tawt.ms.storage.ref.RefParagraphList;
 import ru.textanalysis.tawt.ms.storage.ref.RefSentenceList;
-import ru.textanalysis.tawt.ms.storage.ref.RefWordList;
 import ru.textanalysis.tawt.rest.common.api.request.SelectByStringRequest;
 import ru.textanalysis.tawt.rest.common.api.response.*;
+import ru.textanalysis.tawt.rest.common.api.response.item.TransportRefOmoFormItem;
 import ru.textanalysis.tawt.rest.server.services.GamaService;
 import ru.textanalysis.tawt.rest.server.services.ValidationService;
+
+import java.util.List;
 
 @RestController(value = "API для выборки gama")
 @RequestMapping("/api/gama")
@@ -53,9 +54,9 @@ public class GamaController {
         result.getErrors().addAll(validationService.validationRequest(request));
 
         if (result.getErrors().isEmpty()) {
-            ServiceWorksResult<RefOmoFormList> resultSelect = gamaService.selectMorphWordByString(request.getText());
+            ServiceWorksResult<List<TransportRefOmoFormItem>> resultSelect = gamaService.selectMorphWordByString(request.getText());
             result.createEmptyData();
-            result.getData().setRefOmoFormList(resultSelect.getResult());
+            result.getData().setRefOmoForms(resultSelect.getResult());
             if (!resultSelect.getErrorMessage().isEmpty()) {
                 result.getErrors().addAll(resultSelect.getErrorMessage());
             }
@@ -75,9 +76,9 @@ public class GamaController {
         result.getErrors().addAll(validationService.validationRequest(request));
 
         if (result.getErrors().isEmpty()) {
-            ServiceWorksResult<RefWordList> resultSelect = gamaService.selectMorphBearingPhraseByString(request.getText());
+            ServiceWorksResult<List<List<TransportRefOmoFormItem>>> resultSelect = gamaService.selectMorphBearingPhraseByString(request.getText());
             result.createEmptyData();
-            result.getData().setRefWordList(resultSelect.getResult());
+            result.getData().setRefOmoForms(resultSelect.getResult());
             if (!resultSelect.getErrorMessage().isEmpty()) {
                 result.getErrors().addAll(resultSelect.getErrorMessage());
             }

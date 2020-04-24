@@ -19,8 +19,26 @@ public class TransportRefOmoFormItem implements Serializable {
     private Byte typeOfSpeech;
     private Long morfCharacteristics;
     private Integer formKeyInBD;
+    private Integer typeFormId;
     private TypeForms typeForm;
     private Boolean isInitialForm;
+    private String myString;
+
+
+    public TypeForms getTypeForm() {
+        return typeForm;
+    }
+    public void setTypeForm(TypeForms typeForm) {
+        this.typeForm = typeForm;
+    }
+
+    public String getMyString() {
+        return myString;
+    }
+
+    public void setMyString(String myformKey) {
+        this.myString = myformKey;
+    }
 
     public Boolean isInitialForm() {
         return isInitialForm;
@@ -30,12 +48,12 @@ public class TransportRefOmoFormItem implements Serializable {
         isInitialForm = initialForm;
     }
 
-    public TypeForms getTypeForm() {
-        return typeForm;
+    public Integer getTypeFormId() {
+        return typeFormId;
     }
 
-    public void setTypeForm(TypeForms typeForm) {
-        this.typeForm = typeForm;
+    public void setTypeFormId(Integer typeFormId) {
+        this.typeFormId = typeFormId;
     }
 
     public Integer getFormKeyInBD() {

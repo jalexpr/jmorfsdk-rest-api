@@ -20,6 +20,7 @@ public class BuilderTransportBase {
         item.setTypeForm(form.getTypeForm().getId());
         item.setMyMain(form.myMain);
         item.setMyDependent(form.myDependent);
+        item.setStringForm(form.getMyFormString());
         switch (form.getTypeForm()) {
             case NUMBER:
             case UNFAMILIAR:

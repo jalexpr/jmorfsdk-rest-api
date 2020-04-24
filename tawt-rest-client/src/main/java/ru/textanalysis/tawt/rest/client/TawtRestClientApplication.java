@@ -7,6 +7,8 @@ import ru.textanalysis.common.rest.services.RestClientService;
 import ru.textanalysis.tawt.ms.internal.BuilderTransportBase;
 import ru.textanalysis.tawt.ms.internal.ref.BuilderTransportRef;
 import ru.textanalysis.tawt.rest.client.config.BeanFactory;
+import ru.textanalysis.tawt.rest.client.services.GamaRemoteService;
+import ru.textanalysis.tawt.rest.client.services.GraphematicParserRemoteService;
 import ru.textanalysis.tawt.rest.client.services.JMorfSdkRemoteService;
 
 public class TawtRestClientApplication {
@@ -16,14 +18,17 @@ public class TawtRestClientApplication {
         try {
             BeanFactory beanFactory = new BeanFactory();
             RestClientService restClientService = new RestClientService(beanFactory.restTemplate());
+            GraphematicParserRemoteService graphematicParserRemoteService = new GraphematicParserRemoteService(restClientService);
             BuilderTransportBase builderTransport = new BuilderTransportBase();
             BuilderTransportRef builderTransportRef = new BuilderTransportRef();
             JMorfSdkRemoteService jMorfSdkRemoteService = new JMorfSdkRemoteService(restClientService, builderTransport, builderTransportRef);
             //GraphematicParserRemoteService graphematicParserRemoteService = new GraphematicParserRemoteService(restClientService);
-            //GamaRemoteService gamaRemoteService = new GamaRemoteService(restClientService);
+            GamaRemoteService gamaRemoteService = new GamaRemoteService(restClientService, builderTransportRef);
 
-            System.out.println(jMorfSdkRemoteService.getAllCharacteristicsOfForm("село").getResult());
-            System.out.println(jMorfSdkRemoteService.getRefOmoFormList("село").getResult());
+            //System.out.println(jMorfSdkRemoteService.getAllCharacteristicsOfForm("дерево").getResult());
+            System.out.println(jMorfSdkRemoteService.getRefOmoFormList("дверью").getResult());
+            //System.out.println(gamaRemoteService.getMorphWord("село").getResult());
+            //System.out.println(gamaRemoteService.getMorphBearingPhrase("мальнькая девочка").getResult());
         } catch (Exception ex) {
             logger.warn("Ошибка!", ex);
         }
