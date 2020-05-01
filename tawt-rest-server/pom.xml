@@ -81,7 +81,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>ru.textanalysis.tawt.rest.server.TawtRestApiApplication</mainClass>
+                            <mainClass>ru.textanalysis.tawt.rest.server.TawtRestApiServerApplication</mainClass>
                             <addClasspath>true</addClasspath>
                         </manifest>
                         <manifestEntries>

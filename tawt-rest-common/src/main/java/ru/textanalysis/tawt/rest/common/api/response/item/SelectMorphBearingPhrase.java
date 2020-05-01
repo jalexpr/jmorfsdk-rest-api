@@ -8,15 +8,15 @@ import java.io.Serializable;
 import java.util.List;
 
 public class SelectMorphBearingPhrase implements ResponseItem, Serializable {
-    @ApiModelProperty(value = "Список MorphBearingPhrase по заданной несущей фразе")
+    @ApiModelProperty(value = "Список refWordList по заданной несущей фразе")
     @JsonProperty
-    private List<List<TransportRefOmoFormItem>> refOmoForms;
+    private List<List<TransportRefOmoFormItem>> refWordList;
 
-    public List<List<TransportRefOmoFormItem>> getRefOmoForms() {
-        return refOmoForms;
+    public List<List<TransportRefOmoFormItem>> getRefWordList() {
+        return refWordList;
     }
 
-    public void setRefOmoForms(List<List<TransportRefOmoFormItem>> refOmoForms) {
-        this.refOmoForms = refOmoForms;
+    public void setRefWordList(List<List<TransportRefOmoFormItem>> refWordList) {
+        this.refWordList = refWordList;
     }
 }

@@ -21,7 +21,7 @@ import java.util.List;
 @Lazy
 @Service
 public class JMorfSdkRemoteService {
-    private final static String SERVICE_NAME = "http://localhost:30002/tawt-rest-api";//todo читать из проперти
+    private final static String SERVICE_NAME = "http://localhost:30002/tawt-rest-api";
     private final static String URN_SELECT_OMOFORMS_BY_STRING = "api/jmorfsdk/get/all/characteristics/of/form";
     private final static String URN_SELECT_MORPHOLOGY_CHARACTERISTICS_BY_STRING = "api/jmorfsdk/get/morphology/characteristics";
     private final static String URN_SELECT_REFOMOFORMLIST_BY_STRING = "api/jmorfsdk/get/ref/omo/form/list";
@@ -34,18 +34,19 @@ public class JMorfSdkRemoteService {
     private final static String URN_IS_INITIAL_FORM_BY_STRING = "api/jmorfsdk/is/initial/form";
 
     private final RestClientService restClientService;
-    private final BuilderTransportBase builderTransport;
-    private final BuilderTransportRef builderTransportRef;
+    private final BuilderTransportBase builderTransport = new BuilderTransportBase();
+    private final BuilderTransportRef builderTransportRef = new BuilderTransportRef();
 
     @Autowired
-    public JMorfSdkRemoteService(RestClientService restClientService,
-                                 BuilderTransportBase builderTransport,
-                                 BuilderTransportRef builderTransportRef) {
+    public JMorfSdkRemoteService(RestClientService restClientService) {
         this.restClientService = restClientService;
-        this.builderTransport = builderTransport;
-        this.builderTransportRef = builderTransportRef;
     }
 
+    /**
+     * Получение списка омоформ по заданному слову.
+     * @param word слово
+     * @return ServiceWorksResult<OmoFormList>
+     */
     public ServiceWorksResult<OmoFormList> getAllCharacteristicsOfForm(String word) {
         SelectByStringRequest request = new SelectByStringRequest();
         request.setText(word);
@@ -69,6 +70,11 @@ public class JMorfSdkRemoteService {
         return new ServiceWorksResult<>(result, response.getErrors());
     }
 
+    /**
+     * Получение морфологических характеристик по заданному слову
+     * @param word слово
+     * @return ServiceWorksResult<List<Long>>
+     */
     public ServiceWorksResult<List<Long>> getMorphologyCharacteristics(String word) {
         SelectByStringRequest request = new SelectByStringRequest();
         request.setText(word);
@@ -83,10 +89,14 @@ public class JMorfSdkRemoteService {
             throw new TawtRestRuntimeException(message);
         }
 
-
         return new ServiceWorksResult<>(response.getData().getMorfCharacteristics(), response.getErrors());
     }
 
+    /**
+     * Получение списка рефомоформ по заданному слову.
+     * @param word слово
+     * @return ServiceWorksResult<RefOmoFormList>
+     */
     public ServiceWorksResult<RefOmoFormList> getRefOmoFormList(String word) {
         SelectByStringRequest request = new SelectByStringRequest();
         request.setText(word);
@@ -111,6 +121,11 @@ public class JMorfSdkRemoteService {
         return new ServiceWorksResult<>(result, response.getErrors());
     }
 
+    /**
+     * Получение списка начальных форм по заданному слову.
+     * @param word слово
+     * @return ServiceWorksResult<List<String>>
+     */
     public ServiceWorksResult<List<String>> getStringInitialForm(String word) {
         SelectByStringRequest request = new SelectByStringRequest();
         request.setText(word);
@@ -125,10 +140,14 @@ public class JMorfSdkRemoteService {
             throw new TawtRestRuntimeException(message);
         }
 
-
         return new ServiceWorksResult<>(response.getData().getStringList(), response.getErrors());
     }
 
+    /**
+     * Получение списка частей речи по заданному слову.
+     * @param word слово
+     * @return ServiceWorksResult<List<Byte>>
+     */
     public ServiceWorksResult<List<Byte>> getTypeOfSpeeches(String word) {
         SelectByStringRequest request = new SelectByStringRequest();
         request.setText(word);
@@ -143,10 +162,16 @@ public class JMorfSdkRemoteService {
             throw new TawtRestRuntimeException(message);
         }
 
-
         return new ServiceWorksResult<>(response.getData().getByteList(), response.getErrors());
     }
 
+    /**
+     * Получение списка производных форм по заданному слову, части речи и морфологическим характеристикам
+     * @param word слово
+     * @param typeOfSpeeches часть речи
+     * @param morphologyCharacteristics морфологические характеристики
+     * @return ServiceWorksResult<List<String>>
+     */
     public ServiceWorksResult<List<String>> getDerivativeForm(String word, Byte typeOfSpeeches, Long morphologyCharacteristics) {
         SelectByStringWithTypeOfSpeechesAndMorphologyCharacteristicsRequest request = new SelectByStringWithTypeOfSpeechesAndMorphologyCharacteristicsRequest();
         request.setWord(word);
@@ -163,10 +188,15 @@ public class JMorfSdkRemoteService {
             throw new TawtRestRuntimeException(message);
         }
 
-
         return new ServiceWorksResult<>(response.getData().getStringList(), response.getErrors());
     }
 
+    /**
+     * Получение списка производных форм по заданному слову и части речи
+     * @param word слово
+     * @param typeOfSpeeches чать речи
+     * @return ServiceWorksResult<List<String>>
+     */
     public ServiceWorksResult<List<String>> getDerivativeForm(String word, Byte typeOfSpeeches) {
         SelectByStringWithTypeOfSpeechesRequest request = new SelectByStringWithTypeOfSpeechesRequest();
         request.setWord(word);
@@ -182,10 +212,15 @@ public class JMorfSdkRemoteService {
             throw new TawtRestRuntimeException(message);
         }
 
-
         return new ServiceWorksResult<>(response.getData().getStringList(), response.getErrors());
     }
 
+    /**
+     * Получение списка производных форм по заданному слову и морфологическим характеристикам
+     * @param word слово
+     * @param morphologyCharacteristics морфологические характеристики
+     * @return ServiceWorksResult<List<String>>
+     */
     public ServiceWorksResult<List<String>> getDerivativeForm(String word, Long morphologyCharacteristics) {
         SelectByStringWithMorphologyCharacteristicsRequest request = new SelectByStringWithMorphologyCharacteristicsRequest();
         request.setWord(word);
@@ -201,10 +236,14 @@ public class JMorfSdkRemoteService {
             throw new TawtRestRuntimeException(message);
         }
 
-
         return new ServiceWorksResult<>(response.getData().getStringList(), response.getErrors());
     }
 
+    /**
+     * Проверка на существование формы в словаре.
+     * @param word слово
+     * @return ServiceWorksResult<Boolean>
+     */
     public ServiceWorksResult<Boolean> isFormExistsInDictionary(String word) {
         ExistFormByStringRequest request = new ExistFormByStringRequest();
         request.setWord(word);
@@ -222,6 +261,11 @@ public class JMorfSdkRemoteService {
         return new ServiceWorksResult<>(response.getData().getExist(), response.getErrors());
     }
 
+    /**
+     * Проверка на начальную форму заданного слова.
+     * @param word слово
+     * @return ServiceWorksResult<Byte>
+     */
     public ServiceWorksResult<Byte> isInitialForm(String word) {
         ExistFormByStringRequest request = new ExistFormByStringRequest();
         request.setWord(word);

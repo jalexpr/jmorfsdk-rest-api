@@ -34,7 +34,6 @@ public class BuilderTransportRef {
     }
 
     public Form build(TransportRefOmoFormItem item) {
-
         TypeForms typeForm = IEnumWithLongValue.getEnumById(TypeForms.class, item.getTypeFormId());
         Form form;
         switch (typeForm) {
@@ -49,7 +48,7 @@ public class BuilderTransportRef {
                         new InitialForm(item.getInitialFormKey(), item.getTypeOfSpeech(), item.getMorfCharacteristics()));
                 break;
             case UNFAMILIAR:
-                form = new UnfamiliarForm(item.getInitialFormString());
+                form = new UnfamiliarForm(item.getMyString());
                 break;
             default:
                 log.warn("Cannot impl for {}", typeForm);

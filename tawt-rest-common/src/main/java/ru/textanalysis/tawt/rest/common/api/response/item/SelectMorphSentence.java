@@ -3,20 +3,20 @@ package ru.textanalysis.tawt.rest.common.api.response.item;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
 import ru.textanalysis.common.rest.domain.response.item.ResponseItem;
-import ru.textanalysis.tawt.ms.storage.ref.RefBearingPhraseList;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class SelectMorphSentence implements ResponseItem, Serializable {
-    @ApiModelProperty(value = "Список MorphSentence по заданному предложению")
+    @ApiModelProperty(value = "Список refBearingPhraseList по заданному предложению")
     @JsonProperty
-    private RefBearingPhraseList refBearingPhraseList;
+    private List<List<List<TransportRefOmoFormItem>>> refBearingPhraseList;
 
-    public RefBearingPhraseList getRefBearingPhraseList() {
+    public List<List<List<TransportRefOmoFormItem>>> getRefBearingPhraseList() {
         return refBearingPhraseList;
     }
 
-    public void setRefBearingPhraseList(RefBearingPhraseList refBearingPhraseList) {
+    public void setRefBearingPhraseList(List<List<List<TransportRefOmoFormItem>>> refBearingPhraseList) {
         this.refBearingPhraseList = refBearingPhraseList;
     }
 }

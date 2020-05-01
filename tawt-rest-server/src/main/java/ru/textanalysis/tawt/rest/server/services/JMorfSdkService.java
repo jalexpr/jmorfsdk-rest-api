@@ -80,11 +80,8 @@ public class JMorfSdkService implements InitializingBean {
 
     public ServiceWorksResult<List<TransportRefOmoFormItem>> selectRefOmoFormListByString(String word) {
         List<String> errors = new LinkedList<>();
-        //List<Form> forms = new ArrayList<>();
-        //RefOmoFormList result = new RefOmoFormList(forms);
         List<TransportRefOmoFormItem> result = new LinkedList<>();
         try {
-            //result = jMorfSdk.getRefOmoFormList(word);
             jMorfSdk.getRefOmoFormList(word).copy().forEach(form -> {
                 TransportRefOmoFormItem item = builderTransportRef.build(form);
                 result.add(item);

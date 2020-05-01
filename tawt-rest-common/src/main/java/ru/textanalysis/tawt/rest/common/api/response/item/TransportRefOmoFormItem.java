@@ -5,15 +5,6 @@ import ru.textanalysis.tawt.ms.internal.TypeForms;
 import java.io.Serializable;
 
 public class TransportRefOmoFormItem implements Serializable {
-/*    Form form;
-
-    public Form getForm() {
-        return form;
-    }
-
-    public void setForm(Form form) {
-        this.form = form;
-    }*/
     private Integer initialFormKey;
     private String initialFormString;
     private Byte typeOfSpeech;
