@@ -45,7 +45,7 @@ public class JMorfSdkRemoteService {
     /**
      * Получение списка омоформ по заданному слову.
      * @param word слово
-     * @return ServiceWorksResult<OmoFormList>
+     * @return список омоформ
      */
     public ServiceWorksResult<OmoFormList> getAllCharacteristicsOfForm(String word) {
         SelectByStringRequest request = new SelectByStringRequest();
@@ -73,7 +73,7 @@ public class JMorfSdkRemoteService {
     /**
      * Получение морфологических характеристик по заданному слову
      * @param word слово
-     * @return ServiceWorksResult<List<Long>>
+     * @return список морфологических характеристик
      */
     public ServiceWorksResult<List<Long>> getMorphologyCharacteristics(String word) {
         SelectByStringRequest request = new SelectByStringRequest();
@@ -95,7 +95,7 @@ public class JMorfSdkRemoteService {
     /**
      * Получение списка рефомоформ по заданному слову.
      * @param word слово
-     * @return ServiceWorksResult<RefOmoFormList>
+     * @return список рефомоформ
      */
     public ServiceWorksResult<RefOmoFormList> getRefOmoFormList(String word) {
         SelectByStringRequest request = new SelectByStringRequest();
@@ -124,7 +124,7 @@ public class JMorfSdkRemoteService {
     /**
      * Получение списка начальных форм по заданному слову.
      * @param word слово
-     * @return ServiceWorksResult<List<String>>
+     * @return список начальных форм
      */
     public ServiceWorksResult<List<String>> getStringInitialForm(String word) {
         SelectByStringRequest request = new SelectByStringRequest();
@@ -146,7 +146,7 @@ public class JMorfSdkRemoteService {
     /**
      * Получение списка частей речи по заданному слову.
      * @param word слово
-     * @return ServiceWorksResult<List<Byte>>
+     * @return список частей речи
      */
     public ServiceWorksResult<List<Byte>> getTypeOfSpeeches(String word) {
         SelectByStringRequest request = new SelectByStringRequest();
@@ -170,7 +170,7 @@ public class JMorfSdkRemoteService {
      * @param word слово
      * @param typeOfSpeeches часть речи
      * @param morphologyCharacteristics морфологические характеристики
-     * @return ServiceWorksResult<List<String>>
+     * @return список производных форм
      */
     public ServiceWorksResult<List<String>> getDerivativeForm(String word, Byte typeOfSpeeches, Long morphologyCharacteristics) {
         SelectByStringWithTypeOfSpeechesAndMorphologyCharacteristicsRequest request = new SelectByStringWithTypeOfSpeechesAndMorphologyCharacteristicsRequest();
@@ -195,7 +195,7 @@ public class JMorfSdkRemoteService {
      * Получение списка производных форм по заданному слову и части речи
      * @param word слово
      * @param typeOfSpeeches чать речи
-     * @return ServiceWorksResult<List<String>>
+     * @return список производных форм
      */
     public ServiceWorksResult<List<String>> getDerivativeForm(String word, Byte typeOfSpeeches) {
         SelectByStringWithTypeOfSpeechesRequest request = new SelectByStringWithTypeOfSpeechesRequest();
@@ -219,7 +219,7 @@ public class JMorfSdkRemoteService {
      * Получение списка производных форм по заданному слову и морфологическим характеристикам
      * @param word слово
      * @param morphologyCharacteristics морфологические характеристики
-     * @return ServiceWorksResult<List<String>>
+     * @return список производных форм
      */
     public ServiceWorksResult<List<String>> getDerivativeForm(String word, Long morphologyCharacteristics) {
         SelectByStringWithMorphologyCharacteristicsRequest request = new SelectByStringWithMorphologyCharacteristicsRequest();
@@ -242,7 +242,7 @@ public class JMorfSdkRemoteService {
     /**
      * Проверка на существование формы в словаре.
      * @param word слово
-     * @return ServiceWorksResult<Boolean>
+     * @return true, если форма есть в ловаре, иначе false.
      */
     public ServiceWorksResult<Boolean> isFormExistsInDictionary(String word) {
         ExistFormByStringRequest request = new ExistFormByStringRequest();
@@ -264,7 +264,8 @@ public class JMorfSdkRemoteService {
     /**
      * Проверка на начальную форму заданного слова.
      * @param word слово
-     * @return ServiceWorksResult<Byte>
+     * @return 0, если слово содержит начальную форму и неначальную форму; 1, если слово содержит начальную форму; -1,
+     * если слово содержит неначальную форму; в иных случаях -2.
      */
     public ServiceWorksResult<Byte> isInitialForm(String word) {
         ExistFormByStringRequest request = new ExistFormByStringRequest();

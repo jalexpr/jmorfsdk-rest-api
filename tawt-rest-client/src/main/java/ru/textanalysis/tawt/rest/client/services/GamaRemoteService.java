@@ -40,7 +40,7 @@ public class GamaRemoteService {
     /**
      * Получение списка рефомоформ по заданному слову
      * @param text слово
-     * @return ServiceWorksResult<RefOmoFormList>
+     * @return список рефомоформ
      */
     public ServiceWorksResult<RefOmoFormList> getMorphWord(String text) {
         SelectByStringRequest request = new SelectByStringRequest();
@@ -69,7 +69,7 @@ public class GamaRemoteService {
     /**
      * Получение списка рефомоформ по заданному опорному обороту.
      * @param text опорный оборот
-     * @return ServiceWorksResult<RefWordList>
+     * @return список рефомоформ
      */
     public ServiceWorksResult<RefWordList> getMorphBearingPhrase(String text) {
         SelectByStringRequest request = new SelectByStringRequest();
@@ -101,7 +101,7 @@ public class GamaRemoteService {
     /**
      * Получение списка рефомоформ по заданному предложению.
      * @param text предложение
-     * @return ServiceWorksResult<RefBearingPhraseList>
+     * @return список рефомоформ
      */
     public ServiceWorksResult<RefBearingPhraseList> getMorphSentence(String text) {
         SelectByStringRequest request = new SelectByStringRequest();
@@ -137,7 +137,7 @@ public class GamaRemoteService {
     /**
      * Получение списка рефомоформ по заданному параграфу.
      * @param text параграф
-     * @return ServiceWorksResult<RefSentenceList>
+     * @return список рефомоформ
      */
     public ServiceWorksResult<RefSentenceList> getMorphParagraph(String text) {
         SelectByStringRequest request = new SelectByStringRequest();
@@ -177,7 +177,7 @@ public class GamaRemoteService {
     /**
      * Получение списка рефомоформ по заданному тексту.
      * @param text произвольный текст
-     * @return ServiceWorksResult<RefParagraphList>
+     * @return список рефомоформ
      */
     public ServiceWorksResult<RefParagraphList> getMorphText(String text) {
         SelectByStringRequest request = new SelectByStringRequest();

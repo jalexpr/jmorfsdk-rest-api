@@ -33,7 +33,7 @@ public class GraphematicParserRemoteService {
     /**
      * Получение списка слов по заданной фразе
      * @param text фраза
-     * @return ServiceWorksResult<List<String>>
+     * @return список слов
      */
     public ServiceWorksResult<List<String>> parserBasicsPhaseByString(String text) {
         SelectByStringRequest request = new SelectByStringRequest();
@@ -55,7 +55,7 @@ public class GraphematicParserRemoteService {
     /**
      * Получение списка слов по заданному предложению.
      * @param text предложение
-     * @return ServiceWorksResult<List<List<String>>>
+     * @return список слов
      */
     public ServiceWorksResult<List<List<String>>> parserSentence(String text) {
         SelectByStringRequest request = new SelectByStringRequest();
@@ -77,7 +77,7 @@ public class GraphematicParserRemoteService {
     /**
      * Получение списка слов по заданному параграфу.
      * @param text параграф
-     * @return ServiceWorksResult<List<List<List<String>>>>
+     * @return список слов
      */
     public ServiceWorksResult<List<List<List<String>>>> parserParagraph(String text) {
         SelectByStringRequest request = new SelectByStringRequest();
@@ -99,7 +99,7 @@ public class GraphematicParserRemoteService {
     /**
      * получение списка слов по заданному тексту
      * @param text произвольный текст
-     * @return ServiceWorksResult<List<List<List<List<String>>>>>
+     * @return список слов
      */
     public ServiceWorksResult<List<List<List<List<String>>>>> parserText(String text) {
         SelectByStringRequest request = new SelectByStringRequest();
