@@ -17,8 +17,8 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.github.jalexpr</groupId>
-            <artifactId>tawt</artifactId>
+            <groupId>com.github.jalexpr.tawt</groupId>
+            <artifactId>morphological-structures</artifactId>
         </dependency>
 
         <dependency>
