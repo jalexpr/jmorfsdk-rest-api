@@ -19,7 +19,7 @@
     <properties>
         <tawt.version>66b3ffb881</tawt.version>
         <tawt.morphological-dictionary.version>a320235737</tawt.morphological-dictionary.version>
-        <common-rest-interface.version>70c9ff49e7</common-rest-interface.version>
+        <common-rest-interface.version>0564986f52</common-rest-interface.version>
 
         <project.java.version>1.8</project.java.version>
         <project.build.sourceEncoding>utf-8</project.build.sourceEncoding>
