@@ -21,7 +21,7 @@
         <tawt.morphological-dictionary.version>a320235737</tawt.morphological-dictionary.version>
         <common-rest-interface.version>70c9ff49e7</common-rest-interface.version>
 
-        <project.java.version>11</project.java.version>
+        <project.java.version>1.8</project.java.version>
         <project.build.sourceEncoding>utf-8</project.build.sourceEncoding>
 
         <spring.boot.version>2.2.4.RELEASE</spring.boot.version>
