@@ -31,11 +31,12 @@ public class GamaRemoteService {
     private final static String URN_SELECT_MORPH_TEXT_BY_STRING = "api/gama/get/morph/text";
 
     private final RestClientService restClientService;
-    private final BuilderTransportRef builderTransportRef = new BuilderTransportRef();
+    private final BuilderTransportRef builderTransportRef;
 
     @Autowired
     public GamaRemoteService(RestClientService restClientService, Config config) {
         this.restClientService = restClientService;
+        this.builderTransportRef = new BuilderTransportRef();
         SERVICE_NAME = String.format("%s:%s/tawt-rest-api", config.getAddress(), config.getPort());
     }
 

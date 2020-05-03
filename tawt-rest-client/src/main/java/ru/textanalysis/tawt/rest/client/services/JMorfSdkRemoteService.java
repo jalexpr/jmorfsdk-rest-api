@@ -35,12 +35,14 @@ public class JMorfSdkRemoteService {
     private final static String URN_IS_INITIAL_FORM_BY_STRING = "api/jmorfsdk/is/initial/form";
 
     private final RestClientService restClientService;
-    private final BuilderTransportBase builderTransport = new BuilderTransportBase();
-    private final BuilderTransportRef builderTransportRef = new BuilderTransportRef();
+    private final BuilderTransportBase builderTransport;
+    private final BuilderTransportRef builderTransportRef;
 
     @Autowired
     public JMorfSdkRemoteService(RestClientService restClientService, Config config) {
         this.restClientService = restClientService;
+        this.builderTransport = new BuilderTransportBase();
+        this.builderTransportRef = new BuilderTransportRef();
         SERVICE_NAME = String.format("%s:%s/tawt-rest-api", config.getAddress(), config.getPort());
     }
 
