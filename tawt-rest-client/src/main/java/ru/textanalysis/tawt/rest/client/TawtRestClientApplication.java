@@ -5,6 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.textanalysis.common.rest.services.RestClientService;
 import ru.textanalysis.tawt.rest.client.config.BeanFactory;
+import ru.textanalysis.tawt.rest.client.config.Config;
 import ru.textanalysis.tawt.rest.client.services.GamaRemoteService;
 import ru.textanalysis.tawt.rest.client.services.GraphematicParserRemoteService;
 import ru.textanalysis.tawt.rest.client.services.JMorfSdkRemoteService;
@@ -16,9 +17,11 @@ public class TawtRestClientApplication {
         try {
             BeanFactory beanFactory = new BeanFactory();
             RestClientService restClientService = new RestClientService(beanFactory.restTemplate());
-            JMorfSdkRemoteService jMorfSdkRemoteService = new JMorfSdkRemoteService(restClientService);
-            GraphematicParserRemoteService graphematicParserRemoteService = new GraphematicParserRemoteService(restClientService);
-            GamaRemoteService gamaRemoteService = new GamaRemoteService(restClientService);
+            //Config config = new Config ("http://localhost", "30002");
+            Config config = new Config ("http://boberpul2.asuscomm.com", "8093");
+            JMorfSdkRemoteService jMorfSdkRemoteService = new JMorfSdkRemoteService(restClientService, config);
+            GraphematicParserRemoteService graphematicParserRemoteService = new GraphematicParserRemoteService(restClientService, config);
+            GamaRemoteService gamaRemoteService = new GamaRemoteService(restClientService, config);
 
             System.out.println(jMorfSdkRemoteService.getRefOmoFormList("село").getResult());
             System.out.println(graphematicParserRemoteService.parserSentence("я ходил гулять").getResult());

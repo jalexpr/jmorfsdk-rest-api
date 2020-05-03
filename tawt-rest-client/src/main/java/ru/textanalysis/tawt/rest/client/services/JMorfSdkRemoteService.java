@@ -11,6 +11,7 @@ import ru.textanalysis.tawt.ms.internal.form.Form;
 import ru.textanalysis.tawt.ms.internal.ref.BuilderTransportRef;
 import ru.textanalysis.tawt.ms.internal.ref.RefOmoFormList;
 import ru.textanalysis.tawt.ms.storage.OmoFormList;
+import ru.textanalysis.tawt.rest.client.config.Config;
 import ru.textanalysis.tawt.rest.common.api.request.*;
 import ru.textanalysis.tawt.rest.common.api.response.*;
 import ru.textanalysis.tawt.rest.common.exception.TawtRestRuntimeException;
@@ -21,7 +22,7 @@ import java.util.List;
 @Lazy
 @Service
 public class JMorfSdkRemoteService {
-    private final static String SERVICE_NAME = "http://localhost:30002/tawt-rest-api";
+    private static String SERVICE_NAME = "";
     private final static String URN_SELECT_OMOFORMS_BY_STRING = "api/jmorfsdk/get/all/characteristics/of/form";
     private final static String URN_SELECT_MORPHOLOGY_CHARACTERISTICS_BY_STRING = "api/jmorfsdk/get/morphology/characteristics";
     private final static String URN_SELECT_REFOMOFORMLIST_BY_STRING = "api/jmorfsdk/get/ref/omo/form/list";
@@ -38,8 +39,9 @@ public class JMorfSdkRemoteService {
     private final BuilderTransportRef builderTransportRef = new BuilderTransportRef();
 
     @Autowired
-    public JMorfSdkRemoteService(RestClientService restClientService) {
+    public JMorfSdkRemoteService(RestClientService restClientService, Config config) {
         this.restClientService = restClientService;
+        SERVICE_NAME = String.format("%s:%s/tawt-rest-api", config.getAddress(), config.getPort());
     }
 
     /**

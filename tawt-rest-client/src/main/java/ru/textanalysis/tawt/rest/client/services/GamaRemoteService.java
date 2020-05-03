@@ -12,6 +12,7 @@ import ru.textanalysis.tawt.ms.storage.ref.RefBearingPhraseList;
 import ru.textanalysis.tawt.ms.storage.ref.RefParagraphList;
 import ru.textanalysis.tawt.ms.storage.ref.RefSentenceList;
 import ru.textanalysis.tawt.ms.storage.ref.RefWordList;
+import ru.textanalysis.tawt.rest.client.config.Config;
 import ru.textanalysis.tawt.rest.common.api.request.SelectByStringRequest;
 import ru.textanalysis.tawt.rest.common.api.response.*;
 import ru.textanalysis.tawt.rest.common.exception.TawtRestRuntimeException;
@@ -22,7 +23,7 @@ import java.util.List;
 @Lazy
 @Service
 public class GamaRemoteService {
-    private final static String SERVICE_NAME = "http://localhost:30002/tawt-rest-api";
+    private static String SERVICE_NAME = "";
     private final static String URN_SELECT_MORPH_WORD_BY_STRING = "api/gama/get/morph/word";
     private final static String URN_SELECT_MORPH_BEARING_PHRASE_BY_STRING = "api/gama/get/morph/bearing/phrase";
     private final static String URN_SELECT_MORPH_SENTENCE_BY_STRING = "api/gama/get/morph/sentence";
@@ -33,8 +34,9 @@ public class GamaRemoteService {
     private final BuilderTransportRef builderTransportRef = new BuilderTransportRef();
 
     @Autowired
-    public GamaRemoteService(RestClientService restClientService) {
+    public GamaRemoteService(RestClientService restClientService, Config config) {
         this.restClientService = restClientService;
+        SERVICE_NAME = String.format("%s:%s/tawt-rest-api", config.getAddress(), config.getPort());
     }
 
     /**

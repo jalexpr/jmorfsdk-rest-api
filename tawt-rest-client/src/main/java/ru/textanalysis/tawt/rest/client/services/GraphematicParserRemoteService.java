@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import ru.textanalysis.common.rest.classes.ServiceWorksResult;
 import ru.textanalysis.common.rest.services.RestClientService;
+import ru.textanalysis.tawt.rest.client.config.Config;
 import ru.textanalysis.tawt.rest.common.api.request.SelectByStringRequest;
 import ru.textanalysis.tawt.rest.common.api.response.ParserBasicsPhaseByStringResponse;
 import ru.textanalysis.tawt.rest.common.api.response.ParserParagraphByStringResponse;
@@ -17,7 +18,7 @@ import java.util.List;
 @Lazy
 @Service
 public class GraphematicParserRemoteService {
-    private final static String SERVICE_NAME = "http://localhost:30002/tawt-rest-api";
+    private static String SERVICE_NAME = "";
     private final static String URN_PARSER_BASICS_PHASE_BY_STRING = "api/gp/parser/basics/phase";
     private final static String URN_PARSER_SENTENCE_BY_STRING = "api/gp/parser/sentence";
     private final static String URN_PARSER_PARAGRAPH_BY_STRING = "api/gp/parser/paragraph";
@@ -26,8 +27,9 @@ public class GraphematicParserRemoteService {
     private final RestClientService restClientService;
 
     @Autowired
-    public GraphematicParserRemoteService(RestClientService restClientService) {
+    public GraphematicParserRemoteService(RestClientService restClientService, Config config) {
         this.restClientService = restClientService;
+        SERVICE_NAME = String.format("%s:%s/tawt-rest-api", config.getAddress(), config.getPort());
     }
 
     /**
