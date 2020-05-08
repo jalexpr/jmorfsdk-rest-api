@@ -15,6 +15,14 @@ public class TransportOmoFormItem implements Serializable {
     private Integer typeForm;
     private String stringForm;
 
+    public Integer getTypeForm() {
+        return typeForm;
+    }
+
+    public void setTypeForm(Integer typeForm) {
+        this.typeForm = typeForm;
+    }
+
     public Integer getInitialFormKey() {
         return initialFormKey;
     }
@@ -61,14 +69,6 @@ public class TransportOmoFormItem implements Serializable {
 
     public void setMyMain(LinkedList<OmoForm> myMain) {
         this.myMain = myMain;
-    }
-
-    public Integer getTypeForm() {
-        return typeForm;
-    }
-
-    public void setTypeForm(Integer typeForm) {
-        this.typeForm = typeForm;
     }
 
     public String getStringForm() {

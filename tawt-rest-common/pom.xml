@@ -6,13 +6,13 @@
 
     <artifactId>tawt-rest-common</artifactId>
     <name>TAWT Rest API COMMON</name>
-    <version>66b3ffb881</version>
+    <version>46431343af</version>
     <packaging>jar</packaging>
 
     <parent>
         <groupId>ru.textanalysis.tawt.rest</groupId>
         <artifactId>tawt-rest-api-parent</artifactId>
-        <version>66b3ffb881</version>
+        <version>46431343af</version>
     </parent>
 
     <dependencies>

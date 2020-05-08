@@ -7,6 +7,9 @@ import ru.textanalysis.common.rest.services.RestClientService;
 import ru.textanalysis.tawt.ms.internal.BuilderTransportBase;
 import ru.textanalysis.tawt.ms.internal.ref.BuilderTransportRef;
 import ru.textanalysis.tawt.rest.client.config.BeanFactory;
+import ru.textanalysis.tawt.rest.client.config.Config;
+import ru.textanalysis.tawt.rest.client.services.GamaRemoteService;
+import ru.textanalysis.tawt.rest.client.services.GraphematicParserRemoteService;
 import ru.textanalysis.tawt.rest.client.services.JMorfSdkRemoteService;
 
 public class TawtRestClientApplication {
@@ -16,14 +19,15 @@ public class TawtRestClientApplication {
         try {
             BeanFactory beanFactory = new BeanFactory();
             RestClientService restClientService = new RestClientService(beanFactory.restTemplate());
-            BuilderTransportBase builderTransport = new BuilderTransportBase();
-            BuilderTransportRef builderTransportRef = new BuilderTransportRef();
-            JMorfSdkRemoteService jMorfSdkRemoteService = new JMorfSdkRemoteService(restClientService, builderTransport, builderTransportRef);
-            //GraphematicParserRemoteService graphematicParserRemoteService = new GraphematicParserRemoteService(restClientService);
-            //GamaRemoteService gamaRemoteService = new GamaRemoteService(restClientService);
+            //Config config = new Config ("http://localhost", "30002");
+            Config config = new Config ("http://boberpul2.asuscomm.com", "8093");
+            JMorfSdkRemoteService jMorfSdkRemoteService = new JMorfSdkRemoteService(restClientService, new BuilderTransportBase(), new BuilderTransportRef(), config);
+            GraphematicParserRemoteService graphematicParserRemoteService = new GraphematicParserRemoteService(restClientService, config);
+            GamaRemoteService gamaRemoteService = new GamaRemoteService(restClientService, config);
 
-            System.out.println(jMorfSdkRemoteService.getAllCharacteristicsOfForm("село").getResult());
             System.out.println(jMorfSdkRemoteService.getRefOmoFormList("село").getResult());
+            System.out.println(graphematicParserRemoteService.parserSentence("я ходил гулять").getResult());
+            System.out.println(gamaRemoteService.getMorphSentence("я ходил гулять").getResult());
         } catch (Exception ex) {
             logger.warn("Ошибка!", ex);
         }

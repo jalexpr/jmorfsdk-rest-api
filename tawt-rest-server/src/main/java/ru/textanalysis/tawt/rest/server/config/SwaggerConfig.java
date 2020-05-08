@@ -31,7 +31,7 @@ public class SwaggerConfig {
         return new ApiInfoBuilder()
                 .title("TAWT REST API")
                 .description("Данный сервис для использование API фреймворка TAWT")
-                .version("66b3ffb881")
+                .version("46431343af")
                 .build();
     }
 

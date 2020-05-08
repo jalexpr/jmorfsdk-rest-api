@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import ru.textanalysis.common.rest.classes.ServiceWorksResult;
 import ru.textanalysis.common.rest.services.RestClientService;
+import ru.textanalysis.tawt.rest.client.config.Config;
 import ru.textanalysis.tawt.rest.common.api.request.SelectByStringRequest;
 import ru.textanalysis.tawt.rest.common.api.response.ParserBasicsPhaseByStringResponse;
 import ru.textanalysis.tawt.rest.common.api.response.ParserParagraphByStringResponse;
@@ -17,19 +18,25 @@ import java.util.List;
 @Lazy
 @Service
 public class GraphematicParserRemoteService {
-    private final static String SERVICE_NAME = "http://localhost:30002/tawt-rest-api";
-    private final static String URN_PARSER_BASICS_PHASE_BY_STRING = "/api/gp/parser/basics/phase";
-    private final static String URN_PARSER_SENTENCE_BY_STRING = "/api/gp/parser/sentence";
-    private final static String URN_PARSER_PARAGRAPH_BY_STRING = "/api/gp/parser/paragraph";
-    private final static String URN_PARSER_TEXT_BY_STRING = "/api/gp/parser/text";
+    private static String SERVICE_NAME = "";
+    private final static String URN_PARSER_BASICS_PHASE_BY_STRING = "api/gp/parser/basics/phase";
+    private final static String URN_PARSER_SENTENCE_BY_STRING = "api/gp/parser/sentence";
+    private final static String URN_PARSER_PARAGRAPH_BY_STRING = "api/gp/parser/paragraph";
+    private final static String URN_PARSER_TEXT_BY_STRING = "api/gp/parser/text";
 
     private final RestClientService restClientService;
 
     @Autowired
-    public GraphematicParserRemoteService(RestClientService restClientService) {
+    public GraphematicParserRemoteService(RestClientService restClientService, Config config) {
         this.restClientService = restClientService;
+        SERVICE_NAME = String.format("%s:%s/tawt-rest-api", config.getAddress(), config.getPort());
     }
 
+    /**
+     * Получение списка слов по заданной фразе
+     * @param text фраза
+     * @return список слов
+     */
     public ServiceWorksResult<List<String>> parserBasicsPhaseByString(String text) {
         SelectByStringRequest request = new SelectByStringRequest();
         request.setText(text);
@@ -44,10 +51,14 @@ public class GraphematicParserRemoteService {
             throw new TawtRestRuntimeException(message);
         }
 
-
         return new ServiceWorksResult<>(response.getData().getStringList(), response.getErrors());
     }
 
+    /**
+     * Получение списка слов по заданному предложению.
+     * @param text предложение
+     * @return список слов
+     */
     public ServiceWorksResult<List<List<String>>> parserSentence(String text) {
         SelectByStringRequest request = new SelectByStringRequest();
         request.setText(text);
@@ -62,10 +73,14 @@ public class GraphematicParserRemoteService {
             throw new TawtRestRuntimeException(message);
         }
 
-
         return new ServiceWorksResult<>(response.getData().getStringList(), response.getErrors());
     }
 
+    /**
+     * Получение списка слов по заданному параграфу.
+     * @param text параграф
+     * @return список слов
+     */
     public ServiceWorksResult<List<List<List<String>>>> parserParagraph(String text) {
         SelectByStringRequest request = new SelectByStringRequest();
         request.setText(text);
@@ -80,10 +95,14 @@ public class GraphematicParserRemoteService {
             throw new TawtRestRuntimeException(message);
         }
 
-
         return new ServiceWorksResult<>(response.getData().getStringList(), response.getErrors());
     }
 
+    /**
+     * получение списка слов по заданному тексту
+     * @param text произвольный текст
+     * @return список слов
+     */
     public ServiceWorksResult<List<List<List<List<String>>>>> parserText(String text) {
         SelectByStringRequest request = new SelectByStringRequest();
         request.setText(text);
@@ -97,7 +116,6 @@ public class GraphematicParserRemoteService {
                     SERVICE_NAME, URN_PARSER_TEXT_BY_STRING, text);
             throw new TawtRestRuntimeException(message);
         }
-
 
         return new ServiceWorksResult<>(response.getData().getStringList(), response.getErrors());
     }

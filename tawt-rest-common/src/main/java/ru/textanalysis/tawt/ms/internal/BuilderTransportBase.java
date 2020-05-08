@@ -20,6 +20,7 @@ public class BuilderTransportBase {
         item.setTypeForm(form.getTypeForm().getId());
         item.setMyMain(form.myMain);
         item.setMyDependent(form.myDependent);
+        item.setStringForm(form.getMyFormString());
         switch (form.getTypeForm()) {
             case NUMBER:
             case UNFAMILIAR:
@@ -50,7 +51,11 @@ public class BuilderTransportBase {
                 throw new TawtRestRuntimeException("Cannot impl for {}" + typeForm);
         }
         form.initialFormKey = item.getInitialFormKey();
-        //...
+        form.myDependent = item.getMyDependent();
+        form.myMain = item.getMyMain();
+        form.myFormKey = item.getMyFormKey();
+        form.morfCharacteristics = item.getMorfCharacteristics();
+        form.typeOfSpeech = item.getTypeOfSpeech();
         return form;
     }
 }

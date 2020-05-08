@@ -8,7 +8,7 @@
     <artifactId>tawt-rest-api-parent</artifactId>
     <name>TAWT Rest API PARENT</name>
     <packaging>pom</packaging>
-    <version>66b3ffb881</version>
+    <version>46431343af</version>
 
     <modules>
         <module>tawt-rest-common</module>
@@ -17,7 +17,7 @@
     </modules>
 
     <properties>
-        <tawt.version>66b3ffb881</tawt.version>
+        <tawt.version>46431343af</tawt.version>
         <tawt.morphological-dictionary.version>a320235737</tawt.morphological-dictionary.version>
         <common-rest-interface.version>0564986f52</common-rest-interface.version>
 

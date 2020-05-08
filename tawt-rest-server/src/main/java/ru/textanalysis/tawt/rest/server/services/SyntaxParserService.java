@@ -5,11 +5,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import ru.textanalysis.common.rest.classes.ServiceWorksResult;
-import ru.textanalysis.tawt.ms.external.sp.BearingPhraseExt;
-import ru.textanalysis.tawt.ms.internal.sp.BearingPhraseSP;
+import ru.textanalysis.tawt.ms.internal.sp.BuilderTransportSP;
+import ru.textanalysis.tawt.rest.common.api.response.item.TransportBearingPhraseExtItem;
+import ru.textanalysis.tawt.rest.common.api.response.item.TransportBearingPhraseSPItem;
 import ru.textanalysis.tawt.sp.api.SyntaxParser;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -19,17 +19,21 @@ public class SyntaxParserService {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
     private final SyntaxParser sp = new SyntaxParser();
+    private final BuilderTransportSP builderTransportSP = new BuilderTransportSP();
 
     private void spInit () {
         sp.init();
     }
 
-    public ServiceWorksResult<List<BearingPhraseSP>> selectTreeSentenceByString(String text) {
+    public ServiceWorksResult<List<TransportBearingPhraseSPItem>> selectTreeSentenceByString(String text) {
         List<String> errors = new LinkedList<>();
-        List<BearingPhraseSP> result = new ArrayList<>();
+        List<TransportBearingPhraseSPItem> result = new LinkedList<>();
         try {
             spInit();
-            result = sp.getTreeSentence(text);
+            sp.getTreeSentence(text).forEach(bearingPhraseSP -> {
+                TransportBearingPhraseSPItem item = builderTransportSP.build(bearingPhraseSP);
+                result.add(item);
+            });
         } catch (Throwable ex) {
             String message = "Cannot getTreeSentence for text: " + String.valueOf(text);
             log.warn(message, ex);
@@ -38,12 +42,15 @@ public class SyntaxParserService {
         return new ServiceWorksResult<>(result, errors);
     }
 
-    public ServiceWorksResult<List<BearingPhraseExt>> selectTreeSentenceWithoutAmbiguity(String text) {
+    public ServiceWorksResult<List<TransportBearingPhraseExtItem>> selectTreeSentenceWithoutAmbiguity(String text) {
         List<String> errors = new LinkedList<>();
-        List<BearingPhraseExt> result = new ArrayList<>();
+        List<TransportBearingPhraseExtItem> result = new LinkedList<>();
         try {
             spInit();
-            result = sp.getTreeSentenceWithoutAmbiguity(text);
+            sp.getTreeSentenceWithoutAmbiguity(text).forEach(bearingPhraseExt -> {
+                TransportBearingPhraseExtItem item = builderTransportSP.build(bearingPhraseExt);
+                result.add(item);
+            });
         } catch (Throwable ex) {
             String message = "Cannot getTreeSentenceWithoutAmbiguity for text: " + String.valueOf(text);
             log.warn(message, ex);

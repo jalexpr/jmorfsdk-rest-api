@@ -9,9 +9,9 @@ import ru.textanalysis.tawt.ms.internal.BuilderTransportBase;
 import ru.textanalysis.tawt.ms.internal.IOmoForm;
 import ru.textanalysis.tawt.ms.internal.form.Form;
 import ru.textanalysis.tawt.ms.internal.ref.BuilderTransportRef;
-import ru.textanalysis.tawt.ms.internal.ref.RefOmoForm;
 import ru.textanalysis.tawt.ms.internal.ref.RefOmoFormList;
 import ru.textanalysis.tawt.ms.storage.OmoFormList;
+import ru.textanalysis.tawt.rest.client.config.Config;
 import ru.textanalysis.tawt.rest.common.api.request.*;
 import ru.textanalysis.tawt.rest.common.api.response.*;
 import ru.textanalysis.tawt.rest.common.exception.TawtRestRuntimeException;
@@ -22,17 +22,17 @@ import java.util.List;
 @Lazy
 @Service
 public class JMorfSdkRemoteService {
-    private final static String SERVICE_NAME = "http://localhost:30002/tawt-rest-api";//todo читать из проперти
-    private final static String URN_SELECT_OMOFORMS_BY_STRING = "api/jmorfsdk/get/all/characteristics/of/form";
-    private final static String URN_SELECT_MORPHOLOGY_CHARACTERISTICS_BY_STRING = "api/jmorfsdk/get/morphology/characteristics";
-    private final static String URN_SELECT_REFOMOFORMLIST_BY_STRING = "api/jmorfsdk/get/ref/omo/form/list";
-    private final static String URN_SELECT_STRING_INITIAL_FORM_BY_STRING = "api/jmorfsdk/get/string/initial/form";
-    private final static String URN_SELECT_TYPE_OF_SPEECHES_BY_STRING = "api/jmorfsdk/get/type/of/speeches";
-    private final static String URN_SELECT_DERIVATIVE_FORM_WITH_TYPE_OF_SPEECHES_AND_MORPH_CHARACTERISTICS_BY_STRING = "api/jmorfsdk/get/derivative/form/with/type/of/speeches/and/morph/characteristics";
-    private final static String URN_SELECT_DERIVATIVE_FORM_WITH_TYPE_OF_SPEECHES_BY_STRING = "api/jmorfsdk/get/derivative/form/with/type/of/speeches";
-    private final static String URN_SELECT_DERIVATIVE_FORM_WITH_MORPH_CHARACTERISTICS_BY_STRING = "api/jmorfsdk/get/derivative/form/with/morph/characteristics";
-    private final static String URN_IS_FORM_EXISTS_IN_DICTIONARY_BY_STRING = "api/jmorfsdk/is/form/exists/in/dictionary";
-    private final static String URN_IS_INITIAL_FORM_BY_STRING = "api/jmorfsdk/is/initial/form";
+    private final String SERVICE_NAME;
+    private final String URN_SELECT_OMOFORMS_BY_STRING = "api/jmorfsdk/get/all/characteristics/of/form";
+    private final String URN_SELECT_MORPHOLOGY_CHARACTERISTICS_BY_STRING = "api/jmorfsdk/get/morphology/characteristics";
+    private final String URN_SELECT_REFOMOFORMLIST_BY_STRING = "api/jmorfsdk/get/ref/omo/form/list";
+    private final String URN_SELECT_STRING_INITIAL_FORM_BY_STRING = "api/jmorfsdk/get/string/initial/form";
+    private final String URN_SELECT_TYPE_OF_SPEECHES_BY_STRING = "api/jmorfsdk/get/type/of/speeches";
+    private final String URN_SELECT_DERIVATIVE_FORM_WITH_TYPE_OF_SPEECHES_AND_MORPH_CHARACTERISTICS_BY_STRING = "api/jmorfsdk/get/derivative/form/with/type/of/speeches/and/morph/characteristics";
+    private final String URN_SELECT_DERIVATIVE_FORM_WITH_TYPE_OF_SPEECHES_BY_STRING = "api/jmorfsdk/get/derivative/form/with/type/of/speeches";
+    private final String URN_SELECT_DERIVATIVE_FORM_WITH_MORPH_CHARACTERISTICS_BY_STRING = "api/jmorfsdk/get/derivative/form/with/morph/characteristics";
+    private final String URN_IS_FORM_EXISTS_IN_DICTIONARY_BY_STRING = "api/jmorfsdk/is/form/exists/in/dictionary";
+    private final String URN_IS_INITIAL_FORM_BY_STRING = "api/jmorfsdk/is/initial/form";
 
     private final RestClientService restClientService;
     private final BuilderTransportBase builderTransport;
@@ -41,12 +41,19 @@ public class JMorfSdkRemoteService {
     @Autowired
     public JMorfSdkRemoteService(RestClientService restClientService,
                                  BuilderTransportBase builderTransport,
-                                 BuilderTransportRef builderTransportRef) {
+                                 BuilderTransportRef builderTransportRef,
+                                 Config config) {
         this.restClientService = restClientService;
         this.builderTransport = builderTransport;
         this.builderTransportRef = builderTransportRef;
+        this.SERVICE_NAME = String.format("%s:%s/tawt-rest-api", config.getAddress(), config.getPort());
     }
 
+    /**
+     * Получение списка омоформ по заданному слову.
+     * @param word слово
+     * @return список омоформ
+     */
     public ServiceWorksResult<OmoFormList> getAllCharacteristicsOfForm(String word) {
         SelectByStringRequest request = new SelectByStringRequest();
         request.setText(word);
@@ -70,6 +77,11 @@ public class JMorfSdkRemoteService {
         return new ServiceWorksResult<>(result, response.getErrors());
     }
 
+    /**
+     * Получение морфологических характеристик по заданному слову
+     * @param word слово
+     * @return список морфологических характеристик
+     */
     public ServiceWorksResult<List<Long>> getMorphologyCharacteristics(String word) {
         SelectByStringRequest request = new SelectByStringRequest();
         request.setText(word);
@@ -84,11 +96,14 @@ public class JMorfSdkRemoteService {
             throw new TawtRestRuntimeException(message);
         }
 
-
         return new ServiceWorksResult<>(response.getData().getMorfCharacteristics(), response.getErrors());
     }
 
-    //todo Не работает
+    /**
+     * Получение списка рефомоформ по заданному слову.
+     * @param word слово
+     * @return список рефомоформ
+     */
     public ServiceWorksResult<RefOmoFormList> getRefOmoFormList(String word) {
         SelectByStringRequest request = new SelectByStringRequest();
         request.setText(word);
@@ -104,16 +119,20 @@ public class JMorfSdkRemoteService {
         }
 
         List<Form> forms = new LinkedList<>();
-        RefOmoFormList result = new RefOmoFormList(forms);
         response.getData().getRefOmoFormList().forEach(item -> {
-            RefOmoForm refOmoForm = builderTransportRef.build(item);
-            result.copy().add(refOmoForm);
+            Form form = builderTransportRef.build(item);
+            forms.add(form);
         });
-
+        RefOmoFormList result = new RefOmoFormList(forms);
 
         return new ServiceWorksResult<>(result, response.getErrors());
     }
 
+    /**
+     * Получение списка начальных форм по заданному слову.
+     * @param word слово
+     * @return список начальных форм
+     */
     public ServiceWorksResult<List<String>> getStringInitialForm(String word) {
         SelectByStringRequest request = new SelectByStringRequest();
         request.setText(word);
@@ -128,10 +147,14 @@ public class JMorfSdkRemoteService {
             throw new TawtRestRuntimeException(message);
         }
 
-
         return new ServiceWorksResult<>(response.getData().getStringList(), response.getErrors());
     }
 
+    /**
+     * Получение списка частей речи по заданному слову.
+     * @param word слово
+     * @return список частей речи
+     */
     public ServiceWorksResult<List<Byte>> getTypeOfSpeeches(String word) {
         SelectByStringRequest request = new SelectByStringRequest();
         request.setText(word);
@@ -146,10 +169,16 @@ public class JMorfSdkRemoteService {
             throw new TawtRestRuntimeException(message);
         }
 
-
         return new ServiceWorksResult<>(response.getData().getByteList(), response.getErrors());
     }
 
+    /**
+     * Получение списка производных форм по заданному слову, части речи и морфологическим характеристикам
+     * @param word слово
+     * @param typeOfSpeeches часть речи
+     * @param morphologyCharacteristics морфологические характеристики
+     * @return список производных форм
+     */
     public ServiceWorksResult<List<String>> getDerivativeForm(String word, Byte typeOfSpeeches, Long morphologyCharacteristics) {
         SelectByStringWithTypeOfSpeechesAndMorphologyCharacteristicsRequest request = new SelectByStringWithTypeOfSpeechesAndMorphologyCharacteristicsRequest();
         request.setWord(word);
@@ -166,10 +195,15 @@ public class JMorfSdkRemoteService {
             throw new TawtRestRuntimeException(message);
         }
 
-
         return new ServiceWorksResult<>(response.getData().getStringList(), response.getErrors());
     }
 
+    /**
+     * Получение списка производных форм по заданному слову и части речи
+     * @param word слово
+     * @param typeOfSpeeches чать речи
+     * @return список производных форм
+     */
     public ServiceWorksResult<List<String>> getDerivativeForm(String word, Byte typeOfSpeeches) {
         SelectByStringWithTypeOfSpeechesRequest request = new SelectByStringWithTypeOfSpeechesRequest();
         request.setWord(word);
@@ -185,10 +219,15 @@ public class JMorfSdkRemoteService {
             throw new TawtRestRuntimeException(message);
         }
 
-
         return new ServiceWorksResult<>(response.getData().getStringList(), response.getErrors());
     }
 
+    /**
+     * Получение списка производных форм по заданному слову и морфологическим характеристикам
+     * @param word слово
+     * @param morphologyCharacteristics морфологические характеристики
+     * @return список производных форм
+     */
     public ServiceWorksResult<List<String>> getDerivativeForm(String word, Long morphologyCharacteristics) {
         SelectByStringWithMorphologyCharacteristicsRequest request = new SelectByStringWithMorphologyCharacteristicsRequest();
         request.setWord(word);
@@ -204,10 +243,14 @@ public class JMorfSdkRemoteService {
             throw new TawtRestRuntimeException(message);
         }
 
-
         return new ServiceWorksResult<>(response.getData().getStringList(), response.getErrors());
     }
 
+    /**
+     * Проверка на существование формы в словаре.
+     * @param word слово
+     * @return true, если форма есть в ловаре, иначе false.
+     */
     public ServiceWorksResult<Boolean> isFormExistsInDictionary(String word) {
         ExistFormByStringRequest request = new ExistFormByStringRequest();
         request.setWord(word);
@@ -225,6 +268,12 @@ public class JMorfSdkRemoteService {
         return new ServiceWorksResult<>(response.getData().getExist(), response.getErrors());
     }
 
+    /**
+     * Проверка на начальную форму заданного слова.
+     * @param word слово
+     * @return 0, если слово содержит начальную форму и неначальную форму; 1, если слово содержит начальную форму; -1,
+     * если слово содержит неначальную форму; в иных случаях -2.
+     */
     public ServiceWorksResult<Byte> isInitialForm(String word) {
         ExistFormByStringRequest request = new ExistFormByStringRequest();
         request.setWord(word);

@@ -3,20 +3,20 @@ package ru.textanalysis.tawt.rest.common.api.response.item;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
 import ru.textanalysis.common.rest.domain.response.item.ResponseItem;
-import ru.textanalysis.tawt.ms.storage.ref.RefParagraphList;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class SelectMorphText implements ResponseItem, Serializable {
     @ApiModelProperty(value = "Список MorphText по заданному тексту")
     @JsonProperty
-    private RefParagraphList refParagraphList;
+    private List<List<List<List<List<TransportRefOmoFormItem>>>>> refParagraphList;
 
-    public RefParagraphList getRefParagraphList() {
+    public List<List<List<List<List<TransportRefOmoFormItem>>>>> getRefParagraphList() {
         return refParagraphList;
     }
 
-    public void setRefParagraphList(RefParagraphList refParagraphList) {
+    public void setRefParagraphList(List<List<List<List<List<TransportRefOmoFormItem>>>>> refParagraphList) {
         this.refParagraphList = refParagraphList;
     }
 }

@@ -1,5 +1,7 @@
 package ru.textanalysis.tawt.rest.common.api.response.item;
 
+import ru.textanalysis.tawt.ms.internal.TypeForms;
+
 import java.io.Serializable;
 
 public class TransportRefOmoFormItem implements Serializable {
@@ -8,6 +10,42 @@ public class TransportRefOmoFormItem implements Serializable {
     private Byte typeOfSpeech;
     private Long morfCharacteristics;
     private Integer formKeyInBD;
+    private Integer typeFormId;
+    private TypeForms typeForm;
+    private Boolean isInitialForm;
+    private String myString;
+
+
+    public TypeForms getTypeForm() {
+        return typeForm;
+    }
+    public void setTypeForm(TypeForms typeForm) {
+        this.typeForm = typeForm;
+    }
+
+    public String getMyString() {
+        return myString;
+    }
+
+    public void setMyString(String myformKey) {
+        this.myString = myformKey;
+    }
+
+    public Boolean isInitialForm() {
+        return isInitialForm;
+    }
+
+    public void setInitialForm(Boolean initialForm) {
+        isInitialForm = initialForm;
+    }
+
+    public Integer getTypeFormId() {
+        return typeFormId;
+    }
+
+    public void setTypeFormId(Integer typeFormId) {
+        this.typeFormId = typeFormId;
+    }
 
     public Integer getFormKeyInBD() {
         return formKeyInBD;
@@ -17,7 +55,7 @@ public class TransportRefOmoFormItem implements Serializable {
         this.formKeyInBD = formKeyInBD;
     }
 
-    public Integer getInitialFormKey() {
+    public int getInitialFormKey() {
         return initialFormKey;
     }
 

@@ -13,11 +13,11 @@ import org.springframework.web.bind.annotation.*;
 import ru.textanalysis.common.rest.classes.ServiceWorksResult;
 import ru.textanalysis.common.rest.utils.WebErrorHelper;
 import ru.textanalysis.common.rest.utils.WebHelper;
-import ru.textanalysis.tawt.ms.external.sp.BearingPhraseExt;
-import ru.textanalysis.tawt.ms.internal.sp.BearingPhraseSP;
 import ru.textanalysis.tawt.rest.common.api.request.SelectByStringRequest;
 import ru.textanalysis.tawt.rest.common.api.response.SelectTreeSentenceByStringResponse;
 import ru.textanalysis.tawt.rest.common.api.response.SelectTreeSentenceWithoutAmbiguityByStringResponse;
+import ru.textanalysis.tawt.rest.common.api.response.item.TransportBearingPhraseExtItem;
+import ru.textanalysis.tawt.rest.common.api.response.item.TransportBearingPhraseSPItem;
 import ru.textanalysis.tawt.rest.server.services.SyntaxParserService;
 import ru.textanalysis.tawt.rest.server.services.ValidationService;
 
@@ -53,7 +53,7 @@ public class SyntaxParserController {
         result.getErrors().addAll(validationService.validationRequest(request));
 
         if (result.getErrors().isEmpty()) {
-            ServiceWorksResult<List<BearingPhraseSP>> resultSelect = spService.selectTreeSentenceByString(request.getText());
+            ServiceWorksResult<List<TransportBearingPhraseSPItem>> resultSelect = spService.selectTreeSentenceByString(request.getText());
             result.createEmptyData();
             result.getData().setBearingPhraseSPList(resultSelect.getResult());
             if (!resultSelect.getErrorMessage().isEmpty()) {
@@ -75,7 +75,7 @@ public class SyntaxParserController {
         result.getErrors().addAll(validationService.validationRequest(request));
 
         if (result.getErrors().isEmpty()) {
-            ServiceWorksResult<List<BearingPhraseExt>> resultSelect = spService.selectTreeSentenceWithoutAmbiguity(request.getText());
+            ServiceWorksResult<List<TransportBearingPhraseExtItem>> resultSelect = spService.selectTreeSentenceWithoutAmbiguity(request.getText());
             result.createEmptyData();
             result.getData().setBearingPhraseExtList(resultSelect.getResult());
             if (!resultSelect.getErrorMessage().isEmpty()) {
