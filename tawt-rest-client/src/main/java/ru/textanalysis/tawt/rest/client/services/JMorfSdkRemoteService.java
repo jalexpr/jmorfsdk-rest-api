@@ -21,6 +21,7 @@ import java.util.List;
 
 @Lazy
 @Service
+@SuppressWarnings("FieldCanBeLocal")
 public class JMorfSdkRemoteService {
     private final String SERVICE_NAME;
     private final String URN_SELECT_OMOFORMS_BY_STRING = "api/jmorfsdk/get/all/characteristics/of/form";
@@ -39,10 +40,10 @@ public class JMorfSdkRemoteService {
     private final BuilderTransportRef builderTransportRef;
 
     @Autowired
-    public JMorfSdkRemoteService(RestClientService restClientService,
-                                 BuilderTransportBase builderTransport,
-                                 BuilderTransportRef builderTransportRef,
-                                 Config config) {
+    JMorfSdkRemoteService(RestClientService restClientService,
+                          BuilderTransportBase builderTransport,
+                          BuilderTransportRef builderTransportRef,
+                          Config config) {
         this.restClientService = restClientService;
         this.builderTransport = builderTransport;
         this.builderTransportRef = builderTransportRef;
@@ -51,6 +52,7 @@ public class JMorfSdkRemoteService {
 
     /**
      * Получение списка омоформ по заданному слову.
+     *
      * @param word слово
      * @return список омоформ
      */
@@ -79,6 +81,7 @@ public class JMorfSdkRemoteService {
 
     /**
      * Получение морфологических характеристик по заданному слову
+     *
      * @param word слово
      * @return список морфологических характеристик
      */
@@ -101,6 +104,7 @@ public class JMorfSdkRemoteService {
 
     /**
      * Получение списка рефомоформ по заданному слову.
+     *
      * @param word слово
      * @return список рефомоформ
      */
@@ -119,7 +123,7 @@ public class JMorfSdkRemoteService {
         }
 
         List<Form> forms = new LinkedList<>();
-        response.getData().getRefOmoFormList().forEach(item -> {
+        response.getData().getRefOmoForms().forEach(item -> {
             Form form = builderTransportRef.build(item);
             forms.add(form);
         });
@@ -130,6 +134,7 @@ public class JMorfSdkRemoteService {
 
     /**
      * Получение списка начальных форм по заданному слову.
+     *
      * @param word слово
      * @return список начальных форм
      */
@@ -152,6 +157,7 @@ public class JMorfSdkRemoteService {
 
     /**
      * Получение списка частей речи по заданному слову.
+     *
      * @param word слово
      * @return список частей речи
      */
@@ -174,8 +180,9 @@ public class JMorfSdkRemoteService {
 
     /**
      * Получение списка производных форм по заданному слову, части речи и морфологическим характеристикам
-     * @param word слово
-     * @param typeOfSpeeches часть речи
+     *
+     * @param word                      слово
+     * @param typeOfSpeeches            часть речи
      * @param morphologyCharacteristics морфологические характеристики
      * @return список производных форм
      */
@@ -200,7 +207,8 @@ public class JMorfSdkRemoteService {
 
     /**
      * Получение списка производных форм по заданному слову и части речи
-     * @param word слово
+     *
+     * @param word           слово
      * @param typeOfSpeeches чать речи
      * @return список производных форм
      */
@@ -224,7 +232,8 @@ public class JMorfSdkRemoteService {
 
     /**
      * Получение списка производных форм по заданному слову и морфологическим характеристикам
-     * @param word слово
+     *
+     * @param word                      слово
      * @param morphologyCharacteristics морфологические характеристики
      * @return список производных форм
      */
@@ -248,6 +257,7 @@ public class JMorfSdkRemoteService {
 
     /**
      * Проверка на существование формы в словаре.
+     *
      * @param word слово
      * @return true, если форма есть в ловаре, иначе false.
      */
@@ -270,6 +280,7 @@ public class JMorfSdkRemoteService {
 
     /**
      * Проверка на начальную форму заданного слова.
+     *
      * @param word слово
      * @return 0, если слово содержит начальную форму и неначальную форму; 1, если слово содержит начальную форму; -1,
      * если слово содержит неначальную форму; в иных случаях -2.

@@ -2,13 +2,15 @@ package ru.textanalysis.tawt.ms.internal;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import ru.textanalysis.tawt.rest.common.api.response.item.TransportOmoFormItem;
 import ru.textanalysis.tawt.rest.common.exception.TawtRestRuntimeException;
 
+@Lazy
 @Service
 public class BuilderTransportBase {
-    private Logger log = LoggerFactory.getLogger(getClass());
+    private final Logger log = LoggerFactory.getLogger(getClass());
 
     public TransportOmoFormItem build(IOmoForm iOmoForm) {
         OmoForm form = (OmoForm) iOmoForm;

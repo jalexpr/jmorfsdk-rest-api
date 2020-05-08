@@ -98,7 +98,7 @@ public class JmorfsdkController {
         if (result.getErrors().isEmpty()) {
             ServiceWorksResult<List<TransportRefOmoFormItem>> resultSelect = jMorfSdkService.selectRefOmoFormListByString(request.getText());
             result.createEmptyData();
-            result.getData().setRefOmoFormList(resultSelect.getResult());
+            result.getData().setRefOmoForms(resultSelect.getResult());
             if (!resultSelect.getErrorMessage().isEmpty()) {
                 result.getErrors().addAll(resultSelect.getErrorMessage());
             }

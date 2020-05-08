@@ -17,19 +17,21 @@ import java.util.List;
 
 @Lazy
 @Service
+@SuppressWarnings("FieldCanBeLocal")
 public class GraphematicParserRemoteService {
-    private static String SERVICE_NAME = "";
-    private final static String URN_PARSER_BASICS_PHASE_BY_STRING = "api/gp/parser/basics/phase";
-    private final static String URN_PARSER_SENTENCE_BY_STRING = "api/gp/parser/sentence";
-    private final static String URN_PARSER_PARAGRAPH_BY_STRING = "api/gp/parser/paragraph";
-    private final static String URN_PARSER_TEXT_BY_STRING = "api/gp/parser/text";
+    private final String SERVICE_NAME;
+    private final String URN_PARSER_BASICS_PHASE_BY_STRING = "api/gp/parser/basics/phase";
+    private final String URN_PARSER_SENTENCE_BY_STRING = "api/gp/parser/sentence";
+    private final String URN_PARSER_PARAGRAPH_BY_STRING = "api/gp/parser/paragraph";
+    private final String URN_PARSER_TEXT_BY_STRING = "api/gp/parser/text";
 
     private final RestClientService restClientService;
 
     @Autowired
-    public GraphematicParserRemoteService(RestClientService restClientService, Config config) {
+    GraphematicParserRemoteService(RestClientService restClientService,
+                                   Config config) {
         this.restClientService = restClientService;
-        SERVICE_NAME = String.format("%s:%s/tawt-rest-api", config.getAddress(), config.getPort());
+        this.SERVICE_NAME = String.format("%s:%s/tawt-rest-api", config.getAddress(), config.getPort());
     }
 
     /**

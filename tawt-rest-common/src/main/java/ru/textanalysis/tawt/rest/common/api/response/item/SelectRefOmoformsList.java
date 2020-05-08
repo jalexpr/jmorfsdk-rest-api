@@ -10,13 +10,13 @@ import java.util.List;
 public class SelectRefOmoformsList implements ResponseItem, Serializable {
     @ApiModelProperty(value = "Список RefOmoform по заданному слову")
     @JsonProperty
-    private List<TransportRefOmoFormItem> refOmoFormList;
+    private List<TransportRefOmoFormItem> refOmoForms;
 
-    public List<TransportRefOmoFormItem> getRefOmoFormList() {
-        return refOmoFormList;
+    public List<TransportRefOmoFormItem> getRefOmoForms() {
+        return refOmoForms;
     }
 
-    public void setRefOmoFormList(List<TransportRefOmoFormItem> refOmoFormList) {
-        this.refOmoFormList = refOmoFormList;
+    public void setRefOmoForms(List<TransportRefOmoFormItem> refOmoForms) {
+        this.refOmoForms = refOmoForms;
     }
 }
