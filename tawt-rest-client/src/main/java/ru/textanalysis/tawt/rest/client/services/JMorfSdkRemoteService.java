@@ -21,33 +21,38 @@ import java.util.List;
 
 @Lazy
 @Service
+@SuppressWarnings("FieldCanBeLocal")
 public class JMorfSdkRemoteService {
-    private static String SERVICE_NAME = "";
-    private final static String URN_SELECT_OMOFORMS_BY_STRING = "api/jmorfsdk/get/all/characteristics/of/form";
-    private final static String URN_SELECT_MORPHOLOGY_CHARACTERISTICS_BY_STRING = "api/jmorfsdk/get/morphology/characteristics";
-    private final static String URN_SELECT_REFOMOFORMLIST_BY_STRING = "api/jmorfsdk/get/ref/omo/form/list";
-    private final static String URN_SELECT_STRING_INITIAL_FORM_BY_STRING = "api/jmorfsdk/get/string/initial/form";
-    private final static String URN_SELECT_TYPE_OF_SPEECHES_BY_STRING = "api/jmorfsdk/get/type/of/speeches";
-    private final static String URN_SELECT_DERIVATIVE_FORM_WITH_TYPE_OF_SPEECHES_AND_MORPH_CHARACTERISTICS_BY_STRING = "api/jmorfsdk/get/derivative/form/with/type/of/speeches/and/morph/characteristics";
-    private final static String URN_SELECT_DERIVATIVE_FORM_WITH_TYPE_OF_SPEECHES_BY_STRING = "api/jmorfsdk/get/derivative/form/with/type/of/speeches";
-    private final static String URN_SELECT_DERIVATIVE_FORM_WITH_MORPH_CHARACTERISTICS_BY_STRING = "api/jmorfsdk/get/derivative/form/with/morph/characteristics";
-    private final static String URN_IS_FORM_EXISTS_IN_DICTIONARY_BY_STRING = "api/jmorfsdk/is/form/exists/in/dictionary";
-    private final static String URN_IS_INITIAL_FORM_BY_STRING = "api/jmorfsdk/is/initial/form";
+    private final String SERVICE_NAME;
+    private final String URN_SELECT_OMOFORMS_BY_STRING = "api/jmorfsdk/get/all/characteristics/of/form";
+    private final String URN_SELECT_MORPHOLOGY_CHARACTERISTICS_BY_STRING = "api/jmorfsdk/get/morphology/characteristics";
+    private final String URN_SELECT_REFOMOFORMLIST_BY_STRING = "api/jmorfsdk/get/ref/omo/form/list";
+    private final String URN_SELECT_STRING_INITIAL_FORM_BY_STRING = "api/jmorfsdk/get/string/initial/form";
+    private final String URN_SELECT_TYPE_OF_SPEECHES_BY_STRING = "api/jmorfsdk/get/type/of/speeches";
+    private final String URN_SELECT_DERIVATIVE_FORM_WITH_TYPE_OF_SPEECHES_AND_MORPH_CHARACTERISTICS_BY_STRING = "api/jmorfsdk/get/derivative/form/with/type/of/speeches/and/morph/characteristics";
+    private final String URN_SELECT_DERIVATIVE_FORM_WITH_TYPE_OF_SPEECHES_BY_STRING = "api/jmorfsdk/get/derivative/form/with/type/of/speeches";
+    private final String URN_SELECT_DERIVATIVE_FORM_WITH_MORPH_CHARACTERISTICS_BY_STRING = "api/jmorfsdk/get/derivative/form/with/morph/characteristics";
+    private final String URN_IS_FORM_EXISTS_IN_DICTIONARY_BY_STRING = "api/jmorfsdk/is/form/exists/in/dictionary";
+    private final String URN_IS_INITIAL_FORM_BY_STRING = "api/jmorfsdk/is/initial/form";
 
     private final RestClientService restClientService;
     private final BuilderTransportBase builderTransport;
     private final BuilderTransportRef builderTransportRef;
 
     @Autowired
-    public JMorfSdkRemoteService(RestClientService restClientService, Config config) {
+    JMorfSdkRemoteService(RestClientService restClientService,
+                          BuilderTransportBase builderTransport,
+                          BuilderTransportRef builderTransportRef,
+                          Config config) {
         this.restClientService = restClientService;
-        this.builderTransport = new BuilderTransportBase();
-        this.builderTransportRef = new BuilderTransportRef();
-        SERVICE_NAME = String.format("%s:%s/tawt-rest-api", config.getAddress(), config.getPort());
+        this.builderTransport = builderTransport;
+        this.builderTransportRef = builderTransportRef;
+        this.SERVICE_NAME = String.format("%s:%s/tawt-rest-api", config.getAddress(), config.getPort());
     }
 
     /**
      * Получение списка омоформ по заданному слову.
+     *
      * @param word слово
      * @return список омоформ
      */
@@ -76,6 +81,7 @@ public class JMorfSdkRemoteService {
 
     /**
      * Получение морфологических характеристик по заданному слову
+     *
      * @param word слово
      * @return список морфологических характеристик
      */
@@ -98,6 +104,7 @@ public class JMorfSdkRemoteService {
 
     /**
      * Получение списка рефомоформ по заданному слову.
+     *
      * @param word слово
      * @return список рефомоформ
      */
@@ -127,6 +134,7 @@ public class JMorfSdkRemoteService {
 
     /**
      * Получение списка начальных форм по заданному слову.
+     *
      * @param word слово
      * @return список начальных форм
      */
@@ -149,6 +157,7 @@ public class JMorfSdkRemoteService {
 
     /**
      * Получение списка частей речи по заданному слову.
+     *
      * @param word слово
      * @return список частей речи
      */
@@ -171,8 +180,9 @@ public class JMorfSdkRemoteService {
 
     /**
      * Получение списка производных форм по заданному слову, части речи и морфологическим характеристикам
-     * @param word слово
-     * @param typeOfSpeeches часть речи
+     *
+     * @param word                      слово
+     * @param typeOfSpeeches            часть речи
      * @param morphologyCharacteristics морфологические характеристики
      * @return список производных форм
      */
@@ -197,7 +207,8 @@ public class JMorfSdkRemoteService {
 
     /**
      * Получение списка производных форм по заданному слову и части речи
-     * @param word слово
+     *
+     * @param word           слово
      * @param typeOfSpeeches чать речи
      * @return список производных форм
      */
@@ -221,7 +232,8 @@ public class JMorfSdkRemoteService {
 
     /**
      * Получение списка производных форм по заданному слову и морфологическим характеристикам
-     * @param word слово
+     *
+     * @param word                      слово
      * @param morphologyCharacteristics морфологические характеристики
      * @return список производных форм
      */
@@ -245,6 +257,7 @@ public class JMorfSdkRemoteService {
 
     /**
      * Проверка на существование формы в словаре.
+     *
      * @param word слово
      * @return true, если форма есть в ловаре, иначе false.
      */
@@ -267,6 +280,7 @@ public class JMorfSdkRemoteService {
 
     /**
      * Проверка на начальную форму заданного слова.
+     *
      * @param word слово
      * @return 0, если слово содержит начальную форму и неначальную форму; 1, если слово содержит начальную форму; -1,
      * если слово содержит неначальную форму; в иных случаях -2.

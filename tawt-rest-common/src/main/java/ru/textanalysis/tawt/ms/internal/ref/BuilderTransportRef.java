@@ -3,19 +3,19 @@ package ru.textanalysis.tawt.ms.internal.ref;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import ru.textanalysis.tawt.jmorfsdk.form.InitialForm;
-import ru.textanalysis.tawt.jmorfsdk.form.NumberForm;
-import ru.textanalysis.tawt.jmorfsdk.form.UnfamiliarForm;
-import ru.textanalysis.tawt.jmorfsdk.form.WordForm;
 import ru.textanalysis.tawt.ms.internal.IEnumWithLongValue;
 import ru.textanalysis.tawt.ms.internal.TypeForms;
 import ru.textanalysis.tawt.ms.internal.form.Form;
+import ru.textanalysis.tawt.ms.internal.jmorfsdk.InitialForm;
+import ru.textanalysis.tawt.ms.internal.jmorfsdk.NumberForm;
+import ru.textanalysis.tawt.ms.internal.jmorfsdk.UnfamiliarForm;
+import ru.textanalysis.tawt.ms.internal.jmorfsdk.WordForm;
 import ru.textanalysis.tawt.rest.common.api.response.item.TransportRefOmoFormItem;
 import ru.textanalysis.tawt.rest.common.exception.TawtRestRuntimeException;
 
 @Service
 public class BuilderTransportRef {
-    private Logger log = LoggerFactory.getLogger(getClass());
+    private final Logger log = LoggerFactory.getLogger(getClass());
 
     public TransportRefOmoFormItem build(RefOmoForm refOmoFormform) {
         TransportRefOmoFormItem item = new TransportRefOmoFormItem();

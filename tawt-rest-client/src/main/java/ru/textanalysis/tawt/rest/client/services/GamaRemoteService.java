@@ -22,22 +22,24 @@ import java.util.List;
 
 @Lazy
 @Service
+@SuppressWarnings("FieldCanBeLocal")
 public class GamaRemoteService {
-    private static String SERVICE_NAME = "";
-    private final static String URN_SELECT_MORPH_WORD_BY_STRING = "api/gama/get/morph/word";
-    private final static String URN_SELECT_MORPH_BEARING_PHRASE_BY_STRING = "api/gama/get/morph/bearing/phrase";
-    private final static String URN_SELECT_MORPH_SENTENCE_BY_STRING = "api/gama/get/morph/sentence";
-    private final static String URN_SELECT_MORPH_PARAGRAPH_BY_STRING = "api/gama/get/morph/paragraph";
-    private final static String URN_SELECT_MORPH_TEXT_BY_STRING = "api/gama/get/morph/text";
+    private final String SERVICE_NAME;
+    private final String URN_SELECT_MORPH_WORD_BY_STRING = "api/gama/get/morph/word";
+    private final String URN_SELECT_MORPH_BEARING_PHRASE_BY_STRING = "api/gama/get/morph/bearing/phrase";
+    private final String URN_SELECT_MORPH_SENTENCE_BY_STRING = "api/gama/get/morph/sentence";
+    private final String URN_SELECT_MORPH_PARAGRAPH_BY_STRING = "api/gama/get/morph/paragraph";
+    private final String URN_SELECT_MORPH_TEXT_BY_STRING = "api/gama/get/morph/text";
 
     private final RestClientService restClientService;
     private final BuilderTransportRef builderTransportRef;
 
     @Autowired
-    public GamaRemoteService(RestClientService restClientService, Config config) {
+    GamaRemoteService(RestClientService restClientService,
+                      Config config) {
         this.restClientService = restClientService;
         this.builderTransportRef = new BuilderTransportRef();
-        SERVICE_NAME = String.format("%s:%s/tawt-rest-api", config.getAddress(), config.getPort());
+        this.SERVICE_NAME = String.format("%s:%s/tawt-rest-api", config.getAddress(), config.getPort());
     }
 
     /**
