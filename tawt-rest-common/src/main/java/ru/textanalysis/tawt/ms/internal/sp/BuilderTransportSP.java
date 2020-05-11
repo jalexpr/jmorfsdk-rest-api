@@ -21,17 +21,41 @@ public class BuilderTransportSP {
             TransportRefOmoFormItem item = builderTransportRef.build(omoFormSP.currencyOmoForm);
             omoFormSPItems.add(item);
         });
+
         List<List<TransportRefOmoFormItem>> wordSPItems = new LinkedList<>();
+        List<List<Integer>> mainCursorsHashcodesList = new LinkedList<>();
+        List<List<Integer>> mainCursorsWordSPHashcodesList = new LinkedList<>();
+        List<List<Integer>> omoFormSPHashcodesList = new LinkedList<>();
         bearingPhraseSP.words.forEach(wordSP -> {
             List<TransportRefOmoFormItem> items = new LinkedList<>();
+            List<Integer> mainCursorsHashcodes = new LinkedList<>();
+            List<Integer> mainCursorsWordSPHashcodes = new LinkedList<>();
+            List<Integer> omoFormSPHashcodes = new LinkedList<>();
             wordSP.omoForms.forEach((integer, omoFormSP) -> {
                 TransportRefOmoFormItem item = builderTransportRef.build(omoFormSP.currencyOmoForm);
                 items.add(item);
+                omoFormSPHashcodes.add(integer);
+                int mainCursorsHashcode = -1;
+                int mainCursorsWordSPHashcode = -1;
+                try {
+                    mainCursorsHashcode = omoFormSP.mainCursors.getHashCode();
+                    mainCursorsWordSPHashcode = omoFormSP.mainCursors.wordSP.hashCode();
+                } catch (NullPointerException ex) {
+                    System.out.println("NullPointerException");
+                }
+                mainCursorsHashcodes.add(mainCursorsHashcode);
+                mainCursorsWordSPHashcodes.add(mainCursorsWordSPHashcode);
             });
             wordSPItems.add(items);
+            mainCursorsHashcodesList.add(mainCursorsHashcodes);
+            mainCursorsWordSPHashcodesList.add(mainCursorsWordSPHashcodes);
+            omoFormSPHashcodesList.add(omoFormSPHashcodes);
         });
         spItem.setMainOmoForms(omoFormSPItems);
         spItem.setWordSP(wordSPItems);
+        spItem.setMainCursorsHashcodes(mainCursorsHashcodesList);
+        spItem.setMainCursorsWordSPHashcodes(mainCursorsWordSPHashcodesList);
+        spItem.setOmoFormSPHashcodes(omoFormSPHashcodesList);
 
         return spItem;
     }
