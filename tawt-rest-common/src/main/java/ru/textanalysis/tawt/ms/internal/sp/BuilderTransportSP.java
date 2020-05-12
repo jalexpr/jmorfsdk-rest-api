@@ -13,7 +13,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class BuilderTransportSP {
-
     private final Logger log = LoggerFactory.getLogger(getClass());
 
     BuilderTransportRef builderTransportRef = new BuilderTransportRef();
@@ -26,7 +25,6 @@ public class BuilderTransportSP {
             TransportRefOmoFormItem item = builderTransportRef.build(omoFormSP.currencyOmoForm);
             omoFormSPItems.add(item);
         });
-
 
         List<TransportOmoFormSPItem> OmoFormSPList = new LinkedList<>();
         bearingPhraseSP.words.forEach(wordSP -> {

@@ -1,8 +1,9 @@
 package ru.textanalysis.tawt.rest.common.api.response.item;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class TransportBearingPhraseExtItem {
+public class TransportBearingPhraseExtItem implements Serializable {
     private List<TransportRefOmoFormItem> mainOmoForms;
 
     public List<TransportRefOmoFormItem> getMainOmoForms() {
