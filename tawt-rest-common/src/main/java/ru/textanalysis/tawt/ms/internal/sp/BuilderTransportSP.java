@@ -1,15 +1,20 @@
 package ru.textanalysis.tawt.ms.internal.sp;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import ru.textanalysis.tawt.ms.external.sp.BearingPhraseExt;
 import ru.textanalysis.tawt.ms.internal.ref.BuilderTransportRef;
 import ru.textanalysis.tawt.rest.common.api.response.item.TransportBearingPhraseExtItem;
 import ru.textanalysis.tawt.rest.common.api.response.item.TransportBearingPhraseSPItem;
+import ru.textanalysis.tawt.rest.common.api.response.item.TransportOmoFormSPItem;
 import ru.textanalysis.tawt.rest.common.api.response.item.TransportRefOmoFormItem;
 
 import java.util.LinkedList;
 import java.util.List;
 
 public class BuilderTransportSP {
+
+    private final Logger log = LoggerFactory.getLogger(getClass());
 
     BuilderTransportRef builderTransportRef = new BuilderTransportRef();
 
@@ -22,40 +27,38 @@ public class BuilderTransportSP {
             omoFormSPItems.add(item);
         });
 
-        List<List<TransportRefOmoFormItem>> wordSPItems = new LinkedList<>();
-        List<List<Integer>> mainCursorsHashcodesList = new LinkedList<>();
-        List<List<Integer>> mainCursorsWordSPHashcodesList = new LinkedList<>();
-        List<List<Integer>> omoFormSPHashcodesList = new LinkedList<>();
+
+        List<TransportOmoFormSPItem> OmoFormSPList = new LinkedList<>();
         bearingPhraseSP.words.forEach(wordSP -> {
+            TransportOmoFormSPItem omoFormSPItem = new TransportOmoFormSPItem();
             List<TransportRefOmoFormItem> items = new LinkedList<>();
             List<Integer> mainCursorsHashcodes = new LinkedList<>();
             List<Integer> mainCursorsWordSPHashcodes = new LinkedList<>();
-            List<Integer> omoFormSPHashcodes = new LinkedList<>();
             wordSP.omoForms.forEach((integer, omoFormSP) -> {
                 TransportRefOmoFormItem item = builderTransportRef.build(omoFormSP.currencyOmoForm);
                 items.add(item);
-                omoFormSPHashcodes.add(integer);
                 int mainCursorsHashcode = -1;
                 int mainCursorsWordSPHashcode = -1;
                 try {
-                    mainCursorsHashcode = omoFormSP.mainCursors.getHashCode();
+                    mainCursorsHashcode = omoFormSP.mainCursors.hashCode;
+                } catch (NullPointerException ex) {
+                    log.info("NullPointerException in mainCursors on omoFormHashCode: " + integer);
+                }
+                try {
                     mainCursorsWordSPHashcode = omoFormSP.mainCursors.wordSP.hashCode();
                 } catch (NullPointerException ex) {
-                    System.out.println("NullPointerException");
+                    log.info("NullPointerException in mainCursors.wordSP on omoFormHashCode: " + integer);
                 }
                 mainCursorsHashcodes.add(mainCursorsHashcode);
                 mainCursorsWordSPHashcodes.add(mainCursorsWordSPHashcode);
             });
-            wordSPItems.add(items);
-            mainCursorsHashcodesList.add(mainCursorsHashcodes);
-            mainCursorsWordSPHashcodesList.add(mainCursorsWordSPHashcodes);
-            omoFormSPHashcodesList.add(omoFormSPHashcodes);
+            omoFormSPItem.setCurrencyOmoForm(items);
+            omoFormSPItem.setMainCursorsHashcodes(mainCursorsHashcodes);
+            omoFormSPItem.setMainCursorsWordSPHashcodes(mainCursorsWordSPHashcodes);
+            OmoFormSPList.add(omoFormSPItem);
         });
         spItem.setMainOmoForms(omoFormSPItems);
-        spItem.setWordSP(wordSPItems);
-        spItem.setMainCursorsHashcodes(mainCursorsHashcodesList);
-        spItem.setMainCursorsWordSPHashcodes(mainCursorsWordSPHashcodesList);
-        spItem.setOmoFormSPHashcodes(omoFormSPHashcodesList);
+        spItem.setOmoFormSPList(OmoFormSPList);
 
         return spItem;
     }
