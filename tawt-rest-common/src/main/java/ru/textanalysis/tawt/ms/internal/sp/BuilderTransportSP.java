@@ -46,6 +46,7 @@ public class BuilderTransportSP {
                 omoFormSPList.add(omoFormSPItem);
             });
             word.setOmoFormSPList(omoFormSPList);
+            word.setOmoFormSPListHashcode(omoFormSPList.hashCode());
             words.add(word);
         });
         spItem.setMainOmoForms(omoFormSPItems);
