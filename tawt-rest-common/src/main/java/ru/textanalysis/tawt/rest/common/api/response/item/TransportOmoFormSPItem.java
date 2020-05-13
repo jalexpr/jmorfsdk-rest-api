@@ -1,33 +1,40 @@
 package ru.textanalysis.tawt.rest.common.api.response.item;
 
-import java.util.List;
-
 public class TransportOmoFormSPItem {
-    private List<TransportRefOmoFormItem> currencyOmoForm;
-    private List<Integer> mainCursorsHashcodes;
-    private List<Integer> mainCursorsWordSPHashcodes;
+    private TransportRefOmoFormItem currencyOmoForm;
+    private Integer omoFormHashCode;
+    private Integer mainCursorsHashcode;
+    private Integer mainCursorsWordSPHashcode;
 
-    public List<TransportRefOmoFormItem> getCurrencyOmoForm() {
+    public TransportRefOmoFormItem getCurrencyOmoForm() {
         return currencyOmoForm;
     }
 
-    public void setCurrencyOmoForm(List<TransportRefOmoFormItem> currencyOmoForm) {
+    public void setCurrencyOmoForm(TransportRefOmoFormItem currencyOmoForm) {
         this.currencyOmoForm = currencyOmoForm;
     }
 
-    public List<Integer> getMainCursorsHashcodes() {
-        return mainCursorsHashcodes;
+    public Integer getMainCursorsHashcode() {
+        return mainCursorsHashcode;
     }
 
-    public void setMainCursorsHashcodes(List<Integer> mainCursorsHashcodes) {
-        this.mainCursorsHashcodes = mainCursorsHashcodes;
+    public void setMainCursorsHashcode(Integer mainCursorsHashcode) {
+        this.mainCursorsHashcode = mainCursorsHashcode;
     }
 
-    public List<Integer> getMainCursorsWordSPHashcodes() {
-        return mainCursorsWordSPHashcodes;
+    public Integer getMainCursorsWordSPHashcode() {
+        return mainCursorsWordSPHashcode;
     }
 
-    public void setMainCursorsWordSPHashcodes(List<Integer> mainCursorsWordSPHashcodes) {
-        this.mainCursorsWordSPHashcodes = mainCursorsWordSPHashcodes;
+    public void setMainCursorsWordSPHashcode(Integer mainCursorsWordSPHashcode) {
+        this.mainCursorsWordSPHashcode = mainCursorsWordSPHashcode;
+    }
+
+    public Integer getOmoFormHashCode() {
+        return omoFormHashCode;
+    }
+
+    public void setOmoFormHashCode(Integer omoFormHashCode) {
+        this.omoFormHashCode = omoFormHashCode;
     }
 }

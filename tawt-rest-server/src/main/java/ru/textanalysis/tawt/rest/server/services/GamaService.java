@@ -3,7 +3,7 @@ package ru.textanalysis.tawt.rest.server.services;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.annotation.Lazy;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.stereotype.Service;
 import ru.textanalysis.common.rest.classes.ServiceWorksResult;
 import ru.textanalysis.tawt.gama.main.Gama;
@@ -13,9 +13,8 @@ import ru.textanalysis.tawt.rest.common.api.response.item.TransportRefOmoFormIte
 import java.util.LinkedList;
 import java.util.List;
 
-@Lazy
 @Service
-public class GamaService {
+public class GamaService implements InitializingBean {
     private final Logger log = LoggerFactory.getLogger(getClass());
     private final BuilderTransportRef builderTransportRef;
 
@@ -23,6 +22,11 @@ public class GamaService {
 
     public GamaService(BuilderTransportRef builderTransportRef) {
         this.builderTransportRef = builderTransportRef;
+    }
+
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        gamaInit();
     }
 
     private void gamaInit () {
@@ -33,7 +37,6 @@ public class GamaService {
         List<String> errors = new LinkedList<>();
         List<TransportRefOmoFormItem> result = new LinkedList<>();
         try {
-            gamaInit();
             gama.getMorphWord(word).copy().forEach(form -> {
                 TransportRefOmoFormItem item = builderTransportRef.build(form);
                 result.add(item);
@@ -50,7 +53,6 @@ public class GamaService {
         List<String> errors = new LinkedList<>();
         List<List<TransportRefOmoFormItem>> result = new LinkedList<>();
         try {
-            gamaInit();
             gama.getMorphBearingPhrase(bearingPhrase).forEach(refOmoFormList -> {
                 List<TransportRefOmoFormItem> formItems = new LinkedList<>();
                 refOmoFormList.copy().forEach(form -> {
@@ -71,7 +73,6 @@ public class GamaService {
         List<String> errors = new LinkedList<>();
         List<List<List<List<TransportRefOmoFormItem>>>> result = new LinkedList<>();
         try {
-            gamaInit();
             gama.getMorphParagraph(paragraph).forEach(refWordLists -> {
                 List<List<List<TransportRefOmoFormItem>>> refWordItems = new LinkedList<>();
                 refWordLists.forEach(wordList -> {
@@ -100,7 +101,6 @@ public class GamaService {
         List<String> errors = new LinkedList<>();
         List<List<List<TransportRefOmoFormItem>>> result = new LinkedList<>();
         try {
-            gamaInit();
             gama.getMorphSentence(sentence).forEach(wordList -> {
                 List<List<TransportRefOmoFormItem>> refOmoFormItems = new LinkedList<>();
                 wordList.forEach(refOmoFormList -> {
@@ -125,7 +125,6 @@ public class GamaService {
         List<String> errors = new LinkedList<>();
         List<List<List<List<List<TransportRefOmoFormItem>>>>> result = new LinkedList<>();
         try {
-            gamaInit();
             gama.getMorphText(text).forEach(refBearingPhraseLists -> {
                 List<List<List<List<TransportRefOmoFormItem>>>> refSentenceItems = new LinkedList<>();
                 refBearingPhraseLists.forEach(refWordLists -> {
@@ -153,7 +152,4 @@ public class GamaService {
         }
         return new ServiceWorksResult<>(result, errors);
     }
-
-
-
 }

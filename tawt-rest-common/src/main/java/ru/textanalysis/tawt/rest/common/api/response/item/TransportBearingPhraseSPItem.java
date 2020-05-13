@@ -5,14 +5,14 @@ import java.util.List;
 
 public class TransportBearingPhraseSPItem implements Serializable {
     private List<TransportRefOmoFormItem> mainOmoForms;
-    private List<TransportOmoFormSPItem> OmoFormSPList;
+    private List<TransportWordSpItem> words;
 
-    public List<TransportOmoFormSPItem> getOmoFormSPList() {
-        return OmoFormSPList;
+    public List<TransportWordSpItem> getWords() {
+        return words;
     }
 
-    public void setOmoFormSPList(List<TransportOmoFormSPItem> omoFormSPList) {
-        OmoFormSPList = omoFormSPList;
+    public void setWords(List<TransportWordSpItem> words) {
+        this.words = words;
     }
 
     public List<TransportRefOmoFormItem> getMainOmoForms() {
