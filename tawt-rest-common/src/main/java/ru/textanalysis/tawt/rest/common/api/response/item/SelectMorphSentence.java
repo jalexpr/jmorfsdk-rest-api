@@ -10,13 +10,13 @@ import java.util.List;
 public class SelectMorphSentence implements ResponseItem, Serializable {
     @ApiModelProperty(value = "Список refBearingPhraseList по заданному предложению")
     @JsonProperty
-    private List<List<List<TransportRefOmoFormItem>>> refBearingPhraseList;
+    private List<MorphBearingPhrase> refBearingPhraseList;
 
-    public List<List<List<TransportRefOmoFormItem>>> getRefBearingPhraseList() {
+    public List<MorphBearingPhrase> getRefBearingPhraseList() {
         return refBearingPhraseList;
     }
 
-    public void setRefBearingPhraseList(List<List<List<TransportRefOmoFormItem>>> refBearingPhraseList) {
+    public void setRefBearingPhraseList(List<MorphBearingPhrase> refBearingPhraseList) {
         this.refBearingPhraseList = refBearingPhraseList;
     }
 }

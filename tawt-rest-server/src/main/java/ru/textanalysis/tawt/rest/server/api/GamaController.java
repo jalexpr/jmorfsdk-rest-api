@@ -15,7 +15,7 @@ import ru.textanalysis.common.rest.utils.WebErrorHelper;
 import ru.textanalysis.common.rest.utils.WebHelper;
 import ru.textanalysis.tawt.rest.common.api.request.SelectByStringRequest;
 import ru.textanalysis.tawt.rest.common.api.response.*;
-import ru.textanalysis.tawt.rest.common.api.response.item.TransportRefOmoFormItem;
+import ru.textanalysis.tawt.rest.common.api.response.item.*;
 import ru.textanalysis.tawt.rest.server.services.GamaService;
 import ru.textanalysis.tawt.rest.server.services.ValidationService;
 
@@ -73,7 +73,7 @@ public class GamaController {
         result.getErrors().addAll(validationService.validationRequest(request));
 
         if (result.getErrors().isEmpty()) {
-            ServiceWorksResult<List<List<TransportRefOmoFormItem>>> resultSelect = gamaService.selectMorphBearingPhraseByString(request.getText());
+            ServiceWorksResult<List<MorphWord>> resultSelect = gamaService.selectMorphBearingPhraseByString(request.getText());
             result.createEmptyData();
             result.getData().setRefWordList(resultSelect.getResult());
             if (!resultSelect.getErrorMessage().isEmpty()) {
@@ -95,7 +95,7 @@ public class GamaController {
         result.getErrors().addAll(validationService.validationRequest(request));
 
         if (result.getErrors().isEmpty()) {
-            ServiceWorksResult<List<List<List<List<TransportRefOmoFormItem>>>>> resultSelect = gamaService.selectMorphParagraphByString(request.getText());
+            ServiceWorksResult<List<MorphSentence>> resultSelect = gamaService.selectMorphParagraphByString(request.getText());
             result.createEmptyData();
             result.getData().setRefSentenceList(resultSelect.getResult());
             if (!resultSelect.getErrorMessage().isEmpty()) {
@@ -117,7 +117,7 @@ public class GamaController {
         result.getErrors().addAll(validationService.validationRequest(request));
 
         if (result.getErrors().isEmpty()) {
-            ServiceWorksResult<List<List<List<TransportRefOmoFormItem>>>> resultSelect = gamaService.selectMorphSentenceByString(request.getText());
+            ServiceWorksResult<List<MorphBearingPhrase>> resultSelect = gamaService.selectMorphSentenceByString(request.getText());
             result.createEmptyData();
             result.getData().setRefBearingPhraseList(resultSelect.getResult());
             if (!resultSelect.getErrorMessage().isEmpty()) {
@@ -139,7 +139,7 @@ public class GamaController {
         result.getErrors().addAll(validationService.validationRequest(request));
 
         if (result.getErrors().isEmpty()) {
-            ServiceWorksResult<List<List<List<List<List<TransportRefOmoFormItem>>>>>> resultSelect = gamaService.selectMorphTextByString(request.getText());
+            ServiceWorksResult<List<MorphParagraph>> resultSelect = gamaService.selectMorphTextByString(request.getText());
             result.createEmptyData();
             result.getData().setRefParagraphList(resultSelect.getResult());
             if (!resultSelect.getErrorMessage().isEmpty()) {

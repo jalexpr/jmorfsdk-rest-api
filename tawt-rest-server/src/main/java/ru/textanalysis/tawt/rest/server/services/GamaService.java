@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import ru.textanalysis.common.rest.classes.ServiceWorksResult;
 import ru.textanalysis.tawt.gama.main.Gama;
 import ru.textanalysis.tawt.ms.internal.ref.BuilderTransportRef;
-import ru.textanalysis.tawt.rest.common.api.response.item.TransportRefOmoFormItem;
+import ru.textanalysis.tawt.rest.common.api.response.item.*;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -49,17 +49,19 @@ public class GamaService implements InitializingBean {
         return new ServiceWorksResult<>(result, errors);
     }
 
-    public ServiceWorksResult<List<List<TransportRefOmoFormItem>>> selectMorphBearingPhraseByString(String bearingPhrase) {
+    public ServiceWorksResult<List<MorphWord>> selectMorphBearingPhraseByString(String bearingPhrase) {
         List<String> errors = new LinkedList<>();
-        List<List<TransportRefOmoFormItem>> result = new LinkedList<>();
+        List<MorphWord> result = new LinkedList<>();
         try {
             gama.getMorphBearingPhrase(bearingPhrase).forEach(refOmoFormList -> {
+                MorphWord morphWord = new MorphWord();
                 List<TransportRefOmoFormItem> formItems = new LinkedList<>();
                 refOmoFormList.copy().forEach(form -> {
                     TransportRefOmoFormItem item = builderTransportRef.build(form);
                     formItems.add(item);
                 });
-                result.add(formItems);
+                morphWord.setRefOmoForms(formItems);
+                result.add(morphWord);
             });
         } catch (Throwable ex) {
             String message = "Cannot MorphBearingPhrase for bearingPhrase: " + String.valueOf(bearingPhrase);
@@ -69,25 +71,31 @@ public class GamaService implements InitializingBean {
         return new ServiceWorksResult<>(result, errors);
     }
 
-    public ServiceWorksResult<List<List<List<List<TransportRefOmoFormItem>>>>> selectMorphParagraphByString(String paragraph) {
+    public ServiceWorksResult<List<MorphSentence>> selectMorphParagraphByString(String paragraph) {
         List<String> errors = new LinkedList<>();
-        List<List<List<List<TransportRefOmoFormItem>>>> result = new LinkedList<>();
+        List<MorphSentence> result = new LinkedList<>();
         try {
             gama.getMorphParagraph(paragraph).forEach(refWordLists -> {
-                List<List<List<TransportRefOmoFormItem>>> refWordItems = new LinkedList<>();
+                MorphSentence morphSentence = new MorphSentence();
+                List<MorphBearingPhrase> refWordItems = new LinkedList<>();
                 refWordLists.forEach(wordList -> {
-                    List<List<TransportRefOmoFormItem>> refOmoFormItems = new LinkedList<>();
+                    MorphBearingPhrase morphBearingPhrase = new MorphBearingPhrase();
+                    List<MorphWord> refOmoFormItems = new LinkedList<>();
                     wordList.forEach(refOmoFormList -> {
+                        MorphWord morphWord = new MorphWord();
                         List<TransportRefOmoFormItem> formItems = new LinkedList<>();
                         refOmoFormList.copy().forEach(form -> {
                             TransportRefOmoFormItem item = builderTransportRef.build(form);
                             formItems.add(item);
                         });
-                        refOmoFormItems.add(formItems);
+                        morphWord.setRefOmoForms(formItems);
+                        refOmoFormItems.add(morphWord);
                     });
-                    refWordItems.add(refOmoFormItems);
+                    morphBearingPhrase.setMorphWordList(refOmoFormItems);
+                    refWordItems.add(morphBearingPhrase);
                 });
-                result.add(refWordItems);
+                morphSentence.setMorphBearingPhraseList(refWordItems);
+                result.add(morphSentence);
             });
         } catch (Throwable ex) {
             String message = "Cannot MorphParagraph for paragraph: " + String.valueOf(paragraph);
@@ -97,21 +105,25 @@ public class GamaService implements InitializingBean {
         return new ServiceWorksResult<>(result, errors);
     }
 
-    public ServiceWorksResult<List<List<List<TransportRefOmoFormItem>>>> selectMorphSentenceByString(String sentence) {
+    public ServiceWorksResult<List<MorphBearingPhrase>> selectMorphSentenceByString(String sentence) {
         List<String> errors = new LinkedList<>();
-        List<List<List<TransportRefOmoFormItem>>> result = new LinkedList<>();
+        List<MorphBearingPhrase> result = new LinkedList<>();
         try {
             gama.getMorphSentence(sentence).forEach(wordList -> {
-                List<List<TransportRefOmoFormItem>> refOmoFormItems = new LinkedList<>();
+                MorphBearingPhrase morphBearingPhrase = new MorphBearingPhrase();
+                List<MorphWord> refOmoFormItems = new LinkedList<>();
                 wordList.forEach(refOmoFormList -> {
+                    MorphWord morphWord = new MorphWord();
                     List<TransportRefOmoFormItem> formItems = new LinkedList<>();
                     refOmoFormList.copy().forEach(form -> {
                         TransportRefOmoFormItem item = builderTransportRef.build(form);
                         formItems.add(item);
                     });
-                    refOmoFormItems.add(formItems);
+                    morphWord.setRefOmoForms(formItems);
+                    refOmoFormItems.add(morphWord);
                 });
-                result.add(refOmoFormItems);
+                morphBearingPhrase.setMorphWordList(refOmoFormItems);
+                result.add(morphBearingPhrase);
             });
         } catch (Throwable ex) {
             String message = "Cannot MorphSentence for sentence: " + String.valueOf(sentence);
@@ -121,29 +133,37 @@ public class GamaService implements InitializingBean {
         return new ServiceWorksResult<>(result, errors);
     }
 
-    public ServiceWorksResult<List<List<List<List<List<TransportRefOmoFormItem>>>>>> selectMorphTextByString(String text) {
+    public ServiceWorksResult<List<MorphParagraph>> selectMorphTextByString(String text) {
         List<String> errors = new LinkedList<>();
-        List<List<List<List<List<TransportRefOmoFormItem>>>>> result = new LinkedList<>();
+        List<MorphParagraph> result = new LinkedList<>();
         try {
             gama.getMorphText(text).forEach(refBearingPhraseLists -> {
-                List<List<List<List<TransportRefOmoFormItem>>>> refSentenceItems = new LinkedList<>();
+                MorphParagraph morphParagraph = new MorphParagraph();
+                List<MorphSentence> refSentenceItems = new LinkedList<>();
                 refBearingPhraseLists.forEach(refWordLists -> {
-                    List<List<List<TransportRefOmoFormItem>>> refWordItems = new LinkedList<>();
+                    MorphSentence morphSentence = new MorphSentence();
+                    List<MorphBearingPhrase> refWordItems = new LinkedList<>();
                     refWordLists.forEach(wordList -> {
-                        List<List<TransportRefOmoFormItem>> refOmoFormItems = new LinkedList<>();
+                        MorphBearingPhrase morphBearingPhrase = new MorphBearingPhrase();
+                        List<MorphWord> refOmoFormItems = new LinkedList<>();
                         wordList.forEach(refOmoFormList -> {
+                            MorphWord morphWord = new MorphWord();
                             List<TransportRefOmoFormItem> formItems = new LinkedList<>();
                             refOmoFormList.copy().forEach(form -> {
                                 TransportRefOmoFormItem item = builderTransportRef.build(form);
                                 formItems.add(item);
                             });
-                            refOmoFormItems.add(formItems);
+                            morphWord.setRefOmoForms(formItems);
+                            refOmoFormItems.add(morphWord);
                         });
-                        refWordItems.add(refOmoFormItems);
+                        morphBearingPhrase.setMorphWordList(refOmoFormItems);
+                        refWordItems.add(morphBearingPhrase);
                     });
-                    refSentenceItems.add(refWordItems);
+                    morphSentence.setMorphBearingPhraseList(refWordItems);
+                    refSentenceItems.add(morphSentence);
                 });
-                result.add(refSentenceItems);
+                morphParagraph.setMorphSentenceList(refSentenceItems);
+                result.add(morphParagraph);
             });
         } catch (Throwable ex) {
             String message = "Cannot MorphText for text: " + String.valueOf(text);
