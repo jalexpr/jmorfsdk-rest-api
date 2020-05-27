@@ -1,10 +1,28 @@
 package ru.textanalysis.tawt.rest.common.api.response.item;
 
+import java.util.LinkedList;
+import java.util.List;
+
 public class TransportOmoFormSPItem {
     private TransportRefOmoFormItem currencyOmoForm;
-    private Integer omoFormHashCode;
-    private Integer mainCursorsHashcode;
-    private Integer mainCursorsWordSPHashcode;
+    private CursorToFormInWordItem mainCursors;
+    private List<CursorToFormInWordItem> dependentCursors = new LinkedList<>();
+
+    public CursorToFormInWordItem getMainCursors() {
+        return mainCursors;
+    }
+
+    public void setMainCursors(CursorToFormInWordItem mainCursors) {
+        this.mainCursors = mainCursors;
+    }
+
+    public List<CursorToFormInWordItem> getDependentCursors() {
+        return dependentCursors;
+    }
+
+    public void setDependentCursors(List<CursorToFormInWordItem> dependentCursors) {
+        this.dependentCursors = dependentCursors;
+    }
 
     public TransportRefOmoFormItem getCurrencyOmoForm() {
         return currencyOmoForm;
@@ -14,27 +32,6 @@ public class TransportOmoFormSPItem {
         this.currencyOmoForm = currencyOmoForm;
     }
 
-    public Integer getMainCursorsHashcode() {
-        return mainCursorsHashcode;
-    }
 
-    public void setMainCursorsHashcode(Integer mainCursorsHashcode) {
-        this.mainCursorsHashcode = mainCursorsHashcode;
-    }
 
-    public Integer getMainCursorsWordSPHashcode() {
-        return mainCursorsWordSPHashcode;
-    }
-
-    public void setMainCursorsWordSPHashcode(Integer mainCursorsWordSPHashcode) {
-        this.mainCursorsWordSPHashcode = mainCursorsWordSPHashcode;
-    }
-
-    public Integer getOmoFormHashCode() {
-        return omoFormHashCode;
-    }
-
-    public void setOmoFormHashCode(Integer omoFormHashCode) {
-        this.omoFormHashCode = omoFormHashCode;
-    }
 }

@@ -1,10 +1,19 @@
 package ru.textanalysis.tawt.rest.common.api.response.item;
 
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 public class TransportWordSpItem {
-    private List<TransportOmoFormSPItem> omoFormSPList;
+    private Map<Integer, TransportOmoFormSPItem> omoForms = new HashMap<>();
     private Integer omoFormSPListHashcode;
+
+    public Map<Integer, TransportOmoFormSPItem> getOmoForms() {
+        return omoForms;
+    }
+
+    public void setOmoForms(Map<Integer, TransportOmoFormSPItem> omoForms) {
+        this.omoForms = omoForms;
+    }
 
     public Integer getOmoFormSPListHashcode() {
         return omoFormSPListHashcode;
@@ -12,13 +21,5 @@ public class TransportWordSpItem {
 
     public void setOmoFormSPListHashcode(Integer omoFormSPListHashcode) {
         this.omoFormSPListHashcode = omoFormSPListHashcode;
-    }
-
-    public List<TransportOmoFormSPItem> getOmoFormSPList() {
-        return omoFormSPList;
-    }
-
-    public void setOmoFormSPList(List<TransportOmoFormSPItem> omoFormSPList) {
-        this.omoFormSPList = omoFormSPList;
     }
 }
