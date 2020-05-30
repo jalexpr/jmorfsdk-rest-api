@@ -10,13 +10,13 @@ import java.util.List;
 public class SelectMorphText implements ResponseItem, Serializable {
     @ApiModelProperty(value = "Список MorphText по заданному тексту")
     @JsonProperty
-    private List<List<List<List<List<TransportRefOmoFormItem>>>>> refParagraphList;
+    private List<MorphParagraph> refParagraphList;
 
-    public List<List<List<List<List<TransportRefOmoFormItem>>>>> getRefParagraphList() {
+    public List<MorphParagraph> getRefParagraphList() {
         return refParagraphList;
     }
 
-    public void setRefParagraphList(List<List<List<List<List<TransportRefOmoFormItem>>>>> refParagraphList) {
+    public void setRefParagraphList(List<MorphParagraph> refParagraphList) {
         this.refParagraphList = refParagraphList;
     }
 }

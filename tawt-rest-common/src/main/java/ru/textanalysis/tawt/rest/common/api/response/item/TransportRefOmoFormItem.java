@@ -14,7 +14,24 @@ public class TransportRefOmoFormItem implements Serializable {
     private TypeForms typeForm;
     private Boolean isInitialForm;
     private String myString;
+    private Integer order;
+    private Integer orderInitialForm;
 
+    public Integer getOrderInitialForm() {
+        return orderInitialForm;
+    }
+
+    public void setOrderInitialForm(Integer orderInitialForm) {
+        this.orderInitialForm = orderInitialForm;
+    }
+
+    public Integer getOrder() {
+        return order;
+    }
+
+    public void setOrder(Integer order) {
+        this.order = order;
+    }
 
     public TypeForms getTypeForm() {
         return typeForm;

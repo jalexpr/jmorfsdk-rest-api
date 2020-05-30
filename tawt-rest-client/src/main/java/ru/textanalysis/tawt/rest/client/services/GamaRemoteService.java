@@ -93,7 +93,7 @@ public class GamaRemoteService {
         RefWordList result = new RefWordList();
         response.getData().getRefWordList().forEach(item -> {
             List<Form> forms = new ArrayList<>();
-            item.forEach(item2 ->{
+            item.getRefOmoForms().forEach(item2 ->{
                 Form form = builderTransportRef.build(item2);
                 forms.add(form);
             });
@@ -125,9 +125,9 @@ public class GamaRemoteService {
         RefBearingPhraseList result = new RefBearingPhraseList();
         response.getData().getRefBearingPhraseList().forEach(refBearingPhraseList -> {
             RefWordList refWordList = new RefWordList();
-            refBearingPhraseList.forEach(refOmoFormItems -> {
+            refBearingPhraseList.getMorphWordList().forEach(refOmoFormItems -> {
                 List<Form> forms = new ArrayList<>();
-                refOmoFormItems.forEach(items -> {
+                refOmoFormItems.getRefOmoForms().forEach(items -> {
                     Form form = builderTransportRef.build(items);
                     forms.add(form);
                 });
@@ -161,11 +161,11 @@ public class GamaRemoteService {
         RefSentenceList result = new RefSentenceList();
         response.getData().getRefSentenceList().forEach(refSentenceList -> {
             RefBearingPhraseList refBearingPhraseList = new RefBearingPhraseList();
-            refSentenceList.forEach(refBearingPhraseItems -> {
+            refSentenceList.getMorphBearingPhraseList().forEach(refBearingPhraseItems -> {
                 RefWordList refWordList = new RefWordList();
-                refBearingPhraseItems.forEach(refOmoFormItems -> {
+                refBearingPhraseItems.getMorphWordList().forEach(refOmoFormItems -> {
                     List<Form> forms = new ArrayList<>();
-                    refOmoFormItems.forEach(items -> {
+                    refOmoFormItems.getRefOmoForms().forEach(items -> {
                         Form form = builderTransportRef.build(items);
                         forms.add(form);
                     });
@@ -201,13 +201,13 @@ public class GamaRemoteService {
         RefParagraphList result = new RefParagraphList();
         response.getData().getRefParagraphList().forEach(refParagraphList -> {
             RefSentenceList refSentenceList = new RefSentenceList();
-            refParagraphList.forEach(refSentenceItems -> {
+            refParagraphList.getMorphSentenceList().forEach(refSentenceItems -> {
                 RefBearingPhraseList refBearingPhraseList = new RefBearingPhraseList();
-                refSentenceItems.forEach(refBearingPhraseItems -> {
+                refSentenceItems.getMorphBearingPhraseList().forEach(refBearingPhraseItems -> {
                     RefWordList refWordList = new RefWordList();
-                    refBearingPhraseItems.forEach(refOmoFormItems -> {
+                    refBearingPhraseItems.getMorphWordList().forEach(refOmoFormItems -> {
                         List<Form> forms = new ArrayList<>();
-                        refOmoFormItems.forEach(items -> {
+                        refOmoFormItems.getRefOmoForms().forEach(items -> {
                             Form form = builderTransportRef.build(items);
                             forms.add(form);
                         });

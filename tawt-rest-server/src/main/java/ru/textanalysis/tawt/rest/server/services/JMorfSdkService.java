@@ -3,7 +3,6 @@ package ru.textanalysis.tawt.rest.server.services;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import ru.textanalysis.common.rest.classes.ServiceWorksResult;
 import ru.textanalysis.tawt.jmorfsdk.JMorfSdk;
@@ -17,7 +16,6 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-@Lazy
 @Service
 public class JMorfSdkService implements InitializingBean {
     private final Logger log = LoggerFactory.getLogger(getClass());
