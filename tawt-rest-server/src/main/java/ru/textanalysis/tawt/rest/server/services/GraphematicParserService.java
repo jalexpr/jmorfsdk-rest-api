@@ -4,7 +4,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import ru.textanalysis.common.rest.classes.ServiceWorksResult;
-import ru.textanalysis.tawt.graphematic.parser.text.GParserImpl;
 import ru.textanalysis.tawt.graphematic.parser.text.GraphematicParser;
 
 import java.util.ArrayList;
@@ -15,7 +14,11 @@ import java.util.List;
 public class GraphematicParserService {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    private final GraphematicParser parser = new GParserImpl();
+    private final GraphematicParser parser;
+
+    public GraphematicParserService(GraphematicParser parser) {
+        this.parser = parser;
+    }
 
     public ServiceWorksResult<List<String>> parserBasicsPhaseByString(String sentence) {
         List<String> errors = new LinkedList<>();
@@ -23,7 +26,7 @@ public class GraphematicParserService {
         try {
             result = parser.parserBasicsPhase(sentence);
         } catch (Throwable ex) {
-            String message = "Cannot parserBasicsPhase for sentence: " + String.valueOf(sentence);
+            String message = "Cannot parserBasicsPhase for sentence: " + sentence;
             log.warn(message, ex);
             errors.add(message);
         }
@@ -36,7 +39,7 @@ public class GraphematicParserService {
         try {
             result = parser.parserSentence(sentence);
         } catch (Throwable ex) {
-            String message = "Cannot parserSentence for sentence: " + String.valueOf(sentence);
+            String message = "Cannot parserSentence for sentence: " + sentence;
             log.warn(message, ex);
             errors.add(message);
         }
@@ -49,7 +52,7 @@ public class GraphematicParserService {
         try {
             result = parser.parserParagraph(sentence);
         } catch (Throwable ex) {
-            String message = "Cannot parserParagraph for sentence: " + String.valueOf(sentence);
+            String message = "Cannot parserParagraph for sentence: " + sentence;
             log.warn(message, ex);
             errors.add(message);
         }
@@ -62,7 +65,7 @@ public class GraphematicParserService {
         try {
             result = parser.parserText(sentence);
         } catch (Throwable ex) {
-            String message = "Cannot parserText for sentence: " + String.valueOf(sentence);
+            String message = "Cannot parserText for sentence: " + sentence;
             log.warn(message, ex);
             errors.add(message);
         }

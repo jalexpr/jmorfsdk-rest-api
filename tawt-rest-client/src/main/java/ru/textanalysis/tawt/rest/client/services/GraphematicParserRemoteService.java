@@ -19,7 +19,7 @@ import java.util.List;
 @Service
 @SuppressWarnings("FieldCanBeLocal")
 public class GraphematicParserRemoteService {
-    private final String SERVICE_NAME;
+    private final String SERVICE_URL;
     private final String URN_PARSER_BASICS_PHASE_BY_STRING = "api/gp/parser/basics/phase";
     private final String URN_PARSER_SENTENCE_BY_STRING = "api/gp/parser/sentence";
     private final String URN_PARSER_PARAGRAPH_BY_STRING = "api/gp/parser/paragraph";
@@ -31,11 +31,12 @@ public class GraphematicParserRemoteService {
     GraphematicParserRemoteService(RestClientService restClientService,
                                    Config config) {
         this.restClientService = restClientService;
-        this.SERVICE_NAME = String.format("%s:%s/tawt-rest-api", config.getAddress(), config.getPort());
+        this.SERVICE_URL = config.getUrl();
     }
 
     /**
      * Получение списка слов по заданной фразе
+     *
      * @param text фраза
      * @return список слов
      */
@@ -44,12 +45,12 @@ public class GraphematicParserRemoteService {
         request.setText(text);
 
         ParserBasicsPhaseByStringResponse response =
-                restClientService.post(SERVICE_NAME, URN_PARSER_BASICS_PHASE_BY_STRING,
+                restClientService.post(SERVICE_URL, URN_PARSER_BASICS_PHASE_BY_STRING,
                         request, ParserBasicsPhaseByStringResponse.class);
 
         if (response == null) {
             String message = String.format("Error connected to http://%s/%s by word = %s",
-                    SERVICE_NAME, URN_PARSER_BASICS_PHASE_BY_STRING, text);
+                    SERVICE_URL, URN_PARSER_BASICS_PHASE_BY_STRING, text);
             throw new TawtRestRuntimeException(message);
         }
 
@@ -58,6 +59,7 @@ public class GraphematicParserRemoteService {
 
     /**
      * Получение списка слов по заданному предложению.
+     *
      * @param text предложение
      * @return список слов
      */
@@ -66,12 +68,12 @@ public class GraphematicParserRemoteService {
         request.setText(text);
 
         ParserSentenceByStringResponse response =
-                restClientService.post(SERVICE_NAME, URN_PARSER_SENTENCE_BY_STRING,
+                restClientService.post(SERVICE_URL, URN_PARSER_SENTENCE_BY_STRING,
                         request, ParserSentenceByStringResponse.class);
 
         if (response == null) {
             String message = String.format("Error connected to http://%s/%s by word = %s",
-                    SERVICE_NAME, URN_PARSER_SENTENCE_BY_STRING, text);
+                    SERVICE_URL, URN_PARSER_SENTENCE_BY_STRING, text);
             throw new TawtRestRuntimeException(message);
         }
 
@@ -80,6 +82,7 @@ public class GraphematicParserRemoteService {
 
     /**
      * Получение списка слов по заданному параграфу.
+     *
      * @param text параграф
      * @return список слов
      */
@@ -88,12 +91,12 @@ public class GraphematicParserRemoteService {
         request.setText(text);
 
         ParserParagraphByStringResponse response =
-                restClientService.post(SERVICE_NAME, URN_PARSER_PARAGRAPH_BY_STRING,
+                restClientService.post(SERVICE_URL, URN_PARSER_PARAGRAPH_BY_STRING,
                         request, ParserParagraphByStringResponse.class);
 
         if (response == null) {
             String message = String.format("Error connected to http://%s/%s by word = %s",
-                    SERVICE_NAME, URN_PARSER_PARAGRAPH_BY_STRING, text);
+                    SERVICE_URL, URN_PARSER_PARAGRAPH_BY_STRING, text);
             throw new TawtRestRuntimeException(message);
         }
 
@@ -102,6 +105,7 @@ public class GraphematicParserRemoteService {
 
     /**
      * получение списка слов по заданному тексту
+     *
      * @param text произвольный текст
      * @return список слов
      */
@@ -110,16 +114,15 @@ public class GraphematicParserRemoteService {
         request.setText(text);
 
         ParserTextByStringResponse response =
-                restClientService.post(SERVICE_NAME, URN_PARSER_TEXT_BY_STRING,
+                restClientService.post(SERVICE_URL, URN_PARSER_TEXT_BY_STRING,
                         request, ParserTextByStringResponse.class);
 
         if (response == null) {
             String message = String.format("Error connected to http://%s/%s by word = %s",
-                    SERVICE_NAME, URN_PARSER_TEXT_BY_STRING, text);
+                    SERVICE_URL, URN_PARSER_TEXT_BY_STRING, text);
             throw new TawtRestRuntimeException(message);
         }
 
         return new ServiceWorksResult<>(response.getData().getStringList(), response.getErrors());
     }
-
 }

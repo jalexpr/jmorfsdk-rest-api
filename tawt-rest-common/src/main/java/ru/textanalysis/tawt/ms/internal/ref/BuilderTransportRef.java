@@ -11,7 +11,11 @@ import ru.textanalysis.tawt.rest.common.api.response.item.TransportRefOmoFormIte
 public class BuilderTransportRef {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    BuilderForm builderForm = new BuilderForm();
+    private final BuilderForm builderForm;
+
+    public BuilderTransportRef(BuilderForm builderForm) {
+        this.builderForm = builderForm;
+    }
 
     public TransportRefOmoFormItem build(RefOmoForm refOmoFormform) {
         TransportRefOmoFormItem item = new TransportRefOmoFormItem();

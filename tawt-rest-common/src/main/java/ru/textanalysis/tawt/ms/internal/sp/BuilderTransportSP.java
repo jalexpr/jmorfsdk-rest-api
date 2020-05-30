@@ -2,6 +2,8 @@ package ru.textanalysis.tawt.ms.internal.sp;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.stereotype.Service;
 import ru.textanalysis.tawt.ms.external.sp.BearingPhraseExt;
 import ru.textanalysis.tawt.ms.internal.form.Form;
 import ru.textanalysis.tawt.ms.internal.ref.BuilderTransportRef;
@@ -14,10 +16,16 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+@Lazy
+@Service
 public class BuilderTransportSP {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    BuilderTransportRef builderTransportRef = new BuilderTransportRef();
+    private final BuilderTransportRef builderTransportRef;
+
+    public BuilderTransportSP(BuilderTransportRef builderTransportRef) {
+        this.builderTransportRef = builderTransportRef;
+    }
 
     public TransportBearingPhraseSPItem build(BearingPhraseSP bearingPhraseSP) {
         TransportBearingPhraseSPItem spItem = new TransportBearingPhraseSPItem();
@@ -144,9 +152,6 @@ public class BuilderTransportSP {
                 }
             });
         });
-
-
-
         return result;
     }
 }

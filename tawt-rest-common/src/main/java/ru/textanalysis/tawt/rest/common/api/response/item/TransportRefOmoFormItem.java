@@ -36,6 +36,7 @@ public class TransportRefOmoFormItem implements Serializable {
     public TypeForms getTypeForm() {
         return typeForm;
     }
+
     public void setTypeForm(TypeForms typeForm) {
         this.typeForm = typeForm;
     }
