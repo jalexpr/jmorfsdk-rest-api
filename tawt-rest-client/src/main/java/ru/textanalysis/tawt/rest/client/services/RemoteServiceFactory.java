@@ -8,6 +8,7 @@ import ru.textanalysis.tawt.ms.internal.ref.BuilderTransportRef;
 import ru.textanalysis.tawt.ms.internal.sp.BuilderTransportSP;
 import ru.textanalysis.tawt.rest.client.config.Config;
 
+@SuppressWarnings("FieldCanBeLocal")
 public class RemoteServiceFactory {
     private final GraphematicParserRemoteService graphematicParserRemoteService;
     private final JMorfSdkRemoteService jMorfSdkRemoteService;

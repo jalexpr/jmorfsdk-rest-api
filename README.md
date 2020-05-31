@@ -2,10 +2,18 @@
 Ссылка на Swagger сервиса: http://boberpul2.asuscomm.com:8093/tawt-rest-api/swagger-ui.html
 
 ## Описание библиотеки-клиента
-В библиотеке реализовано 3 класса, которые соответствуют инструментам фреймворка TAWT:
+В библиотеке клиента реализовано 4 класса, которые соответствуют инструментам фреймворка TAWT:
 1) JMorfSdkRemoteService
 2) GraphematicParserRemoteService
 3) GamaRemoteService
+4) SyntaxParserRemoteService 
+
+## Подключение
+1) Если с использованием Spring, то необходимо просканировать пакет ru.textanalysis.tawt.rest.client.services
+2) Если без использования Spring, то достаточно инициализировать RemoteServiceFactory
+
+## Сборка
+Для локального запуска необходимо отключить Profiles (distr)
 
 Для использования библиотеки-клиента, необходимо подключить ее к
 своему проекту. Для этого можно воспользоваться сборщиком пакетов Maven, с

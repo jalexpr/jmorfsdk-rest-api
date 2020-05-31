@@ -247,4 +247,21 @@
             <url>https://jitpack.io</url>
         </repository>
     </repositories>
+
+
+    <profiles>
+        <profile>
+            <id>distr</id>
+            <build>
+                <resources>
+                    <resource>
+                        <directory>src/main/resources-dev</directory>
+                        <excludes>
+                            <exclude>application.properties</exclude>
+                        </excludes>
+                    </resource>
+                </resources>
+            </build>
+        </profile>
+    </profiles>
 </project>
