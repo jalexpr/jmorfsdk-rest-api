@@ -14,7 +14,7 @@ import java.util.Objects;
 @Service
 @SuppressWarnings("FieldCanBeLocal")
 public class ValidationService implements InitializingBean {
-    private final String version = "a89291e197";
+    private final String version = "508bd1f04f";
     private final String SERVICE_URL;
     private final String URN_CHECK_VERSION_SERVICE = "/api/version";
     private final RestTemplate restTemplate;
