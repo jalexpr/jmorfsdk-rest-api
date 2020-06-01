@@ -57,8 +57,8 @@ public class JMorfSdkRemoteService {
      * @return список омоформ
      */
     public ServiceWorksResult<OmoFormList> getAllCharacteristicsOfForm(String word) {
-        SelectByStringRequest request = new SelectByStringRequest();
-        request.setText(word);
+        SelectByWordRequest request = new SelectByWordRequest();
+        request.setWord(word);
 
         SelectOmoformsByStringResponse response =
                 restClientService.post(SERVICE_URL, URN_SELECT_OMOFORMS_BY_STRING,
@@ -86,8 +86,8 @@ public class JMorfSdkRemoteService {
      * @return список морфологических характеристик
      */
     public ServiceWorksResult<List<Long>> getMorphologyCharacteristics(String word) {
-        SelectByStringRequest request = new SelectByStringRequest();
-        request.setText(word);
+        SelectByWordRequest request = new SelectByWordRequest();
+        request.setWord(word);
 
         SelectMorfCharacteristicsByStringResponse response =
                 restClientService.post(SERVICE_URL, URN_SELECT_MORPHOLOGY_CHARACTERISTICS_BY_STRING,
@@ -109,8 +109,8 @@ public class JMorfSdkRemoteService {
      * @return список рефомоформ
      */
     public ServiceWorksResult<RefOmoFormList> getRefOmoFormList(String word) {
-        SelectByStringRequest request = new SelectByStringRequest();
-        request.setText(word);
+        SelectByWordRequest request = new SelectByWordRequest();
+        request.setWord(word);
 
         SelectRefOmoFormListByStringResponse response =
                 restClientService.post(SERVICE_URL, URN_SELECT_REFOMOFORMLIST_BY_STRING,
@@ -139,8 +139,8 @@ public class JMorfSdkRemoteService {
      * @return список начальных форм
      */
     public ServiceWorksResult<List<String>> getStringInitialForm(String word) {
-        SelectByStringRequest request = new SelectByStringRequest();
-        request.setText(word);
+        SelectByWordRequest request = new SelectByWordRequest();
+        request.setWord(word);
 
         SelectStringInitialFormByStringResponse response =
                 restClientService.post(SERVICE_URL, URN_SELECT_STRING_INITIAL_FORM_BY_STRING,
@@ -162,8 +162,8 @@ public class JMorfSdkRemoteService {
      * @return список частей речи
      */
     public ServiceWorksResult<List<Byte>> getTypeOfSpeeches(String word) {
-        SelectByStringRequest request = new SelectByStringRequest();
-        request.setText(word);
+        SelectByWordRequest request = new SelectByWordRequest();
+        request.setWord(word);
 
         SelectTypeOfSpeechesByStringResponse response =
                 restClientService.post(SERVICE_URL, URN_SELECT_TYPE_OF_SPEECHES_BY_STRING,
@@ -197,8 +197,9 @@ public class JMorfSdkRemoteService {
                         request, SelectDerivativeFormByStringResponse.class);
 
         if (response == null) {
-            String message = String.format("Error connected to http://%s/%s by word = %s",
-                    SERVICE_URL, URN_SELECT_DERIVATIVE_FORM_WITH_TYPE_OF_SPEECHES_AND_MORPH_CHARACTERISTICS_BY_STRING, word);
+            String message = String.format("Error connected to http://%s/%s by word = %s, typeOfSpeeches = %s, morphologyCharacteristics = %s",
+                    SERVICE_URL, URN_SELECT_DERIVATIVE_FORM_WITH_TYPE_OF_SPEECHES_AND_MORPH_CHARACTERISTICS_BY_STRING,
+                    word, typeOfSpeeches, morphologyCharacteristics);
             throw new TawtRestRuntimeException(message);
         }
 
@@ -222,8 +223,9 @@ public class JMorfSdkRemoteService {
                         request, SelectDerivativeFormByStringResponse.class);
 
         if (response == null) {
-            String message = String.format("Error connected to http://%s/%s by word = %s",
-                    SERVICE_URL, URN_SELECT_DERIVATIVE_FORM_WITH_TYPE_OF_SPEECHES_BY_STRING, word);
+            String message = String.format("Error connected to http://%s/%s by word = %s, typeOfSpeeches = %s",
+                    SERVICE_URL, URN_SELECT_DERIVATIVE_FORM_WITH_TYPE_OF_SPEECHES_BY_STRING,
+                    word, typeOfSpeeches);
             throw new TawtRestRuntimeException(message);
         }
 
@@ -247,8 +249,9 @@ public class JMorfSdkRemoteService {
                         request, SelectDerivativeFormByStringResponse.class);
 
         if (response == null) {
-            String message = String.format("Error connected to http://%s/%s by word = %s",
-                    SERVICE_URL, URN_SELECT_DERIVATIVE_FORM_WITH_MORPH_CHARACTERISTICS_BY_STRING, word);
+            String message = String.format("Error connected to http://%s/%s by word = %s, morphologyCharacteristics = %s",
+                    SERVICE_URL, URN_SELECT_DERIVATIVE_FORM_WITH_MORPH_CHARACTERISTICS_BY_STRING,
+                    word, morphologyCharacteristics);
             throw new TawtRestRuntimeException(message);
         }
 

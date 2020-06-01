@@ -87,24 +87,42 @@ public class BuilderTransportSP {
         return spItem;
     }
 
+    public BearingPhraseSP build(TransportBearingPhraseSPItem transportBearingPhraseSPItem) {
+        return buildSP(transportBearingPhraseSPItem);
+    }
+
     public TransportBearingPhraseExtItem build(BearingPhraseExt bearingPhraseExt) {
         TransportBearingPhraseExtItem extItem = new TransportBearingPhraseExtItem();
 
-        List<TransportRefOmoFormItem> formItems = new LinkedList<>();
+        List<TransportOmoFormExtItem> formItems = new LinkedList<>();
         bearingPhraseExt.getMainOmoForms().forEach(omoFormExt -> {
+            TransportOmoFormExtItem transportOmoFormExtItem = new TransportOmoFormExtItem();
             TransportRefOmoFormItem item = builderTransportRef.build(omoFormExt.getCurrencyOmoForm());
-            formItems.add(item);
+            transportOmoFormExtItem.setCurrencyOmoForm(item);
+            if (omoFormExt.getMainWord() != null) {
+                transportOmoFormExtItem.setMainWord(omoFormExt.getMainWord().hashCode());
+            } else {
+                transportOmoFormExtItem.setMainWord(null);
+            }
+            List<Integer> integers = new LinkedList<>();
+            omoFormExt.getDependentWords().forEach(omoFormExt1 -> {
+                integers.add(omoFormExt1.hashCode());
+            });
+            transportOmoFormExtItem.setDependentWords(integers);
+            formItems.add(transportOmoFormExtItem);
         });
         extItem.setMainOmoForms(formItems);
 
         return extItem;
     }
 
-    public BearingPhraseSP build(TransportBearingPhraseSPItem transportBearingPhraseSPItem) {
+    public BearingPhraseExt buildExt(TransportBearingPhraseSPItem transportBearingPhraseSPItem) {
+        return buildSP(transportBearingPhraseSPItem).toExt();
+    }
 
+    private BearingPhraseSP buildSP(TransportBearingPhraseSPItem transportBearingPhraseSPItem) {
         RefWordList refWordList = new RefWordList();
         Map<Integer, TransportOmoFormSPItem> mapTransportOmoForms = new HashMap<>();
-        //List<>
         transportBearingPhraseSPItem.getWords().forEach(transportWordSpItem -> {
             List<Form> forms = new LinkedList<>();
             transportWordSpItem.getOmoForms().values().forEach(transportOmoFormSPItem -> {

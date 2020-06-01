@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.textanalysis.common.rest.classes.ServiceWorksResult;
 import ru.textanalysis.common.rest.utils.WebErrorHelper;
 import ru.textanalysis.common.rest.utils.WebHelper;
-import ru.textanalysis.tawt.rest.common.api.request.SelectByStringRequest;
+import ru.textanalysis.tawt.rest.common.api.request.*;
 import ru.textanalysis.tawt.rest.common.api.response.*;
 import ru.textanalysis.tawt.rest.common.api.response.item.*;
 import ru.textanalysis.tawt.rest.server.services.GamaService;
@@ -45,13 +45,13 @@ public class GamaController {
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK", response = SelectMorphWordByStringResponse.class)})
     @RequestMapping(value = "get/morph/word", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> getMorphWord(@RequestBody SelectByStringRequest request) {
+    public ResponseEntity<String> getMorphWord(@RequestBody SelectByWordRequest request) {
         SelectMorphWordByStringResponse result = new SelectMorphWordByStringResponse();
 
         result.getErrors().addAll(validationService.validationRequest(request));
 
         if (result.getErrors().isEmpty()) {
-            ServiceWorksResult<List<TransportRefOmoFormItem>> resultSelect = gamaService.selectMorphWordByString(request.getText());
+            ServiceWorksResult<List<TransportRefOmoFormItem>> resultSelect = gamaService.selectMorphWordByString(request.getWord().trim());
             result.createEmptyData();
             result.getData().setRefOmoForms(resultSelect.getResult());
             if (!resultSelect.getErrorMessage().isEmpty()) {
@@ -67,13 +67,13 @@ public class GamaController {
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK", response = SelectMorphBearingPhraseByStringResponse.class)})
     @RequestMapping(value = "get/morph/bearing/phrase", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> getMorphBearingPhrase(@RequestBody SelectByStringRequest request) {
+    public ResponseEntity<String> getMorphBearingPhrase(@RequestBody SelectByBearingPhraseRequest request) {
         SelectMorphBearingPhraseByStringResponse result = new SelectMorphBearingPhraseByStringResponse();
 
         result.getErrors().addAll(validationService.validationRequest(request));
 
         if (result.getErrors().isEmpty()) {
-            ServiceWorksResult<List<MorphWord>> resultSelect = gamaService.selectMorphBearingPhraseByString(request.getText());
+            ServiceWorksResult<List<MorphWord>> resultSelect = gamaService.selectMorphBearingPhraseByString(request.getBearingPhrase());
             result.createEmptyData();
             result.getData().setRefWordList(resultSelect.getResult());
             if (!resultSelect.getErrorMessage().isEmpty()) {
@@ -89,13 +89,13 @@ public class GamaController {
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK", response = SelectMorphParagraphByStringResponse.class)})
     @RequestMapping(value = "get/morph/paragraph", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> getMorphParagraph(@RequestBody SelectByStringRequest request) {
+    public ResponseEntity<String> getMorphParagraph(@RequestBody SelectByParagraphRequest request) {
         SelectMorphParagraphByStringResponse result = new SelectMorphParagraphByStringResponse();
 
         result.getErrors().addAll(validationService.validationRequest(request));
 
         if (result.getErrors().isEmpty()) {
-            ServiceWorksResult<List<MorphSentence>> resultSelect = gamaService.selectMorphParagraphByString(request.getText());
+            ServiceWorksResult<List<MorphSentence>> resultSelect = gamaService.selectMorphParagraphByString(request.getParagraph());
             result.createEmptyData();
             result.getData().setRefSentenceList(resultSelect.getResult());
             if (!resultSelect.getErrorMessage().isEmpty()) {
@@ -111,13 +111,13 @@ public class GamaController {
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK", response = SelectMorphSentenceByStringResponse.class)})
     @RequestMapping(value = "get/morph/sentence", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> getMorphSentence(@RequestBody SelectByStringRequest request) {
+    public ResponseEntity<String> getMorphSentence(@RequestBody SelectBySentenceRequest request) {
         SelectMorphSentenceByStringResponse result = new SelectMorphSentenceByStringResponse();
 
         result.getErrors().addAll(validationService.validationRequest(request));
 
         if (result.getErrors().isEmpty()) {
-            ServiceWorksResult<List<MorphBearingPhrase>> resultSelect = gamaService.selectMorphSentenceByString(request.getText());
+            ServiceWorksResult<List<MorphBearingPhrase>> resultSelect = gamaService.selectMorphSentenceByString(request.getSentence());
             result.createEmptyData();
             result.getData().setRefBearingPhraseList(resultSelect.getResult());
             if (!resultSelect.getErrorMessage().isEmpty()) {

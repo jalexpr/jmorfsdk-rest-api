@@ -21,11 +21,10 @@ public class TawtRestClientApplication {
             GamaRemoteService gamaRemoteService = factory.getGamaRemoteService();
             SyntaxParserRemoteService syntaxParserRemoteService = factory.getSyntaxParserRemoteService();
 
-
-            System.out.println(syntaxParserRemoteService.getTreeSentence("Сегодня за окном было пасмурно").getResult());
-            //System.out.println(jMorfSdkRemoteService.getRefOmoFormList("село").getResult());
-            //System.out.println(graphematicParserRemoteService.parserSentence("я ходил гулять").getResult());
-            //System.out.println(gamaRemoteService.getMorphSentence("мама мыла раму").getResult());
+            System.out.println(syntaxParserRemoteService.getTreeSentence("я ходил сегодня гулять").getResult());
+            /*System.out.println(jMorfSdkRemoteService.getRefOmoFormList("село").getResult());
+            System.out.println(graphematicParserRemoteService.parserSentence("я ходил гулять").getResult());
+            System.out.println(gamaRemoteService.getMorphSentence("мама мыла раму").getResult());*/
         } catch (Exception ex) {
             logger.warn("Ошибка!", ex);
         }
