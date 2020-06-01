@@ -5,6 +5,13 @@ import java.util.List;
 public class MorphWord {
     private List<TransportRefOmoFormItem> refOmoForms;
 
+    public MorphWord() {
+    }
+
+    public MorphWord(List<TransportRefOmoFormItem> refOmoForms) {
+        this.refOmoForms = refOmoForms;
+    }
+
     public List<TransportRefOmoFormItem> getRefOmoForms() {
         return refOmoForms;
     }

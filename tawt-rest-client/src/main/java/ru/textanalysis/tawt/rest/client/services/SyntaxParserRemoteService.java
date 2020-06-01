@@ -11,23 +11,25 @@ import ru.textanalysis.tawt.rest.common.api.request.SelectByStringRequest;
 import ru.textanalysis.tawt.rest.common.api.response.SelectTreeSentenceByStringResponse;
 import ru.textanalysis.tawt.rest.common.exception.TawtRestRuntimeException;
 
-import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Lazy
 @Service
 @SuppressWarnings("FieldCanBeLocal")
 public class SyntaxParserRemoteService {
-    private final String SERVICE_NAME;
+    private final String SERVICE_URL;
     private final String URN_SELECT_TREE_SENTENCE_BY_STRING = "api/sp/get/tree/sentence";
 
     private final RestClientService restClientService;
     private final BuilderTransportSP builderTransportSP;
 
-    SyntaxParserRemoteService(RestClientService restClientService, BuilderTransportSP builderTransportSP, Config config) {
+    SyntaxParserRemoteService(BuilderTransportSP builderTransportSP,
+                              RestClientService restClientService,
+                              Config config) {
         this.restClientService = restClientService;
         this.builderTransportSP = builderTransportSP;
-        this.SERVICE_NAME = String.format("%s:%s/tawt-rest-api", config.getAddress(), config.getPort());
+        this.SERVICE_URL = config.getUrl();
     }
 
     public ServiceWorksResult<List<BearingPhraseSP>> getTreeSentence(String text) {
@@ -35,19 +37,19 @@ public class SyntaxParserRemoteService {
         request.setText(text);
 
         SelectTreeSentenceByStringResponse response =
-                restClientService.post(SERVICE_NAME, URN_SELECT_TREE_SENTENCE_BY_STRING,
+                restClientService.post(SERVICE_URL, URN_SELECT_TREE_SENTENCE_BY_STRING,
                         request, SelectTreeSentenceByStringResponse.class);
 
         if (response == null) {
             String message = String.format("Error connected to http://%s/%s by word = %s",
-                    SERVICE_NAME, URN_SELECT_TREE_SENTENCE_BY_STRING, text);
+                    SERVICE_URL, URN_SELECT_TREE_SENTENCE_BY_STRING, text);
             throw new TawtRestRuntimeException(message);
         }
 
-        List<BearingPhraseSP> result = new LinkedList<>();
-        response.getData().getBearingPhraseSPList().forEach(transportBearingPhraseSPItem -> {
-            result.add(builderTransportSP.build(transportBearingPhraseSPItem));
-        });
+        List<BearingPhraseSP> result = response.getData().getBearingPhraseSPList()
+                .parallelStream()
+                .map(builderTransportSP::build)
+                .collect(Collectors.toList());
 
         return new ServiceWorksResult<>(result, response.getErrors());
     }

@@ -6,13 +6,13 @@
 
     <artifactId>tawt-rest-server</artifactId>
     <name>TAWT Rest API SERVER</name>
-    <version>46431343af</version>
+    <version>ab0e5398db</version>
     <packaging>jar</packaging>
 
     <parent>
         <groupId>ru.textanalysis.tawt.rest</groupId>
         <artifactId>tawt-rest-api-parent</artifactId>
-        <version>46431343af</version>
+        <version>ab0e5398db</version>
     </parent>
 
     <dependencies>
@@ -60,14 +60,6 @@
     </dependencies>
 
     <build>
-        <!--<resources>
-            <resource>
-                <directory>src/main/resources</directory>
-                <excludes>
-                    <exclude>application.properties</exclude>
-                </excludes>
-            </resource>
-        </resources>-->
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
@@ -91,6 +83,8 @@
                         <manifest>
                             <mainClass>ru.textanalysis.tawt.rest.server.TawtRestApiServerApplication</mainClass>
                             <addClasspath>true</addClasspath>
+                            <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+                            <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
                         </manifest>
                         <manifestEntries>
                             <Built-By>Maven</Built-By>

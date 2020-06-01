@@ -2,11 +2,9 @@ package ru.textanalysis.tawt.rest.server.services;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.InitializingBean;
 import org.springframework.stereotype.Service;
 import ru.textanalysis.common.rest.classes.ServiceWorksResult;
 import ru.textanalysis.tawt.jmorfsdk.JMorfSdk;
-import ru.textanalysis.tawt.jmorfsdk.loader.JMorfSdkFactory;
 import ru.textanalysis.tawt.ms.internal.BuilderTransportBase;
 import ru.textanalysis.tawt.ms.internal.ref.BuilderTransportRef;
 import ru.textanalysis.tawt.rest.common.api.response.item.TransportOmoFormItem;
@@ -15,37 +13,37 @@ import ru.textanalysis.tawt.rest.common.api.response.item.TransportRefOmoFormIte
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
-public class JMorfSdkService implements InitializingBean {
+public class JMorfSdkService {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    private JMorfSdk jMorfSdk;
+    private final JMorfSdk jMorfSdk;
     private final BuilderTransportBase builderTransport;
     private final BuilderTransportRef builderTransportRef;
 
-    public JMorfSdkService(BuilderTransportBase builderTransport, BuilderTransportRef builderTransportRef) {
+    public JMorfSdkService(JMorfSdk jMorfSdk,
+                           BuilderTransportBase builderTransport,
+                           BuilderTransportRef builderTransportRef) {
+        this.jMorfSdk = jMorfSdk;
         this.builderTransport = builderTransport;
         this.builderTransportRef = builderTransportRef;
     }
 
-    @Override
-    public void afterPropertiesSet() throws Exception {
-        this.jMorfSdk = JMorfSdkFactory.loadFullLibrary(false);
-    }
-
     public ServiceWorksResult<List<TransportOmoFormItem>> selectOmoformsByString(String word) {
         List<String> errors = new LinkedList<>();
-        List<TransportOmoFormItem> result = new LinkedList<>();
+        List<TransportOmoFormItem> result;
         try {
-            jMorfSdk.getAllCharacteristicsOfForm(word).forEach(form -> {
-                TransportOmoFormItem item = builderTransport.build(form);
-                result.add(item);
-            });
+            result = jMorfSdk.getAllCharacteristicsOfForm(word)
+                    .parallelStream()
+                    .map(builderTransport::build)
+                    .collect(Collectors.toList());
         } catch (Throwable ex) {
-            String message = "Cannot AllCharacteristicsOfForm for word: " + String.valueOf(word);
+            String message = "Cannot AllCharacteristicsOfForm for word: " + word;
             log.warn(message, ex);
             errors.add(message);
+            result = new LinkedList<>();
         }
         return new ServiceWorksResult<>(result, errors);
     }
@@ -56,7 +54,7 @@ public class JMorfSdkService implements InitializingBean {
         try {
             result = jMorfSdk.isFormExistsInDictionary(word);
         } catch (Throwable ex) {
-            String message = "Cannot AllCharacteristicsOfForm for word: " + String.valueOf(word);
+            String message = "Cannot AllCharacteristicsOfForm for word: " + word;
             log.warn(message, ex);
             errors.add(message);
         }
@@ -69,7 +67,7 @@ public class JMorfSdkService implements InitializingBean {
         try {
             result = jMorfSdk.getMorphologyCharacteristics(word);
         } catch (Throwable ex) {
-            String message = "Cannot AllCharacteristicsOfForm for word: " + String.valueOf(word);
+            String message = "Cannot AllCharacteristicsOfForm for word: " + word;
             log.warn(message, ex);
             errors.add(message);
         }
@@ -78,16 +76,18 @@ public class JMorfSdkService implements InitializingBean {
 
     public ServiceWorksResult<List<TransportRefOmoFormItem>> selectRefOmoFormListByString(String word) {
         List<String> errors = new LinkedList<>();
-        List<TransportRefOmoFormItem> result = new LinkedList<>();
+        List<TransportRefOmoFormItem> result;
         try {
-            jMorfSdk.getRefOmoFormList(word).copy().forEach(form -> {
-                TransportRefOmoFormItem item = builderTransportRef.build(form);
-                result.add(item);
-            });
+            result = jMorfSdk.getRefOmoFormList(word)
+                    .stream()
+                    .parallel()
+                    .map(builderTransportRef::build)
+                    .collect(Collectors.toList());
         } catch (Throwable ex) {
-            String message = "Cannot RefOmoFormList for word: " + String.valueOf(word);
+            String message = "Cannot RefOmoFormList for word: " + word;
             log.warn(message, ex);
             errors.add(message);
+            result = new LinkedList<>();
         }
         return new ServiceWorksResult<>(result, errors);
     }
@@ -98,7 +98,7 @@ public class JMorfSdkService implements InitializingBean {
         try {
             result = jMorfSdk.getStringInitialForm(word);
         } catch (Throwable ex) {
-            String message = "Cannot StringInitialForm for word: " + String.valueOf(word);
+            String message = "Cannot StringInitialForm for word: " + word;
             log.warn(message, ex);
             errors.add(message);
         }
@@ -111,7 +111,7 @@ public class JMorfSdkService implements InitializingBean {
         try {
             result = jMorfSdk.getTypeOfSpeeches(word);
         } catch (Throwable ex) {
-            String message = "Cannot TypeOfSpeeches for word: " + String.valueOf(word);
+            String message = "Cannot TypeOfSpeeches for word: " + word;
             log.warn(message, ex);
             errors.add(message);
         }
@@ -124,7 +124,7 @@ public class JMorfSdkService implements InitializingBean {
         try {
             result = jMorfSdk.isInitialForm(word);
         } catch (Throwable ex) {
-            String message = "Cannot InitialForm for word: " + String.valueOf(word);
+            String message = "Cannot InitialForm for word: " + word;
             log.warn(message, ex);
             errors.add(message);
         }
@@ -137,9 +137,10 @@ public class JMorfSdkService implements InitializingBean {
         try {
             result = jMorfSdk.getDerivativeForm(word, typeOfSpeeches, morphologyCharacteristics);
         } catch (Throwable ex) {
-            String message = "Cannot DerivativeForm For word: " + String.valueOf(word)
-                    + " with type of speeches: " + String.valueOf(typeOfSpeeches) +
-                    " and morphology characteristics: " + String.valueOf(morphologyCharacteristics);
+            String message = String.format("Cannot DerivativeForm For word: %s " +
+                            "with type of speeches: %s " +
+                            "and morphology characteristics: %s",
+                    word, typeOfSpeeches, morphologyCharacteristics);
             log.warn(message, ex);
             errors.add(message);
         }
@@ -152,8 +153,8 @@ public class JMorfSdkService implements InitializingBean {
         try {
             result = jMorfSdk.getDerivativeForm(word, typeOfSpeeches);
         } catch (Throwable ex) {
-            String message = "Cannot DerivativeForm For word: " + String.valueOf(word)
-                    + " with type of speeches: " + String.valueOf(typeOfSpeeches);
+            String message = String.format("Cannot DerivativeForm For word: %s with type of speeches: %s",
+                    word, typeOfSpeeches);
             log.warn(message, ex);
             errors.add(message);
         }
@@ -166,8 +167,8 @@ public class JMorfSdkService implements InitializingBean {
         try {
             result = jMorfSdk.getDerivativeForm(word, morphologyCharacteristics);
         } catch (Throwable ex) {
-            String message = "Cannot DerivativeForm For word: " + String.valueOf(word)
-                    + " with morphology characteristics: " + String.valueOf(morphologyCharacteristics);
+            String message = String.format("Cannot DerivativeForm For word: %s with morphology characteristics: %s",
+                    word, morphologyCharacteristics);
             log.warn(message, ex);
             errors.add(message);
         }

@@ -5,6 +5,13 @@ import java.util.List;
 public class MorphParagraph {
     private List<MorphSentence> morphSentenceList;
 
+    public MorphParagraph() {
+    }
+
+    public MorphParagraph(List<MorphSentence> morphSentenceList) {
+        this.morphSentenceList = morphSentenceList;
+    }
+
     public List<MorphSentence> getMorphSentenceList() {
         return morphSentenceList;
     }

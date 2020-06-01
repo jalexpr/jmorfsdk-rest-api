@@ -24,7 +24,7 @@ import java.util.List;
 @Service
 @SuppressWarnings("FieldCanBeLocal")
 public class GamaRemoteService {
-    private final String SERVICE_NAME;
+    private final String SERVICE_URL;
     private final String URN_SELECT_MORPH_WORD_BY_STRING = "api/gama/get/morph/word";
     private final String URN_SELECT_MORPH_BEARING_PHRASE_BY_STRING = "api/gama/get/morph/bearing/phrase";
     private final String URN_SELECT_MORPH_SENTENCE_BY_STRING = "api/gama/get/morph/sentence";
@@ -35,15 +35,17 @@ public class GamaRemoteService {
     private final BuilderTransportRef builderTransportRef;
 
     @Autowired
-    GamaRemoteService(RestClientService restClientService,
+    GamaRemoteService(BuilderTransportRef builderTransportRef,
+                      RestClientService restClientService,
                       Config config) {
         this.restClientService = restClientService;
-        this.builderTransportRef = new BuilderTransportRef();
-        this.SERVICE_NAME = String.format("%s:%s/tawt-rest-api", config.getAddress(), config.getPort());
+        this.builderTransportRef = builderTransportRef;
+        this.SERVICE_URL = config.getUrl();
     }
 
     /**
      * Получение списка рефомоформ по заданному слову
+     *
      * @param text слово
      * @return список рефомоформ
      */
@@ -52,12 +54,12 @@ public class GamaRemoteService {
         request.setText(text);
 
         SelectMorphWordByStringResponse response =
-                restClientService.post(SERVICE_NAME, URN_SELECT_MORPH_WORD_BY_STRING,
+                restClientService.post(SERVICE_URL, URN_SELECT_MORPH_WORD_BY_STRING,
                         request, SelectMorphWordByStringResponse.class);
 
         if (response == null) {
             String message = String.format("Error connected to http://%s/%s by word = %s",
-                    SERVICE_NAME, URN_SELECT_MORPH_WORD_BY_STRING, text);
+                    SERVICE_URL, URN_SELECT_MORPH_WORD_BY_STRING, text);
             throw new TawtRestRuntimeException(message);
         }
 
@@ -73,6 +75,7 @@ public class GamaRemoteService {
 
     /**
      * Получение списка рефомоформ по заданному опорному обороту.
+     *
      * @param text опорный оборот
      * @return список рефомоформ
      */
@@ -81,12 +84,12 @@ public class GamaRemoteService {
         request.setText(text);
 
         SelectMorphBearingPhraseByStringResponse response =
-                restClientService.post(SERVICE_NAME, URN_SELECT_MORPH_BEARING_PHRASE_BY_STRING,
+                restClientService.post(SERVICE_URL, URN_SELECT_MORPH_BEARING_PHRASE_BY_STRING,
                         request, SelectMorphBearingPhraseByStringResponse.class);
 
         if (response == null) {
             String message = String.format("Error connected to http://%s/%s by word = %s",
-                    SERVICE_NAME, URN_SELECT_MORPH_BEARING_PHRASE_BY_STRING, text);
+                    SERVICE_URL, URN_SELECT_MORPH_BEARING_PHRASE_BY_STRING, text);
             throw new TawtRestRuntimeException(message);
         }
 
@@ -105,6 +108,7 @@ public class GamaRemoteService {
 
     /**
      * Получение списка рефомоформ по заданному предложению.
+     *
      * @param text предложение
      * @return список рефомоформ
      */
@@ -113,12 +117,12 @@ public class GamaRemoteService {
         request.setText(text);
 
         SelectMorphSentenceByStringResponse response =
-                restClientService.post(SERVICE_NAME, URN_SELECT_MORPH_SENTENCE_BY_STRING,
+                restClientService.post(SERVICE_URL, URN_SELECT_MORPH_SENTENCE_BY_STRING,
                         request, SelectMorphSentenceByStringResponse.class);
 
         if (response == null) {
             String message = String.format("Error connected to http://%s/%s by word = %s",
-                    SERVICE_NAME, URN_SELECT_MORPH_SENTENCE_BY_STRING, text);
+                    SERVICE_URL, URN_SELECT_MORPH_SENTENCE_BY_STRING, text);
             throw new TawtRestRuntimeException(message);
         }
 
@@ -141,6 +145,7 @@ public class GamaRemoteService {
 
     /**
      * Получение списка рефомоформ по заданному параграфу.
+     *
      * @param text параграф
      * @return список рефомоформ
      */
@@ -149,12 +154,12 @@ public class GamaRemoteService {
         request.setText(text);
 
         SelectMorphParagraphByStringResponse response =
-                restClientService.post(SERVICE_NAME, URN_SELECT_MORPH_PARAGRAPH_BY_STRING,
+                restClientService.post(SERVICE_URL, URN_SELECT_MORPH_PARAGRAPH_BY_STRING,
                         request, SelectMorphParagraphByStringResponse.class);
 
         if (response == null) {
             String message = String.format("Error connected to http://%s/%s by word = %s",
-                    SERVICE_NAME, URN_SELECT_MORPH_PARAGRAPH_BY_STRING, text);
+                    SERVICE_URL, URN_SELECT_MORPH_PARAGRAPH_BY_STRING, text);
             throw new TawtRestRuntimeException(message);
         }
 
@@ -181,6 +186,7 @@ public class GamaRemoteService {
 
     /**
      * Получение списка рефомоформ по заданному тексту.
+     *
      * @param text произвольный текст
      * @return список рефомоформ
      */
@@ -189,12 +195,12 @@ public class GamaRemoteService {
         request.setText(text);
 
         SelectMorphTextByStringResponse response =
-                restClientService.post(SERVICE_NAME, URN_SELECT_MORPH_TEXT_BY_STRING,
+                restClientService.post(SERVICE_URL, URN_SELECT_MORPH_TEXT_BY_STRING,
                         request, SelectMorphTextByStringResponse.class);
 
         if (response == null) {
             String message = String.format("Error connected to http://%s/%s by word = %s",
-                    SERVICE_NAME, URN_SELECT_MORPH_TEXT_BY_STRING, text);
+                    SERVICE_URL, URN_SELECT_MORPH_TEXT_BY_STRING, text);
             throw new TawtRestRuntimeException(message);
         }
 

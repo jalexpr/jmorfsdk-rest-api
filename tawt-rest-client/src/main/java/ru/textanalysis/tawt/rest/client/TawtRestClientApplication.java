@@ -15,8 +15,7 @@ public class TawtRestClientApplication {
 
     public static void main(String[] args) {
         try {
-            //RemoteServiceFactory factory = new RemoteServiceFactory("http://boberpul2.asuscomm.com", 8093);
-            RemoteServiceFactory factory = new RemoteServiceFactory("http://localhost", 30002);
+            RemoteServiceFactory factory = new RemoteServiceFactory("http://localhost:30002");
             JMorfSdkRemoteService jMorfSdkRemoteService = factory.getJMorfSdkRemoteService();
             GraphematicParserRemoteService graphematicParserRemoteService = factory.getGraphematicParserRemoteService();
             GamaRemoteService gamaRemoteService = factory.getGamaRemoteService();
