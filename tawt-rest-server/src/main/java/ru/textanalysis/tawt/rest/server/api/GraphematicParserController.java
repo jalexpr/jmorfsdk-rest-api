@@ -13,6 +13,9 @@ import org.springframework.web.bind.annotation.*;
 import ru.textanalysis.common.rest.classes.ServiceWorksResult;
 import ru.textanalysis.common.rest.utils.WebErrorHelper;
 import ru.textanalysis.common.rest.utils.WebHelper;
+import ru.textanalysis.tawt.rest.common.api.request.SelectByBearingPhraseRequest;
+import ru.textanalysis.tawt.rest.common.api.request.SelectByParagraphRequest;
+import ru.textanalysis.tawt.rest.common.api.request.SelectBySentenceRequest;
 import ru.textanalysis.tawt.rest.common.api.request.SelectByStringRequest;
 import ru.textanalysis.tawt.rest.common.api.response.ParserBasicsPhaseByStringResponse;
 import ru.textanalysis.tawt.rest.common.api.response.ParserParagraphByStringResponse;
@@ -47,13 +50,13 @@ public class GraphematicParserController {
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK", response = ParserBasicsPhaseByStringResponse.class)})
     @RequestMapping(value = "parser/basics/phase", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> parserBasicsPhase(@RequestBody SelectByStringRequest request) {
+    public ResponseEntity<String> parserBasicsPhase(@RequestBody SelectByBearingPhraseRequest request) {
         ParserBasicsPhaseByStringResponse result = new ParserBasicsPhaseByStringResponse();
 
         result.getErrors().addAll(validationService.validationRequest(request));
 
         if (result.getErrors().isEmpty()) {
-            ServiceWorksResult<List<String>> resultSelect = parserService.parserBasicsPhaseByString(request.getText());
+            ServiceWorksResult<List<String>> resultSelect = parserService.parserBasicsPhaseByString(request.getBearingPhrase());
             result.createEmptyData();
             result.getData().setStringList(resultSelect.getResult());
             if (!resultSelect.getErrorMessage().isEmpty()) {
@@ -69,13 +72,13 @@ public class GraphematicParserController {
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK", response = ParserSentenceByStringResponse.class)})
     @RequestMapping(value = "parser/sentence", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> parserSentence(@RequestBody SelectByStringRequest request) {
+    public ResponseEntity<String> parserSentence(@RequestBody SelectBySentenceRequest request) {
         ParserSentenceByStringResponse result = new ParserSentenceByStringResponse();
 
         result.getErrors().addAll(validationService.validationRequest(request));
 
         if (result.getErrors().isEmpty()) {
-            ServiceWorksResult<List<List<String>>> resultSelect = parserService.parserSentenceByString(request.getText());
+            ServiceWorksResult<List<List<String>>> resultSelect = parserService.parserSentenceByString(request.getSentence());
             result.createEmptyData();
             result.getData().setStringList(resultSelect.getResult());
             if (!resultSelect.getErrorMessage().isEmpty()) {
@@ -91,13 +94,13 @@ public class GraphematicParserController {
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK", response = ParserParagraphByStringResponse.class)})
     @RequestMapping(value = "parser/paragraph", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> parserParagraph(@RequestBody SelectByStringRequest request) {
+    public ResponseEntity<String> parserParagraph(@RequestBody SelectByParagraphRequest request) {
         ParserParagraphByStringResponse result = new ParserParagraphByStringResponse();
 
         result.getErrors().addAll(validationService.validationRequest(request));
 
         if (result.getErrors().isEmpty()) {
-            ServiceWorksResult<List<List<List<String>>>> resultSelect = parserService.parserParagraphByString(request.getText());
+            ServiceWorksResult<List<List<List<String>>>> resultSelect = parserService.parserParagraphByString(request.getParagraph());
             result.createEmptyData();
             result.getData().setStringList(resultSelect.getResult());
             if (!resultSelect.getErrorMessage().isEmpty()) {

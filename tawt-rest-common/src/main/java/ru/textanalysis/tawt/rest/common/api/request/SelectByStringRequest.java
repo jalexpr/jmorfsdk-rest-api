@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
 
 public class SelectByStringRequest {
-    @ApiModelProperty(value = "Слово, несущая фраза, текст, предложение...")
+    @ApiModelProperty(value = "Текст", example = "текст")
     @JsonProperty
     private String text;
 
