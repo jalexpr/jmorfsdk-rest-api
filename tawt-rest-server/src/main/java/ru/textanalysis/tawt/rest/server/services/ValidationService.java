@@ -108,20 +108,28 @@ public class ValidationService {
 
     public Collection<? extends String> validationRequest(SelectByStringWithTypeOfSpeechesAndMorphologyCharacteristicsRequest request) {
         List<String> errors = new LinkedList<>();
-        if (request == null) {
+        if (request != null) {
+            if (StringUtils.isBlank(request.getWord())) {
+                String message = "Field 'word' is null or empty | Поле 'word' не задано, либо пустое";
+                log.warn(message);
+                errors.add(message);
+            } else if (!request.getWord().trim().matches("^\\S+$")) {
+                String message = "Field 'word' must contain one word | Поле 'word' должно содержать только одно слово";
+                log.warn(message);
+                errors.add(message);
+            }
+            if (request.getTypeOfSpeeches() == null) {
+                String message = "Field 'typeOfSpeeches' is null | Поле 'typeOfSpeeches' не задано";
+                log.warn(message);
+                errors.add(message);
+            }
+            if (request.getMorphologyCharacteristics() == null) {
+                String message = "Field 'morphologyCharacteristics' is null | Поле 'morphologyCharacteristics' не задано";
+                log.warn(message);
+                errors.add(message);
+            }
+        } else {
             String message = "Request is null | Запрос не задан";
-            log.warn(message);
-            errors.add(message);
-        } else if (StringUtils.isBlank(request.getWord())) {
-            String message = "Field 'word' is null or empty | Поле 'word' не задано, либо пустое";
-            log.warn(message);
-            errors.add(message);
-        } else if (request.getTypeOfSpeeches() == null) {
-            String message = "Field 'typeOfSpeeches' is null | Поле 'typeOfSpeeches' не задано";
-            log.warn(message);
-            errors.add(message);
-        } else if (request.getMorphologyCharacteristics() == null) {
-            String message = "Field 'morphologyCharacteristics' is null | Поле 'morphologyCharacteristics' не задано";
             log.warn(message);
             errors.add(message);
         }
@@ -130,16 +138,23 @@ public class ValidationService {
 
     public Collection<? extends String> validationRequest(SelectByStringWithTypeOfSpeechesRequest request) {
         List<String> errors = new LinkedList<>();
-        if (request == null) {
+        if (request != null) {
+            if (StringUtils.isBlank(request.getWord())) {
+                String message = "Field 'word' is null or empty | Поле 'word' не задано, либо пустое";
+                log.warn(message);
+                errors.add(message);
+            } else if (!request.getWord().trim().matches("^\\S+$")) {
+                String message = "Field 'word' must contain one word | Поле 'word' должно содержать только одно слово";
+                log.warn(message);
+                errors.add(message);
+            }
+            if (request.getTypeOfSpeeches() == null) {
+                String message = "Field 'typeOfSpeeches' is null | Поле 'typeOfSpeeches' не задано";
+                log.warn(message);
+                errors.add(message);
+            }
+        } else {
             String message = "Request is null | Запрос не задан";
-            log.warn(message);
-            errors.add(message);
-        } else if (StringUtils.isBlank(request.getWord())) {
-            String message = "Field 'word' is null or empty | Поле 'word' не задано, либо пустое";
-            log.warn(message);
-            errors.add(message);
-        } else if (request.getTypeOfSpeeches() == null) {
-            String message = "Field 'typeOfSpeeches' is null | Поле 'typeOfSpeeches' не задано";
             log.warn(message);
             errors.add(message);
         }
@@ -148,16 +163,23 @@ public class ValidationService {
 
     public Collection<? extends String> validationRequest(SelectByStringWithMorphologyCharacteristicsRequest request) {
         List<String> errors = new LinkedList<>();
-        if (request == null) {
+        if (request != null) {
+            if (StringUtils.isBlank(request.getWord())) {
+                String message = "Field 'word' is null or empty | Поле 'word' не задано, либо пустое";
+                log.warn(message);
+                errors.add(message);
+            } else if (!request.getWord().trim().matches("^\\S+$")) {
+                String message = "Field 'word' must contain one word | Поле 'word' должно содержать только одно слово";
+                log.warn(message);
+                errors.add(message);
+            }
+            if (request.getMorphologyCharacteristics() == null) {
+                String message = "Field 'morphologyCharacteristics' is null | Поле 'morphologyCharacteristics' не задано";
+                log.warn(message);
+                errors.add(message);
+            }
+        } else {
             String message = "Request is null | Запрос не задан";
-            log.warn(message);
-            errors.add(message);
-        } else if (StringUtils.isBlank(request.getWord())) {
-            String message = "Field 'word' is null or empty | Поле 'word' не задано, либо пустое";
-            log.warn(message);
-            errors.add(message);
-        } else if (request.getMorphologyCharacteristics() == null) {
-            String message = "Field 'morphologyCharacteristics' is null | Поле 'morphologyCharacteristics' не задано";
             log.warn(message);
             errors.add(message);
         }

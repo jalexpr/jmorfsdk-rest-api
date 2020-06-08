@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
 
 public class SelectByStringWithTypeOfSpeechesRequest {
-    @ApiModelProperty(value = "Слово")
+    @ApiModelProperty(value = "Слово", example = "слово")
     @JsonProperty
     private String word;
 

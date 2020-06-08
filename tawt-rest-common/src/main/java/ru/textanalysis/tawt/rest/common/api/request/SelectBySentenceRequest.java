@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
 
 public class SelectBySentenceRequest {
-    @ApiModelProperty(value = "Предложение")
+    @ApiModelProperty(value = "Предложение", example = "предложение")
     @JsonProperty
     private String sentence;
 

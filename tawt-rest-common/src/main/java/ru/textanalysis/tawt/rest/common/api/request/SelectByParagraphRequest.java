@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
 
 public class SelectByParagraphRequest {
-    @ApiModelProperty(value = "Параграф")
+    @ApiModelProperty(value = "Параграф", example = "параграф")
     @JsonProperty
     private String paragraph;
 

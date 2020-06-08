@@ -3,6 +3,7 @@ package ru.textanalysis.tawt.ms.internal.ref;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import ru.textanalysis.tawt.ms.internal.TypeForms;
 import ru.textanalysis.tawt.ms.internal.form.BuilderForm;
 import ru.textanalysis.tawt.ms.internal.form.Form;
 import ru.textanalysis.tawt.rest.common.api.response.item.TransportRefOmoFormItem;
@@ -27,10 +28,14 @@ public class BuilderTransportRef {
         item.setFormKeyInBD(refOmoFormform.getForm().getMyFormKey());
         item.setTypeFormId(refOmoFormform.getForm().getTypeForm().getId());
         item.setInitialForm(refOmoFormform.getForm().isInitialForm());
-        item.setMyString(refOmoFormform.getForm().getMyString());
         item.setTypeForm(refOmoFormform.getTypeForm());
         item.setOrder(refOmoFormform.getForm().getOrder());
         item.setOrderInitialForm(((Form) refOmoFormform.form.getInitialForm()).getOrder());
+        if (refOmoFormform.getTypeForm() == TypeForms.NUMBER) {
+            item.setMyString(refOmoFormform.getInitialFormString());
+        } else {
+            item.setMyString(refOmoFormform.getForm().getMyString());
+        }
         return item;
     }
 
